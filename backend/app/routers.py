@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from ..database import get_db
-from ..models import Lead
-from ..schemas import LeadCreate, LeadResponse
+from .database import get_db
+from .models import Lead
+from .schemas import LeadCreate, LeadResponse
 
 router = APIRouter(
     prefix="/api/leads",

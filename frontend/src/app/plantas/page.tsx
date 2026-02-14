@@ -1,6 +1,6 @@
-import { ArrowRight, Download, Home, Maximize, Ruler, Sparkles } from "lucide-react";
 "use client";
 
+import { ArrowRight, Download, Home, Maximize, Ruler, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function PlantasPage() {

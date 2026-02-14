@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
-from ..database import Base
+from .database import Base
 
 class Lead(Base):
     __tablename__ = "leads"
