@@ -1,26 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Calculator, FileText, Home, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Calculator, Home, Zap } from "lucide-react";
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 glass border-b border-white/10 backdrop-blur-md">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-blue-500 tracking-tighter hover:scale-105 transition-transform cursor-pointer">
-            CASAS<span className="text-blue-500 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">LSF</span>
-          </div>
-          <div className="hidden md:flex gap-10 text-sm font-medium text-gray-300">
-            <Link href="/plantas" className="hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300">Plantas</Link>
-            <Link href="/custos" className="hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300">Custos</Link>
-            <Link href="/metodos" className="hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300">Métodos</Link>
-            <Link href="/blog" className="hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] transition-all duration-300">Blog</Link>
-          </div>
-          <Link href="/simulador" className="btn-primary text-sm px-6 py-2.5 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all">
-            Simular Grátis
-          </Link>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
