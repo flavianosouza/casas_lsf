@@ -4,11 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from .routers import router as leads_router
 
-# Dependency to create tables on startup (simplification for dev)
+# Create tables on startup — if DB unavailable, app still starts
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("✅ Database connected and tables created.")
+    except Exception as e:
+        print(f"⚠️ Database not available on startup: {e}")
+        print("   Tables will be created on first successful request.")
     yield
 
 app = FastAPI(
