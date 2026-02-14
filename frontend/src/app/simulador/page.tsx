@@ -1,156 +1,271 @@
 "use client";
 
 import { useState } from "react";
-import { Calculator, CheckCircle, Info } from "lucide-react";
+import { ArrowRight, CheckCircle, Home, MapPin, Ruler, User } from "lucide-react";
+import Link from "next/link";
 
 export default function SimuladorPage() {
-  const [area, setArea] = useState(100);
-  const [floors, setFloors] = useState(1);
-  const [finish, setFinish] = useState("medio");
-  const [result, setResult] = useState<number | null>(null);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    interesse_tipo: "T3",
+    mensagem: "",
+    localizacao: "",
+    area: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const calculate = () => {
-    let basePrice = 0;
-    switch (finish) {
-      case "base": basePrice = 950; break;
-      case "medio": basePrice = 1150; break;
-      case "premium": basePrice = 1450; break;
-    }
-    
-    // Slight discount for larger areas, penalty for smaller
-    const scaleFactor = area < 80 ? 1.1 : area > 150 ? 0.95 : 1.0;
-    
-    // Multi-story penalty (stairs, structure)
-    const floorFactor = floors > 1 ? 1.05 : 1.0;
-
-    const total = area * basePrice * scaleFactor * floorFactor;
-    setResult(Math.round(total));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/leads/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nome: formData.nome,
+          email: formData.email,
+          telefone: formData.telefone,
+          interesse_tipo: formData.interesse_tipo,
+          mensagem: formData.mensagem,
+          metadata_info: {
+            localizacao: formData.localizacao,
+            area: formData.area,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        setIsSuccess(true);
+      } else {
+        alert("Ocorreu um erro ao enviar. Tente novamente.");
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Erro de conexão.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const nextStep = () => setStep(step + 1);
+  const prevStep = () => setStep(step - 1);
+
+  if (isSuccess) {
+    return (
+      <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover flex items-center justify-center p-6">
+        <div className="glass-card max-w-lg w-full p-10 text-center animate-fade-in">
+          <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+            <CheckCircle className="w-10 h-10" />
+          </div>
+          <h2 className="text-3xl font-bold mb-4 text-white">Pedido Recebido!</h2>
+          <p className="text-gray-300 mb-8">
+            A sua simulação foi enviada com sucesso. A nossa equipa de engenharia irá analisar e entrará em contacto brevemente.
+          </p>
+          <Link href="/" className="btn-primary inline-block w-full py-3">
+            Voltar à Página Inicial
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6">
+    <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover py-20 px-6">
       <div className="container mx-auto max-w-4xl">
-        <h1 className="text-4xl font-bold mb-4 text-center">Simulador de Custos LSF</h1>
-        <p className="text-gray-400 text-center mb-12">
-          Estimativa preliminar baseada nos valores médios de mercado para 2026.
-        </p>
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Simulador de Orçamento</h1>
+          <p className="text-gray-400 text-lg">
+            Receba uma estimativa preliminar para a sua casa LSF em minutos.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Form */}
-          <div className="glass-card p-8">
-            <h2 className="text-2xl font-bold mb-6">Dados do Projeto</h2>
+        <div className="glass-card p-8 md:p-12">
+          {/* Progress Bar */}
+          <div className="flex justify-between mb-12 relative">
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-white/10 -z-10 -translate-y-1/2 rounded-full"></div>
+            <div 
+              className="absolute top-1/2 left-0 h-1 bg-blue-500 -z-10 -translate-y-1/2 rounded-full transition-all duration-500"
+              style={{ width: `${((step - 1) / 2) * 100}%` }}
+            ></div>
             
-            <div className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">Área Bruta (m²)</label>
-                <input 
-                  type="range" 
-                  min="50" 
-                  max="300" 
-                  value={area} 
-                  onChange={(e) => setArea(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                />
-                <div className="mt-2 text-right font-mono text-blue-400">{area} m²</div>
+            {[1, 2, 3].map((s) => (
+              <div key={s} className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${step >= s ? "bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]" : "bg-gray-800 text-gray-500"}`}>
+                {s}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">Nº de Pisos</label>
-                <div className="flex gap-4">
-                  <button 
-                    onClick={() => setFloors(1)}
-                    className={`flex-1 py-3 rounded-lg border transition ${floors === 1 ? 'bg-blue-600 border-blue-500 text-white' : 'border-gray-700 hover:bg-white/5'}`}
-                  >
-                    Térrea
-                  </button>
-                  <button 
-                    onClick={() => setFloors(2)}
-                    className={`flex-1 py-3 rounded-lg border transition ${floors === 2 ? 'bg-blue-600 border-blue-500 text-white' : 'border-gray-700 hover:bg-white/5'}`}
-                  >
-                    2 Pisos
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">Nível de Acabamento</label>
-                <select 
-                  value={finish} 
-                  onChange={(e) => setFinish(e.target.value)}
-                  className="w-full bg-black/50 border border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                >
-                  <option value="base">Base (Essencial)</option>
-                  <option value="medio">Médio (Recomendado)</option>
-                  <option value="premium">Premium (Alto Padrão)</option>
-                </select>
-              </div>
-
-              <button 
-                onClick={calculate}
-                className="w-full btn-primary justify-center py-4 mt-4 text-lg"
-              >
-                <Calculator className="w-5 h-5 mr-2" /> Calcular Estimativa
-              </button>
-            </div>
+            ))}
           </div>
 
-          {/* Results */}
-          <div className="glass-card p-8 flex flex-col justify-center items-center text-center relative overflow-hidden">
-            {!result ? (
-              <div className="text-gray-500">
-                <Info className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Preencha os dados e clique em calcular para ver o resultado.</p>
-              </div>
-            ) : (
-              <div className="animate-fade-in w-full">
-                <div className="inline-block px-4 py-1 rounded-full bg-green-500/20 text-green-400 text-sm mb-6">
-                  Estimativa Gerada com Sucesso
-                </div>
-                <div className="text-gray-400 text-sm mb-2">Valor Estimado Chave na Mão</div>
-                <div className="text-5xl font-bold text-white mb-8 tracking-tight">
-                  {new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(result)}
-                </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {step === 1 && (
+              <div className="animate-fade-in space-y-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                  <Home className="w-6 h-6 text-blue-400" /> Detalhes do Projeto
+                </h2>
                 
-                <div className="space-y-4 text-left bg-black/30 p-6 rounded-lg mb-8">
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gray-400">Estrutura LSF</span>
-                    <span>{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(result * 0.35)}</span>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Tipologia</label>
+                    <select 
+                      name="interesse_tipo" 
+                      value={formData.interesse_tipo}
+                      onChange={handleChange}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-blue-500 outline-none transition-colors"
+                    >
+                      <option value="T1">T1 (50-70 m²)</option>
+                      <option value="T2">T2 (80-110 m²)</option>
+                      <option value="T3">T3 (120-160 m²)</option>
+                      <option value="T4">T4+ (170+ m²)</option>
+                      <option value="Outro">Outro / Personalizado</option>
+                    </select>
                   </div>
-                  <div className="flex justify-between border-b border-white/10 pb-2">
-                    <span className="text-gray-400">Acabamentos</span>
-                    <span>{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(result * 0.45)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Equipamentos/Outros</span>
-                    <span>{new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(result * 0.20)}</span>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Área Estimada (m²)</label>
+                    <div className="relative">
+                      <Ruler className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <input 
+                        type="number" 
+                        name="area"
+                        placeholder="Ex: 150"
+                        value={formData.area}
+                        onChange={handleChange}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 pl-10 text-white focus:border-blue-500 outline-none transition-colors"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-8 border-t border-white/10 pt-6">
-                  <h3 className="text-lg font-bold mb-4">Receber Orçamento Oficial</h3>
-                  <form action={async (formData) => {
-                    "use client";
-                    // Note: In a real app we'd import the server action. 
-                    // For now, this is a placeholder to show where it connects.
-                    alert("Funcionalidade de envio conectada ao Server Action submitLead!");
-                  }} className="space-y-4">
-                    <input name="nome" placeholder="Seu Nome" className="w-full bg-black/30 border border-gray-700 rounded p-3 text-white" required />
-                    <input name="telefone" placeholder="WhatsApp" className="w-full bg-black/30 border border-gray-700 rounded p-3 text-white" required />
-                    <input name="email" placeholder="Email (Opcional)" className="w-full bg-black/30 border border-gray-700 rounded p-3 text-white" />
-                    <button type="submit" className="w-full btn-secondary justify-center">
-                      Enviar Pedido
-                    </button>
-                  </form>
+                <div>
+                   <label className="block text-sm font-medium text-gray-400 mb-2">Localização do Terreno</label>
+                   <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                      <input 
+                        type="text" 
+                        name="localizacao"
+                        placeholder="Concelho ou Distrito"
+                        value={formData.localizacao}
+                        onChange={handleChange}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 pl-10 text-white focus:border-blue-500 outline-none transition-colors"
+                      />
+                   </div>
                 </div>
-                
-                <p className="text-xs text-gray-500 mt-4">
-                  *Valores meramente indicativos. Não inclui terreno, licenciamento e arranjos exteriores.
-                </p>
+
+                <div className="flex justify-end pt-4">
+                  <button type="button" onClick={nextStep} className="btn-primary px-8 py-3 flex items-center gap-2">
+                    Continuar <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             )}
-          </div>
+
+            {step === 2 && (
+              <div className="animate-fade-in space-y-6">
+                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                  <User className="w-6 h-6 text-blue-400" /> Os Seus Dados
+                </h2>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Nome Completo</label>
+                    <input 
+                      type="text" 
+                      name="nome"
+                      required
+                      value={formData.nome}
+                      onChange={handleChange}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-blue-500 outline-none transition-colors"
+                    />
+                  </div>
+                  
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Email</label>
+                      <input 
+                        type="email" 
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-blue-500 outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">Telefone</label>
+                      <input 
+                        type="tel" 
+                        name="telefone"
+                        required
+                        value={formData.telefone}
+                        onChange={handleChange}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-blue-500 outline-none transition-colors"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-between pt-4">
+                   <button type="button" onClick={prevStep} className="text-gray-400 hover:text-white transition-colors px-4">
+                    Voltar
+                  </button>
+                  <button type="button" onClick={nextStep} className="btn-primary px-8 py-3 flex items-center gap-2">
+                    Continuar <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="animate-fade-in space-y-6">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+                  <CheckCircle className="w-6 h-6 text-blue-400" /> Confirmação e Notas
+                </h2>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Mensagem ou Pedidos Especiais (Opcional)</label>
+                  <textarea 
+                    name="mensagem"
+                    rows={4}
+                    value={formData.mensagem}
+                    onChange={handleChange}
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:border-blue-500 outline-none transition-colors resize-none"
+                    placeholder="Ex: Tenho um terreno inclinado, gostaria de incluir garagem na cave..."
+                  ></textarea>
+                </div>
+
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 text-sm text-blue-200">
+                  <p>
+                    Ao submeter, irá receber um contacto da nossa equipa especializada para validar a viabilidade técnica do seu projeto LSF.
+                  </p>
+                </div>
+
+                <div className="flex justify-between pt-4">
+                   <button type="button" onClick={prevStep} className="text-gray-400 hover:text-white transition-colors px-4">
+                    Voltar
+                  </button>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="btn-primary px-8 py-3 w-full md:w-auto flex justify-center items-center gap-2"
+                  >
+                    {isSubmitting ? "A Enviar..." : "Pedir Simulação Grátis"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
