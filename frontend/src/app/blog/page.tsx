@@ -86,11 +86,20 @@ function estimateReadTime(resumo: string | null): string {
 }
 
 const CATEGORIAS_LABELS: Record<string, string> = {
-  construcao: "Construção LSF",
-  financiamento: "Financiamento",
-  terrenos: "Terrenos",
-  dicas: "Dicas",
-  noticias: "Notícias",
+  "construcao-lsf": "Construção LSF",
+  "precos-construcao": "Preços",
+  "casas-modulares": "Casas Modulares",
+  "credito-habitacao": "Crédito Habitação",
+  "dicas-construcao": "Dicas",
+  remodelacao: "Remodelação",
+  "terrenos-licencas": "Terrenos e Licenças",
+  "icf-plastbau": "Construção ICF",
+  acabamentos: "Acabamentos",
+  "telhados-coberturas": "Telhados",
+  betao: "Betão",
+  isolamento: "Isolamento",
+  "pavilhoes-garagens": "Pavilhões e Garagens",
+  "casas-madeira": "Casas de Madeira",
 };
 
 export default async function BlogPage({
