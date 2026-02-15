@@ -15,29 +15,29 @@ export default function Footer() {
               CASAS<span className="text-blue-500">LSF</span>
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed mb-4">
-              Construcao em Light Steel Framing com inteligencia e transparencia.
-              Projectos de raiz, do terreno a chave na mao.
+              Construção em Light Steel Framing com inteligência e transparência.
+              Projetos de raiz, do terreno à chave na mão.
             </p>
             <p className="text-gray-600 text-xs">
               OBRASNET UNIP LDA
               <br />
               NIF: 515 866 989
               <br />
-              Alvara IMPIC: 94665
+              Alvará IMPIC: 94665
             </p>
           </div>
 
           {/* Links rapidos */}
           <div>
             <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
-              Servicos
+              Serviços
             </h4>
             <ul className="space-y-3">
               {[
                 { href: "/simulador", label: "Simulador de Custos" },
                 { href: "/plantas", label: "Plantas LSF" },
-                { href: "/custos", label: "Tabela de Precos" },
-                { href: "/metodos", label: "Metodo Construtivo" },
+                { href: "/custos", label: "Tabela de Preços" },
+                { href: "/metodos", label: "Método Construtivo" },
                 { href: "/como-funciona", label: "Como Funciona" },
               ].map((link) => (
                 <li key={link.href}>
@@ -52,10 +52,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Conteudo */}
+          {/* Conteúdo */}
           <div>
             <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
-              Conteudo
+              Conteúdo
             </h4>
             <ul className="space-y-3">
               {[
@@ -70,7 +70,7 @@ export default function Footer() {
                 },
                 {
                   href: "/blog/quanto-custa-casa-lsf-portugal",
-                  label: "Custos de Construcao",
+                  label: "Custos de Construção",
                 },
               ].map((link) => (
                 <li key={link.href}>
@@ -128,10 +128,10 @@ export default function Footer() {
           </p>
           <div className="flex gap-6 text-xs text-gray-600">
             <Link href="/privacidade" className="hover:text-gray-400 transition-colors">
-              Politica de Privacidade
+              Política de Privacidade
             </Link>
             <Link href="/termos" className="hover:text-gray-400 transition-colors">
-              Termos e Condicoes
+              Termos e Condições
             </Link>
           </div>
         </div>

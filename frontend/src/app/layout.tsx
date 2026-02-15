@@ -9,19 +9,19 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://casaslsf.com"),
   title: {
-    default: "Casas LSF | Construcao em Aco Leve em Portugal",
+    default: "Casas LSF | Construção em Aço Leve em Portugal",
     template: "%s | Casas LSF",
   },
   description:
-    "O maior portal de construcao em Light Steel Framing de Portugal. Plantas, orcamentos, simulador de custos e guias tecnicos. OBRASNET UNIP LDA.",
+    "O maior portal de construção em Light Steel Framing de Portugal. Plantas, orçamentos, simulador de custos e guias técnicos. OBRASNET UNIP LDA.",
   keywords: [
     "casas LSF",
     "Light Steel Framing",
-    "construcao aco leve",
-    "casas pre-fabricadas Portugal",
-    "construcao modular",
-    "orcamento construcao",
-    "casas metalicas",
+    "construção aço leve",
+    "casas pré-fabricadas Portugal",
+    "construção modular",
+    "orçamento construção",
+    "casas metálicas",
     "OBRASNET",
   ],
   authors: [{ name: "OBRASNET UNIP LDA" }],
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     locale: "pt_PT",
     url: "https://casaslsf.com",
     siteName: "Casas LSF",
-    title: "Casas LSF | Construcao em Aco Leve em Portugal",
+    title: "Casas LSF | Construção em Aço Leve em Portugal",
     description:
-      "O maior portal de construcao em Light Steel Framing de Portugal. Plantas, orcamentos e guias tecnicos.",
+      "O maior portal de construção em Light Steel Framing de Portugal. Plantas, orçamentos e guias técnicos.",
   },
   twitter: {
     card: "summary_large_image",

@@ -3,13 +3,13 @@ import { ArrowRight, BookOpen, Tag } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog | Casas LSF - Artigos sobre Construcao em Aco Leve",
+  title: "Blog | Casas LSF - Artigos sobre Construção em Aço Leve",
   description:
-    "Artigos tecnicos, guias e novidades sobre construcao LSF em Portugal. Custos, financiamento, terrenos e dicas para a sua casa em Light Steel Framing.",
+    "Artigos técnicos, guias e novidades sobre construção LSF em Portugal. Custos, financiamento, terrenos e dicas para a sua casa em Light Steel Framing.",
   openGraph: {
     title: "Blog | Casas LSF",
     description:
-      "Artigos tecnicos sobre construcao LSF em Portugal.",
+      "Artigos técnicos sobre construção LSF em Portugal.",
     url: "https://casaslsf.com/blog",
     siteName: "Casas LSF",
     type: "website",
@@ -86,11 +86,11 @@ function estimateReadTime(resumo: string | null): string {
 }
 
 const CATEGORIAS_LABELS: Record<string, string> = {
-  construcao: "Construcao LSF",
+  construcao: "Construção LSF",
   financiamento: "Financiamento",
   terrenos: "Terrenos",
   dicas: "Dicas",
-  noticias: "Noticias",
+  noticias: "Notícias",
 };
 
 export default async function BlogPage({
@@ -114,14 +114,14 @@ export default async function BlogPage({
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-sm font-medium mb-4">
-            <BookOpen className="w-4 h-4" /> Blog & Noticias
+            <BookOpen className="w-4 h-4" /> Blog & Notícias
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Conhecimento LSF
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Artigos tecnicos, guias e novidades sobre o mundo da construcao
-            sustentavel.
+            Artigos técnicos, guias e novidades sobre o mundo da construção
+            sustentável.
           </p>
         </div>
 
@@ -200,7 +200,7 @@ export default async function BlogPage({
         ) : (
           <div className="text-center py-20 animate-fade-in">
             <p className="text-gray-500 text-lg mb-4">
-              Ainda nao ha artigos publicados
+              Ainda não há artigos publicados
               {categoriaFiltro ? " nesta categoria" : ""}.
             </p>
             {categoriaFiltro && (
@@ -262,7 +262,7 @@ export default async function BlogPage({
             href="/simulador"
             className="btn-primary rounded-full px-10 py-4 text-lg font-bold inline-flex items-center gap-3"
           >
-            Simular Gratis <ArrowRight className="w-5 h-5" />
+            Simular Grátis <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </div>
