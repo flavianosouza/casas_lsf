@@ -114,19 +114,11 @@ async def criar_artigo(artigo: ArtigoCreate, db: AsyncSession = Depends(get_db))
 @router.post("/seed")
 async def seed_artigos(db: AsyncSession = Depends(get_db)):
     """Popula os artigos iniciais. Ignora duplicados por slug."""
-    import importlib
-    import sys
-    import os
-
-    # Import seed data
-    seed_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "seed_artigos.py")
-    spec = importlib.util.spec_from_file_location("seed_artigos", seed_path)
-    seed_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(seed_module)
+    from .seed_data import ARTIGOS
 
     inseridos = 0
     existentes = 0
-    for artigo_data in seed_module.ARTIGOS:
+    for artigo_data in ARTIGOS:
         result = await db.execute(
             select(Artigo).where(Artigo.slug == artigo_data["slug"])
         )
