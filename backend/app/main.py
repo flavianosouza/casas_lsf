@@ -3,6 +3,7 @@ from .database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from .routers import router as leads_router
+from .artigos_router import router as artigos_router
 
 # Create tables on startup — if DB unavailable, app still starts
 @asynccontextmanager
@@ -42,6 +43,7 @@ app.add_middleware(
 )
 
 app.include_router(leads_router)
+app.include_router(artigos_router)
 
 @app.get("/")
 async def root():
