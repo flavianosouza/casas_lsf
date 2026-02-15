@@ -8,6 +8,7 @@ import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
 import RelatedArticles from "@/components/RelatedArticles";
+import GerarEstudoButton from "@/components/GerarEstudoButton";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
 const SITE_URL = "https://casaslsf.com";
@@ -376,6 +377,9 @@ export default async function ArtigoPage({
 
           {/* Related Articles */}
           <RelatedArticles articles={relatedArticles} />
+
+          {/* Gerar Estudo Técnico (transactional articles) */}
+          {artigo.search_intent === "transacional" && <GerarEstudoButton />}
 
           {/* Main CTA */}
           <div className="glass-card p-10 text-center animate-fade-in">
