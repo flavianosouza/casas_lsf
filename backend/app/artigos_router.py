@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -24,7 +25,7 @@ router = APIRouter(
 async def listar_artigos(
     pagina: int = Query(1, ge=1),
     por_pagina: int = Query(12, ge=1, le=50),
-    categoria: str | None = None,
+    categoria: Optional[str] = None,
     db: AsyncSession = Depends(get_db),
 ):
     """Lista artigos publicados com paginacao e filtro por categoria."""
