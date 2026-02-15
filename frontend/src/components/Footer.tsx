@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-white/5 bg-black/40">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Empresa */}
           <div>
             <Link
@@ -52,6 +52,31 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Construção LSF */}
+          <div>
+            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
+              Construção LSF
+            </h4>
+            <ul className="space-y-3">
+              {[
+                { href: "/preco-construcao-lsf-por-m2", label: "Preço por m²" },
+                { href: "/quanto-custa-casa-lsf", label: "Quanto Custa Casa LSF" },
+                { href: "/metodologia-construtiva", label: "Metodologia LSF" },
+                { href: "/processo-construcao-lsf", label: "Processo Construtivo" },
+                { href: "/casa-lsf-financiamento", label: "Financiamento" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Conteúdo */}
           <div>
             <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
@@ -60,6 +85,8 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: "/blog", label: "Blog" },
+                { href: "/sobre-obrasnet", label: "Sobre a OBRASNET" },
+                { href: "/empresa-construcao-lsf-portugal", label: "Empresa LSF Portugal" },
                 {
                   href: "/blog/casas-lsf-portugal-guia-completo",
                   label: "Guia LSF Portugal",
@@ -67,10 +94,6 @@ export default function Footer() {
                 {
                   href: "/blog/lsf-vs-alvenaria-portugal",
                   label: "LSF vs Alvenaria",
-                },
-                {
-                  href: "/blog/quanto-custa-casa-lsf-portugal",
-                  label: "Custos de Construção",
                 },
               ].map((link) => (
                 <li key={link.href}>

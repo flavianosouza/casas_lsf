@@ -2,12 +2,14 @@ import { MessageCircle } from "lucide-react";
 
 interface WhatsAppCtaProps {
   articleTitle?: string;
+  titulo?: string;
 }
 
-export default function WhatsAppCta({ articleTitle }: WhatsAppCtaProps) {
+export default function WhatsAppCta({ articleTitle, titulo }: WhatsAppCtaProps) {
+  const title = articleTitle || titulo;
   const phone = "351930423456";
-  const message = articleTitle
-    ? `Olá! Li o artigo "${articleTitle}" e gostaria de saber mais sobre construção LSF.`
+  const message = title
+    ? `Olá! Li o artigo "${title}" e gostaria de saber mais sobre construção LSF.`
     : "Olá! Gostaria de saber mais sobre construção LSF.";
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 

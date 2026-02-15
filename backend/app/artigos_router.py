@@ -77,6 +77,32 @@ async def listar_slugs(db: AsyncSession = Depends(get_db)):
     return [{"slug": row[0], "published_at": row[1]} for row in result.all()]
 
 
+@router.get("/related/{slug}")
+async def artigos_relacionados(slug: str, db: AsyncSession = Depends(get_db)):
+    """Retorna ate 4 artigos relacionados por categoria."""
+    result = await db.execute(
+        select(Artigo).where(Artigo.slug == slug, Artigo.status == "publicado")
+    )
+    artigo = result.scalar_one_or_none()
+    if not artigo or not artigo.categoria:
+        return []
+
+    result = await db.execute(
+        select(Artigo.slug, Artigo.titulo, Artigo.categoria, Artigo.resumo)
+        .where(
+            Artigo.status == "publicado",
+            Artigo.categoria == artigo.categoria,
+            Artigo.slug != slug,
+        )
+        .order_by(desc(Artigo.published_at))
+        .limit(4)
+    )
+    return [
+        {"slug": r[0], "titulo": r[1], "categoria": r[2], "resumo": (r[3] or "")[:150]}
+        for r in result.all()
+    ]
+
+
 @router.get("/{slug}", response_model=ArtigoResponse)
 async def obter_artigo(slug: str, db: AsyncSession = Depends(get_db)):
     """Obtem um artigo pelo slug."""

@@ -7,6 +7,7 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import RelatedArticles from "@/components/RelatedArticles";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
 const SITE_URL = "https://casaslsf.com";
@@ -43,6 +44,25 @@ async function getArtigo(slug: string): Promise<Artigo | null> {
   });
   if (!res.ok) return null;
   return res.json();
+}
+
+interface RelatedArticle {
+  slug: string;
+  titulo: string;
+  categoria: string;
+  resumo?: string;
+}
+
+async function getRelatedArticles(slug: string): Promise<RelatedArticle[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/artigos/related/${slug}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -163,6 +183,8 @@ export default async function ArtigoPage({
   if (!artigo) {
     notFound();
   }
+
+  const relatedArticles = await getRelatedArticles(slug);
 
   const categoriaLabel = artigo.categoria
     ? CATEGORIAS_LABELS[artigo.categoria] || artigo.categoria
@@ -351,6 +373,9 @@ export default async function ArtigoPage({
 
           {/* Author Section (E-E-A-T) */}
           <AuthorSection />
+
+          {/* Related Articles */}
+          <RelatedArticles articles={relatedArticles} />
 
           {/* Main CTA */}
           <div className="glass-card p-10 text-center animate-fade-in">
