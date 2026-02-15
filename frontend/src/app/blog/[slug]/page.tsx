@@ -91,11 +91,19 @@ function estimateReadTime(html: string): string {
 }
 
 const CATEGORIAS_LABELS: Record<string, string> = {
-  construcao: "Construcao LSF",
-  financiamento: "Financiamento",
+  construcao: "Construção LSF",
+  remodelacao: "Remodelação",
   terrenos: "Terrenos",
+  coberturas: "Coberturas e Telhados",
+  pavilhoes: "Pavilhões",
+  "casas-modulares": "Casas Modulares",
+  custos: "Custos e Preços",
+  isolamento: "Isolamento",
+  icf: "Construção ICF",
+  acabamentos: "Acabamentos",
+  financiamento: "Financiamento",
   dicas: "Dicas",
-  noticias: "Noticias",
+  noticias: "Notícias",
 };
 
 export default async function ArtigoPage({
@@ -236,7 +244,7 @@ export default async function ArtigoPage({
               href="/simulador"
               className="btn-primary rounded-full px-10 py-4 text-lg font-bold inline-flex items-center gap-3"
             >
-              Simular Gratis <ArrowRight className="w-5 h-5" />
+              Simular Grátis <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </article>
