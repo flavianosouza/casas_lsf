@@ -110,9 +110,11 @@ export default function Footer() {
               <li>
                 <span className="text-gray-400 text-sm flex items-start gap-2">
                   <MapPin className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
-                  R. Abade Faria 18, 1.o Dto
-                  <br />
-                  2725-475 Mem Martins, Sintra
+                  <span>
+                    R. Abade Faria 18, 1.o Dto
+                    <br />
+                    2725-475 Mem Martins, Sintra
+                  </span>
                 </span>
               </li>
             </ul>

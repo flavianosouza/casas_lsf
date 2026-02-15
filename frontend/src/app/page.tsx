@@ -3,117 +3,103 @@ import { ArrowRight, Calculator, Home, Zap } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover">
-
+    <main className="min-h-screen bg-transparent">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <div className="inline-block mb-6 px-6 py-2 rounded-full glass text-sm font-semibold text-blue-400 animate-fade-in border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-            🚀 O Futuro da Construção em Portugal
+      <section className="relative pt-40 pb-24 md:pt-64 md:pb-40 overflow-hidden flex flex-col items-center justify-center min-h-screen">
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <div className="inline-block mb-10 px-5 py-2 rounded-full border border-blue-500/20 bg-blue-500/5 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 animate-fade-in">
+            A Revolucao da Engenharia em Portugal
           </div>
-          <h1 className="text-6xl md:text-8xl font-extrabold mb-8 tracking-tight animate-fade-in drop-shadow-2xl" style={{ animationDelay: "0.1s" }}>
-            Construa a sua casa de sonho <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-gradient-x">com Inteligência Artificial</span>
+          <h1 className="text-6xl md:text-9xl font-black mb-10 tracking-tighter animate-fade-in leading-[0.9]" style={{ animationDelay: "0.1s" }}>
+            Casas com <br />
+            <span className="text-gradient">Inteligencia</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 mx-auto max-w-4xl leading-relaxed animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Da planta ao orçamento em minutos. Transparência total, precisão de engenharia e a rapidez do Light Steel Framing.
+          <p className="text-xl md:text-2xl text-gray-400 mb-16 mx-auto max-w-3xl leading-relaxed animate-fade-in font-medium" style={{ animationDelay: "0.2s" }}>
+            O seu projecto LSF, da planta ao orcamento detalhado, <br />
+            gerado em minutos com precisao milimetrica.
           </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Link href="/plantas" className="btn-primary text-lg px-8 py-4">
-              Ver Plantas IA <ArrowRight className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
+            <Link href="/plantas" className="btn-primary rounded-full px-12 py-5 text-lg font-bold flex items-center gap-3">
+              Explorar Plantas <ArrowRight className="w-5 h-5" />
             </Link>
-            <Link href="/como-funciona" className="btn-secondary text-lg px-8 py-4">
-              Como Funciona
+            <Link href="/como-funciona" className="btn-secondary rounded-full px-12 py-5 text-lg font-bold">
+              O Metodo
             </Link>
           </div>
         </div>
-        
-        {/* Abstract Background Elements */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-blue-500/10 rounded-full blur-[160px] -z-10 pointer-events-none"></div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 bg-black/50">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="glass-card p-8">
-              <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-6 text-blue-400">
-                <Home className="w-6 h-6" />
+      <section className="py-40 bg-black/20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="glass-card p-10 group">
+              <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-8 text-blue-400 group-hover:scale-110 transition-transform duration-500">
+                <Home className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Plantas Inteligentes</h3>
-              <p className="text-gray-400">
-                Gere e customize plantas adaptadas ao seu terreno e orçamento usando nossa IA generativa exclusiva.
+              <h3 className="text-2xl font-black mb-4 text-white uppercase tracking-tight">Plantas IA</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
+                Algoritmos avancados que adaptam cada m2 ao seu terreno e orcamento.
               </p>
             </div>
-
-            {/* Feature 2 */}
-            <div className="glass-card p-8">
-              <div className="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center mb-6 text-pink-400">
-                <Calculator className="w-6 h-6" />
+            <div className="glass-card p-10 group">
+              <div className="w-16 h-16 bg-pink-500/10 rounded-2xl flex items-center justify-center mb-8 text-pink-400 group-hover:scale-110 transition-transform duration-500">
+                <Calculator className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Orçamento Preciso</h3>
-              <p className="text-gray-400">
-                Adeus estimativas vagas. Obtenha um mapa de quantidades detalhado e custos reais de materiais em segundos.
+              <h3 className="text-2xl font-black mb-4 text-white uppercase tracking-tight">Orcamento Real</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
+                Mapa de quantidades exacto com precos de mercado actualizados semanalmente.
               </p>
             </div>
-
-            {/* Feature 3 */}
-            <div className="glass-card p-8">
-              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 text-purple-400">
-                <Zap className="w-6 h-6" />
+            <div className="glass-card p-10 group">
+              <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-8 text-purple-400 group-hover:scale-110 transition-transform duration-500">
+                <Zap className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Rapidez LSF</h3>
-              <p className="text-gray-400">
-                Saiba por que o Light Steel Framing é 3x mais rápido que a alvenaria tradicional e mais eficiente energeticamente.
+              <h3 className="text-2xl font-black mb-4 text-white uppercase tracking-tight">Construcao Agil</h3>
+              <p className="text-gray-400 leading-relaxed font-medium">
+                A precisao do aco galvanizado (LSF) para uma obra 3x mais rapida e sustentavel.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats / Trust */}
-      <section className="py-20 border-t border-white/5">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-16">Porquê escolher o Portal Casas LSF?</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">35%</div>
-              <div className="text-blue-400 text-sm uppercase tracking-wider">Mais Barato</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">3x</div>
-              <div className="text-blue-400 text-sm uppercase tracking-wider">Mais Rápido</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">A+</div>
-              <div className="text-blue-400 text-sm uppercase tracking-wider">Eficiência Energética</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">100+</div>
-              <div className="text-blue-400 text-sm uppercase tracking-wider">Plantas Grátis</div>
-            </div>
+      {/* Stats */}
+      <section className="py-40 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-16 text-center">
+            {[
+              { val: "35%", label: "Mais Economico" },
+              { val: "3x", label: "Mais Rapido" },
+              { val: "A+", label: "Classe Energetica" },
+              { val: "2.80m", label: "Pe-Direito Padrao" }
+            ].map((s, i) => (
+              <div key={i}>
+                <div className="text-5xl md:text-6xl font-black text-white mb-4 tracking-tighter">{s.val}</div>
+                <div className="text-[10px] font-black text-blue-500 uppercase tracking-[0.3em]">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Footer */}
-      <footer className="py-20 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/20 pointer-events-none"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <h2 className="text-4xl font-bold mb-6">Pronto para começar?</h2>
-          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Junte-se a milhares de portugueses que estão a revolucionar a forma como constroem.
+      {/* CTA Section */}
+      <section className="py-40 text-center relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <h2 className="text-5xl md:text-8xl font-black mb-10 tracking-tighter text-white">
+            Transforme a sua <br />
+            <span className="text-gradient">Visao em Realidade</span>
+          </h2>
+          <p className="text-xl text-gray-500 mb-16 max-w-2xl mx-auto font-medium">
+            O futuro da construcao nao e apenas sobre materiais, <br />
+            e sobre inteligencia e transparencia.
           </p>
-          <Link href="/simulador" className="btn-primary text-lg px-10 py-5">
-            Começar Agora Grátis
+          <Link href="/simulador" className="btn-primary rounded-full px-16 py-6 text-xl font-black tracking-tight">
+            Comecar Simulacao
           </Link>
-          <div className="mt-12 text-sm text-gray-500">
-            © 2026 Casas LSF Intelligence. Todos os direitos reservados.
-          </div>
         </div>
-      </footer>
+      </section>
     </main>
   );
 }

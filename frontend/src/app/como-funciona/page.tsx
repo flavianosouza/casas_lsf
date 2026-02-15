@@ -36,21 +36,19 @@ export default function ComoFuncionaPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover py-32 px-6">
-      <div className="container mx-auto max-w-5xl">
-        <div className="text-center mb-16 animate-fade-in">
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-sm font-medium">
-            O Processo Simplificado
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-            Como funciona o{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Sistema LSF
-            </span>
+    <main className="min-h-screen bg-transparent py-40 px-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-24 animate-fade-in">
+          <span className="inline-block px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+            O Futuro da Construção
+          </span>
+          <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-white">
+            Como funciona o <br />
+            <span className="text-gradient">Sistema LSF</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Da sua ideia à chave na mão. Eliminamos a complexidade da construção
-            tradicional com tecnologia e transparência.
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Eliminamos a complexidade da construção tradicional. <br />
+            Tecnologia milimétrica para a sua casa de sonho.
           </p>
         </div>
 

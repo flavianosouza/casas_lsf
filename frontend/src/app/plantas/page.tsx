@@ -62,62 +62,78 @@ export default function PlantasPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover py-32 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-fade-in">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Catálogo de Plantas</h1>
-            <p className="text-gray-400 max-w-xl">
-              Modelos pré-desenhados otimizados para construção LSF. 
-              Escolha um modelo base ou personalize tudo com a nossa IA.
+    <main className="min-h-screen bg-transparent py-40 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8 animate-fade-in">
+          <div className="max-w-2xl">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
+              Escolha o seu Modelo
+            </span>
+            <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter text-white">
+              Plantas <span className="text-gradient">Inteligentes</span>
+            </h1>
+            <p className="text-xl text-gray-400 leading-relaxed">
+              Modelos pré-desenhados otimizados para construção LSF. <br />
+              Escolha um modelo base ou gere um projeto único com IA.
             </p>
+                  <p className="text-sm text-blue-300 leading-relaxed italic">
+                    &quot;Ao clicar em submeter, a nossa equipa de engenharia irá processar os seus dados e gerar um relatório técnico de viabilidade preliminar gratuito.&quot;
+                  </p>
           </div>
           <Link 
             href="/simulador" 
-            className="btn-primary px-6 py-3 flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
+            className="btn-primary rounded-full px-10 py-5 text-lg font-bold flex items-center gap-3"
           >
-            <Sparkles className="w-5 h-5" /> Gerar Nova Planta IA
+            <Sparkles className="w-6 h-6" /> Gerar Nova Planta IA
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {models.map((model, index) => (
             <div 
               key={model.id} 
-              className="glass-card group hover:border-blue-500/40 transition-all duration-300 flex flex-col h-full animate-fade-in"
+              className="glass-card flex flex-col h-full animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              {/* Placeholder Image Area */}
-              <div className="h-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-t-xl flex items-center justify-center relative overflow-hidden group-hover:from-gray-800 group-hover:to-blue-900/20 transition-all">
-                <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20"></div>
-                <Home className="w-16 h-16 text-gray-700 group-hover:text-blue-500/50 transition-colors duration-500" />
-                <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-mono text-white border border-white/10">
-                  {model.id}
+              <div className="h-64 bg-gray-900/50 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-500/5 hover:bg-blue-500/10 transition-colors"></div>
+                <Home className="w-20 h-20 text-white/10 group-hover:text-blue-500/20 transition-all duration-500" />
+                <div className="absolute top-4 left-4 bg-blue-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                  LSF Premium
+                </div>
+                <div className="absolute bottom-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-lg text-[10px] font-mono text-gray-300 border border-white/5">
+                  ID: {model.id}
                 </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex justify-between items-start mb-4">
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{model.name}</h3>
-                    <div className="text-sm text-gray-400 mt-1">{model.type} • {model.floors} Piso(s)</div>
+                    <h3 className="text-2xl font-black text-white mb-2">{model.name}</h3>
+                    <div className="flex gap-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                      <span>{model.type}</span>
+                      <span>•</span>
+                      <span>{model.floors} PISO{model.floors > 1 ? "S" : ""}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-blue-300 bg-blue-500/10 px-2 py-1 rounded text-sm font-medium border border-blue-500/20">
-                    <Maximize className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 text-blue-400 bg-blue-500/5 px-3 py-1.5 rounded-full text-xs font-bold border border-blue-500/10">
+                    <Maximize className="w-3.5 h-3.5" />
                     {model.area}m²
                   </div>
                 </div>
 
-                <p className="text-gray-500 text-sm mb-6 flex-1 border-t border-white/5 pt-4">
-                  {model.description}
+                <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-1 italic">
+                  &quot;{model.description}&quot;
                 </p>
 
-                <div className="flex items-center justify-between mt-auto">
-                    <div className="text-white font-bold text-lg">
-                        {model.price}
-                        <span className="text-xs text-gray-500 block font-normal">Estimativa Chave na Mão</span>
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                    <div>
+                        <div className="text-2xl font-black text-white leading-none mb-1">
+                            {model.price}
+                        </div>
+                        <span className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Preço Chave na Mão</span>
                     </div>
-                    <button className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors">
+                    <button className="w-12 h-12 flex items-center justify-center bg-white/5 hover:bg-blue-500 hover:text-white rounded-full text-gray-400 transition-all duration-300">
                         <Download className="w-5 h-5" />
                     </button>
                 </div>
