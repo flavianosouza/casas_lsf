@@ -41,6 +41,11 @@ class ArtigoBase(BaseModel):
     imagem_destaque_url: Optional[str] = None
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
+    faq_json: Optional[list[dict[str, str]]] = None
+    search_intent: Optional[str] = None
+    internal_links_json: Optional[list[dict[str, str]]] = None
+    pillar_slug: Optional[str] = None
+    read_time_minutes: Optional[int] = None
 
 
 class ArtigoCreate(ArtigoBase):
@@ -59,12 +64,18 @@ class ArtigoUpdate(BaseModel):
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
     status: Optional[str] = None
+    faq_json: Optional[list[dict[str, str]]] = None
+    search_intent: Optional[str] = None
+    internal_links_json: Optional[list[dict[str, str]]] = None
+    pillar_slug: Optional[str] = None
+    read_time_minutes: Optional[int] = None
 
 
 class ArtigoResponse(ArtigoBase):
     id: UUID
     created_at: datetime
     published_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     status: str
 
     class Config:

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from sqlalchemy import text
 from .database import engine, Base
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -56,3 +57,25 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+
+@app.post("/api/migrate-seo")
+async def migrate_seo_fields():
+    """One-time migration to add SEO columns to artigos table."""
+    statements = [
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS faq_json JSONB",
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS search_intent VARCHAR(20)",
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS internal_links_json JSONB",
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS pillar_slug VARCHAR(255)",
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS read_time_minutes INTEGER",
+        "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ",
+    ]
+    results = []
+    async with engine.begin() as conn:
+        for stmt in statements:
+            try:
+                await conn.execute(text(stmt))
+                results.append({"sql": stmt, "status": "ok"})
+            except Exception as e:
+                results.append({"sql": stmt, "status": f"error: {e}"})
+    return {"message": "Migration completed", "results": results}

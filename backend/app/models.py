@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Text, DateTime, JSON, ARRAY
+from sqlalchemy import Column, String, Text, DateTime, Integer, JSON, ARRAY
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
@@ -37,3 +37,9 @@ class Artigo(Base):
     meta_title = Column(String(255), nullable=True)
     meta_description = Column(String(320), nullable=True)
     status = Column(String(50), default="rascunho")
+    faq_json = Column(JSON, nullable=True)
+    search_intent = Column(String(20), nullable=True)
+    internal_links_json = Column(JSON, nullable=True)
+    pillar_slug = Column(String(255), nullable=True)
+    read_time_minutes = Column(Integer, nullable=True)
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)

@@ -12,6 +12,13 @@ const APP_ROUTES = new Set([
   "/blog",
   "/privacidade",
   "/termos",
+  "/sobre-obrasnet",
+  "/metodologia-construtiva",
+  "/processo-construcao-lsf",
+  "/preco-construcao-lsf-por-m2",
+  "/quanto-custa-casa-lsf",
+  "/casa-lsf-financiamento",
+  "/empresa-construcao-lsf-portugal",
 ]);
 
 // Paths that should never be intercepted

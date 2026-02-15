@@ -1,10 +1,20 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Calendar, Clock, Tag, User } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Tag, User } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import FaqSection from "@/components/FaqSection";
+import InlineCta from "@/components/InlineCta";
+import WhatsAppCta from "@/components/WhatsAppCta";
+import AuthorSection from "@/components/AuthorSection";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
 const SITE_URL = "https://casaslsf.com";
+
+interface FaqItem {
+  pergunta: string;
+  resposta: string;
+}
 
 interface Artigo {
   id: string;
@@ -20,7 +30,11 @@ interface Artigo {
   meta_description: string | null;
   published_at: string | null;
   created_at: string;
+  updated_at: string | null;
   status: string;
+  faq_json: FaqItem[] | null;
+  search_intent: string | null;
+  read_time_minutes: number | null;
 }
 
 async function getArtigo(slug: string): Promise<Artigo | null> {
@@ -40,12 +54,12 @@ export async function generateMetadata({
   const artigo = await getArtigo(slug);
 
   if (!artigo) {
-    return { title: "Artigo nao encontrado | Casas LSF" };
+    return { title: "Artigo não encontrado | Casas LSF" };
   }
 
   const title = artigo.meta_title || `${artigo.titulo} | Casas LSF`;
   const description =
-    artigo.meta_description || artigo.resumo || "Artigo sobre construcao LSF em Portugal.";
+    artigo.meta_description || artigo.resumo || "Artigo sobre construção LSF em Portugal.";
 
   return {
     title,
@@ -57,6 +71,7 @@ export async function generateMetadata({
       siteName: "Casas LSF",
       type: "article",
       publishedTime: artigo.published_at || undefined,
+      modifiedTime: artigo.updated_at || artigo.published_at || undefined,
       authors: [artigo.autor],
       images: artigo.imagem_destaque_url
         ? [{ url: artigo.imagem_destaque_url, width: 1200, height: 630 }]
@@ -83,11 +98,29 @@ function formatDate(dateStr: string | null): string {
   });
 }
 
-function estimateReadTime(html: string): string {
-  const text = html.replace(/<[^>]*>/g, "");
+function getReadTime(artigo: Artigo): string {
+  if (artigo.read_time_minutes) return `${artigo.read_time_minutes} min`;
+  const text = artigo.conteudo_html.replace(/<[^>]*>/g, "");
   const words = text.split(/\s+/).length;
-  const minutes = Math.max(3, Math.ceil(words / 200));
-  return `${minutes} min`;
+  return `${Math.max(3, Math.ceil(words / 200))} min`;
+}
+
+function getWordCount(html: string): number {
+  return html.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length;
+}
+
+function splitContentAfterParagraph(html: string, n: number): [string, string] {
+  let count = 0;
+  const regex = /<\/p>/gi;
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    count++;
+    if (count === n) {
+      const splitIndex = match.index + match[0].length;
+      return [html.substring(0, splitIndex), html.substring(splitIndex)];
+    }
+  }
+  return [html, ""];
 }
 
 const CATEGORIAS_LABELS: Record<string, string> = {
@@ -107,6 +140,18 @@ const CATEGORIAS_LABELS: Record<string, string> = {
   "casas-madeira": "Casas de Madeira",
 };
 
+const PROSE_CLASSES = `prose prose-invert prose-lg max-w-none
+  prose-headings:text-white prose-headings:font-bold
+  prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
+  prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
+  prose-p:text-gray-300 prose-p:leading-relaxed
+  prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300
+  prose-strong:text-white
+  prose-ul:text-gray-300 prose-ol:text-gray-300
+  prose-li:marker:text-blue-500
+  prose-blockquote:border-blue-500 prose-blockquote:text-gray-400
+  prose-img:rounded-xl`;
+
 export default async function ArtigoPage({
   params,
 }: {
@@ -119,14 +164,26 @@ export default async function ArtigoPage({
     notFound();
   }
 
-  const jsonLd = {
+  const categoriaLabel = artigo.categoria
+    ? CATEGORIAS_LABELS[artigo.categoria] || artigo.categoria
+    : null;
+
+  const wordCount = getWordCount(artigo.conteudo_html);
+  const [contentPart1, contentPart2] = splitContentAfterParagraph(artigo.conteudo_html, 2);
+
+  // Article JSON-LD
+  const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: artigo.titulo,
     description: artigo.resumo || "",
+    wordCount,
+    articleSection: categoriaLabel || "Construção LSF",
+    keywords: artigo.tags?.join(", ") || undefined,
     author: {
       "@type": "Organization",
-      name: artigo.autor,
+      name: "OBRASNET UNIP LDA",
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
@@ -138,7 +195,7 @@ export default async function ArtigoPage({
       },
     },
     datePublished: artigo.published_at || artigo.created_at,
-    dateModified: artigo.published_at || artigo.created_at,
+    dateModified: artigo.updated_at || artigo.published_at || artigo.created_at,
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${SITE_URL}/blog/${artigo.slug}`,
@@ -146,29 +203,77 @@ export default async function ArtigoPage({
     image: artigo.imagem_destaque_url || undefined,
   };
 
+  // Breadcrumb JSON-LD
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
+      ...(categoriaLabel
+        ? [{ "@type": "ListItem", position: 3, name: categoriaLabel, item: `${SITE_URL}/blog?categoria=${artigo.categoria}` }]
+        : []),
+      { "@type": "ListItem", position: categoriaLabel ? 4 : 3, name: artigo.titulo },
+    ],
+  };
+
+  // FAQ JSON-LD
+  const faqJsonLd = artigo.faq_json?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: artigo.faq_json.map((faq) => ({
+          "@type": "Question",
+          name: faq.pergunta,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.resposta,
+          },
+        })),
+      }
+    : null;
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+
       <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover py-32 px-6">
         <article className="container mx-auto max-w-3xl">
-          {/* Voltar */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-10 text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar ao Blog
-          </Link>
+          {/* Breadcrumbs */}
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Blog", href: "/blog" },
+              ...(categoriaLabel
+                ? [{ label: categoriaLabel, href: `/blog?categoria=${artigo.categoria}` }]
+                : []),
+              { label: artigo.titulo },
+            ]}
+          />
 
-          {/* Cabecalho */}
+          {/* Header */}
           <header className="mb-12 animate-fade-in">
-            {artigo.categoria && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-medium mb-6">
+            {categoriaLabel && (
+              <Link
+                href={`/blog?categoria=${artigo.categoria}`}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-medium mb-6 hover:bg-blue-500/20 transition-colors"
+              >
                 <Tag className="w-3 h-3" />
-                {CATEGORIAS_LABELS[artigo.categoria] || artigo.categoria}
-              </span>
+                {categoriaLabel}
+              </Link>
             )}
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
               {artigo.titulo}
@@ -186,37 +291,49 @@ export default async function ArtigoPage({
                 <Calendar className="w-4 h-4" /> {formatDate(artigo.published_at)}
               </span>
               <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4" /> {estimateReadTime(artigo.conteudo_html)} de leitura
+                <Clock className="w-4 h-4" /> {getReadTime(artigo)} de leitura
               </span>
             </div>
           </header>
 
-          {/* Imagem de destaque */}
+          {/* Featured Image */}
           {artigo.imagem_destaque_url && (
             <div className="w-full rounded-2xl overflow-hidden mb-12 animate-fade-in">
               <img
                 src={artigo.imagem_destaque_url}
                 alt={artigo.titulo}
                 className="w-full h-auto object-cover"
+                loading="eager"
               />
             </div>
           )}
 
-          {/* Conteudo */}
+          {/* Content Part 1 */}
           <div
-            className="prose prose-invert prose-lg max-w-none mb-16 animate-fade-in
-              prose-headings:text-white prose-headings:font-bold
-              prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
-              prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
-              prose-p:text-gray-300 prose-p:leading-relaxed
-              prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300
-              prose-strong:text-white
-              prose-ul:text-gray-300 prose-ol:text-gray-300
-              prose-li:marker:text-blue-500
-              prose-blockquote:border-blue-500 prose-blockquote:text-gray-400
-              prose-img:rounded-xl"
-            dangerouslySetInnerHTML={{ __html: artigo.conteudo_html }}
+            className={`${PROSE_CLASSES} mb-0 animate-fade-in`}
+            dangerouslySetInnerHTML={{ __html: contentPart1 }}
           />
+
+          {/* Inline CTA (after 2nd paragraph) */}
+          {contentPart2 && (
+            <InlineCta searchIntent={artigo.search_intent} />
+          )}
+
+          {/* Content Part 2 */}
+          {contentPart2 && (
+            <div
+              className={`${PROSE_CLASSES} mb-16 animate-fade-in`}
+              dangerouslySetInnerHTML={{ __html: contentPart2 }}
+            />
+          )}
+
+          {/* If no split happened, add spacing */}
+          {!contentPart2 && <div className="mb-16" />}
+
+          {/* FAQ Section */}
+          {artigo.faq_json && artigo.faq_json.length > 0 && (
+            <FaqSection faqs={artigo.faq_json} />
+          )}
 
           {/* Tags */}
           {artigo.tags && artigo.tags.length > 0 && (
@@ -232,7 +349,10 @@ export default async function ArtigoPage({
             </div>
           )}
 
-          {/* CTA */}
+          {/* Author Section (E-E-A-T) */}
+          <AuthorSection />
+
+          {/* Main CTA */}
           <div className="glass-card p-10 text-center animate-fade-in">
             <h2 className="text-2xl font-bold text-white mb-4">
               Quer construir a sua casa em LSF?
@@ -248,6 +368,9 @@ export default async function ArtigoPage({
               Simular Grátis <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
+
+          {/* WhatsApp CTA */}
+          <WhatsAppCta articleTitle={artigo.titulo} />
         </article>
       </main>
     </>

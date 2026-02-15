@@ -70,6 +70,41 @@ const organizationJsonLd = {
   taxID: "515866989",
 };
 
+const localBusinessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://casaslsf.com/#localbusiness",
+  name: "OBRASNET UNIP LDA",
+  alternateName: "Casas LSF",
+  image: "https://casaslsf.com/logo.png",
+  url: "https://casaslsf.com",
+  telephone: "+351930423456",
+  email: "orcamento@casaslsf.com",
+  description:
+    "Empresa especializada em construção LSF (Light Steel Framing) em Portugal. Projetos de raiz, do terreno à chave na mão.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "R. Abade Faria 18, 1.o Dto",
+    addressLocality: "Mem Martins",
+    addressRegion: "Sintra",
+    postalCode: "2725-475",
+    addressCountry: "PT",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 38.7935,
+    longitude: -9.3472,
+  },
+  priceRange: "$$",
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "09:00",
+    closes: "18:00",
+  },
+  taxID: "515866989",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -82,6 +117,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessJsonLd),
           }}
         />
       </head>
