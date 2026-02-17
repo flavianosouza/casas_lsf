@@ -40,7 +40,7 @@ export default function CtaFinal() {
 
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[160px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-pink-500/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-orange-500/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
     </section>
   );
 }

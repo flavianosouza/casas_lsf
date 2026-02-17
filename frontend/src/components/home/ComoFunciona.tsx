@@ -14,21 +14,21 @@ const steps = [
     icon: Cpu,
     title: "Engenharia Automática",
     desc: "O sistema gera a planta 2D, mapa de quantidades com caderno de encargos, cronograma financeiro e cronograma executivo.",
-    color: "purple",
+    color: "cyan",
   },
   {
     num: "03",
     icon: HardHat,
     title: "Construção Real",
     desc: "Equipa OBRASNET com alvará IMPIC executa a obra completa em LSF. Do licenciamento à entrega de chaves em 6-10 meses.",
-    color: "pink",
+    color: "orange",
   },
 ];
 
 const colorMap: Record<string, { bg: string; text: string; border: string; num: string }> = {
   blue: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20", num: "text-blue-500/20" },
-  purple: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20", num: "text-purple-500/20" },
-  pink: { bg: "bg-pink-500/10", text: "text-pink-400", border: "border-pink-500/20", num: "text-pink-500/20" },
+  cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/20", num: "text-cyan-500/20" },
+  orange: { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/20", num: "text-orange-500/20" },
 };
 
 export default function ComoFunciona() {

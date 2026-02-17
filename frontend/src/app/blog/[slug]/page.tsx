@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar, Clock, Tag, User } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -29,6 +30,7 @@ interface Artigo {
   autor: string;
   tags: string[] | null;
   imagem_destaque_url: string | null;
+  imagem_alt_text: string | null;
   meta_title: string | null;
   meta_description: string | null;
   published_at: string | null;
@@ -344,12 +346,23 @@ export default async function ArtigoPage({
           {/* Featured Image */}
           {artigo.imagem_destaque_url && (
             <div className="w-full rounded-2xl overflow-hidden mb-12 animate-fade-in">
-              <img
-                src={artigo.imagem_destaque_url}
-                alt={artigo.titulo}
-                className="w-full h-auto object-cover"
-                loading="eager"
-              />
+              {artigo.imagem_destaque_url.includes("media.casaslsf.com") ? (
+                <Image
+                  src={artigo.imagem_destaque_url}
+                  alt={artigo.imagem_alt_text || artigo.titulo}
+                  width={1200}
+                  height={630}
+                  priority
+                  sizes="(max-width: 768px) 100vw, 768px"
+                  className="w-full h-auto object-cover"
+                />
+              ) : (
+                <img
+                  src={artigo.imagem_destaque_url}
+                  alt={artigo.imagem_alt_text || artigo.titulo}
+                  className="w-full h-auto object-cover"
+                />
+              )}
             </div>
           )}
 

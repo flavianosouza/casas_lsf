@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HeroSection from "@/components/home/HeroSection";
+import HeroEngineering2030 from "@/components/home/HeroEngineering2030";
 import AssistantLazy from "@/components/assistant/AssistantLazy";
 import ComoFunciona from "@/components/home/ComoFunciona";
 import LiveEngineeringMetrics from "@/components/home/LiveEngineeringMetrics";
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <main className="min-h-screen bg-transparent">
-      <HeroSection />
+      <HeroEngineering2030 />
       <AssistantLazy />
       <ComoFunciona />
       <LiveEngineeringMetrics />

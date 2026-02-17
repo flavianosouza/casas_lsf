@@ -47,6 +47,19 @@ export default function SimuladorClient() {
 
       if (response.ok) {
         setIsSuccess(true);
+        // Email notification via Resend
+        fetch("/api/notify-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: formData.nome,
+            email: formData.email,
+            telefone: formData.telefone,
+            interesse_tipo: formData.interesse_tipo,
+            mensagem: formData.mensagem,
+            origem: "simulador",
+          }),
+        }).catch(() => {});
       } else {
         alert("Ocorreu um erro ao enviar. Tente novamente.");
       }

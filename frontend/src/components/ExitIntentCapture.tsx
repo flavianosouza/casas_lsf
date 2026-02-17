@@ -46,17 +46,24 @@ export default function ExitIntentCapture() {
 
     setLoading(true);
     try {
+      const leadData = {
+        nome: form.nome,
+        telefone: form.telefone,
+        origem: "exit_intent",
+        interesse_tipo: "orcamento",
+        mensagem: `Lead capturado via exit intent em ${window.location.pathname}`,
+      };
       await fetch(`${API_URL}/api/leads/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: form.nome,
-          telefone: form.telefone,
-          origem: "exit_intent",
-          interesse_tipo: "orcamento",
-          mensagem: `Lead capturado via exit intent em ${window.location.pathname}`,
-        }),
+        body: JSON.stringify(leadData),
       });
+      // Email notification via Resend
+      fetch("/api/notify-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadData),
+      }).catch(() => {});
       setSuccess(true);
       setTimeout(dismiss, 3000);
     } catch {

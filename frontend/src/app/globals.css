@@ -4,15 +4,22 @@
 @theme {
   --color-background: #0a0a0a;
   --color-foreground: #ededed;
-  --color-primary: #3b82f6;
-  --color-secondary: #ec4899;
-  --color-accent: #8b5cf6;
-  
+  --color-primary: #178FC6;
+  --color-secondary: #F07D17;
+  --color-accent: #178FC6;
+
+  /* Brand blue scale override */
+  --color-blue-300: #5bbde0;
+  --color-blue-400: #3da9d4;
+  --color-blue-500: #178FC6;
+  --color-blue-600: #1577a5;
+  --color-blue-700: #125f84;
+
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  
+
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
-  
+
   --animate-gradient-x: gradient-x 15s ease infinite;
   --animate-fade-in: fadeIn 0.8s ease-out forwards;
 }
@@ -24,6 +31,11 @@
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -58,20 +70,20 @@ body {
 .glass-card:hover {
   transform: translateY(-4px);
   background: linear-gradient(165deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: rgba(23, 143, 198, 0.4);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
 }
 
 /* Premium Buttons */
 .btn-primary {
   @apply relative overflow-hidden bg-blue-600 font-semibold text-white transition-all duration-300;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, #178FC6 0%, #1a6fa0 100%);
+  box-shadow: 0 0 20px rgba(23, 143, 198, 0.3);
 }
 
 .btn-primary:hover {
   @apply scale-105;
-  box-shadow: 0 0 35px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 35px rgba(23, 143, 198, 0.5);
 }
 
 .btn-secondary {
@@ -80,7 +92,7 @@ body {
 
 /* Utilitários de Texto */
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[#178FC6] via-[#1a9fd6] to-[#F07D17];
 }
 
 /* Scroll Reveal Animation */
@@ -105,7 +117,7 @@ html {
   background: linear-gradient(165deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(23, 143, 198, 0.15);
   border-radius: 1.25rem;
   padding: 2rem;
   position: relative;
@@ -118,7 +130,7 @@ html {
   inset: 0;
   border-radius: 1.25rem;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(23, 143, 198, 0.2), rgba(240, 125, 23, 0.1), transparent);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
@@ -142,7 +154,7 @@ html {
 }
 
 .assistant-input:focus {
-  border-color: rgba(59, 130, 246, 0.5);
+  border-color: rgba(23, 143, 198, 0.5);
 }
 
 .assistant-input::placeholder {
@@ -200,7 +212,7 @@ html {
 
 .quantities-row:hover {
   background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(23, 143, 198, 0.2);
 }
 
 /* ─── Gantt Rows ─── */
@@ -220,11 +232,93 @@ html {
 /* ─── Blueprint SVG ─── */
 .blueprint-container {
   background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(23, 143, 198, 0.1);
   border-radius: 1rem;
   padding: 1.5rem;
 }
 
 .blueprint-draw {
   transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Hero Engineering 2030 ─── */
+@keyframes blueprintDraw {
+  from { stroke-dashoffset: var(--dash-length, 600); }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes blueprintGlow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(23, 143, 198, 0.2)); }
+  50% { filter: drop-shadow(0 0 6px rgba(23, 143, 198, 0.4)); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.hero-blueprint-line {
+  stroke-dasharray: var(--dash-length, 600);
+  stroke-dashoffset: var(--dash-length, 600);
+  animation: blueprintDraw 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.hero-blueprint-svg {
+  animation: blueprintGlow 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.hero-blueprint-dot {
+  animation: dotPulse 3s ease-in-out infinite;
+}
+
+.hero-grid-bg {
+  background-image:
+    linear-gradient(rgba(23, 143, 198, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 143, 198, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-dashboard {
+  background: linear-gradient(165deg, rgba(10, 25, 47, 0.85) 0%, rgba(10, 15, 30, 0.9) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(23, 143, 198, 0.2);
+  border-radius: 1rem;
+}
+
+.hero-image-hover {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-image-hover:hover {
+  transform: translateY(-8px);
+}
+
+.hero-image-hover:hover .hero-border-glow {
+  border-color: rgba(23, 143, 198, 0.6);
+  box-shadow: 0 0 40px rgba(23, 143, 198, 0.15), 0 25px 60px -15px rgba(0, 0, 0, 0.5);
+}
+
+/* Scan line animation */
+@keyframes scanDown {
+  0% { transform: translateY(0); opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { transform: translateY(500px); opacity: 0; }
+}
+
+.hero-scan-line {
+  animation: scanDown 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Crosshair glow on hover */
+.hero-image-hover:hover .hero-blueprint-dot {
+  animation-duration: 1.5s;
+}
+
+/* Button CTA glow on hover */
+.hero-cta-primary:hover {
+  box-shadow: 0 0 30px rgba(240, 125, 23, 0.3), 0 0 60px rgba(240, 125, 23, 0.1);
 }

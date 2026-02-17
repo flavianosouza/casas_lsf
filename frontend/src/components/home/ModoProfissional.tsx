@@ -20,8 +20,8 @@ const items = [
     summary: "Aço galvanizado, obra em 6-10 meses, garantia estrutural de 50 anos.",
     detail:
       "Estrutura em Light Steel Frame com perfis galvanizados a quente. Isolamento térmico e acústico superior, classe energética A+, resistência sísmica comprovada e ventos até 200\u00A0km/h. Até 90% dos materiais recicláveis — construção sustentável sem comprometer performance.",
-    color: "text-purple-400",
-    bg: "bg-purple-500/10",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
   },
   {
     icon: Landmark,
@@ -29,8 +29,8 @@ const items = [
     summary: "Bancos financiam LSF igual a alvenaria — CGD, Millennium, Novo Banco.",
     detail:
       "A construção LSF é aceite por todos os bancos portugueses para crédito habitação e construção. O nosso orçamento detalhado com caderno de encargos facilita a aprovação bancária. Apoiamos em todo o processo de financiamento.",
-    color: "text-pink-400",
-    bg: "bg-pink-500/10",
+    color: "text-orange-400",
+    bg: "bg-orange-500/10",
   },
 ];
 
@@ -41,7 +41,7 @@ export default function ModoProfissional() {
     <section className="py-28 md:py-40 relative">
       <div className="max-w-4xl mx-auto px-6">
         <ScrollReveal className="text-center mb-16">
-          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-pink-400 mb-4">
+          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-400 mb-4">
             Serviço Completo
           </div>
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white">

@@ -8,7 +8,7 @@ const camadas = [
   {
     name: "Acabamento ETICS",
     espessura: "6 mm",
-    cor: "#a855f7",
+    cor: "#178FC6",
     desc: "Sistema ETICS com pintura exterior texturada",
   },
   {
@@ -26,7 +26,7 @@ const camadas = [
   {
     name: "Perfis C90 + Lã de Rocha",
     espessura: "90 mm",
-    cor: "#3b82f6",
+    cor: "#178FC6",
     desc: "Aço Z275 1.2mm @400mm · Lã 40kg/m³",
   },
   {

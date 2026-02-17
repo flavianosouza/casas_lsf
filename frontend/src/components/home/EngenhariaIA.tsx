@@ -13,15 +13,15 @@ const outputs = [
     icon: ClipboardList,
     title: "Mapa de Quantidades",
     desc: "Orçamento detalhado com caderno de encargos, 13 categorias e preços reais de mercado.",
-    color: "text-purple-400",
-    bg: "bg-purple-500/10",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
   },
   {
     icon: BarChart3,
     title: "Cronograma Financeiro",
     desc: "Planeamento de desembolsos mensais com Curva S. Saiba exatamente quando investir cada parcela.",
-    color: "text-pink-400",
-    bg: "bg-pink-500/10",
+    color: "text-orange-400",
+    bg: "bg-orange-500/10",
   },
   {
     icon: CalendarClock,
@@ -39,7 +39,7 @@ export default function EngenhariaIA() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Text */}
           <ScrollReveal>
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-purple-400 mb-4">
+            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 mb-4">
               Tecnologia
             </div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-6">
@@ -82,7 +82,7 @@ export default function EngenhariaIA() {
       </div>
 
       {/* Background accent */}
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-[140px] -z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[140px] -z-10 pointer-events-none" />
     </section>
   );
 }

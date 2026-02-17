@@ -40,15 +40,15 @@ export default function MetodosPage() {
               Paredes compostas por aço galvanizado, OSB, isolamento térmico (ETICS/Capoto), lã mineral e gesso cartonado.
             </p>
           </div>
-          <div className="glass-card p-8 hover:border-purple-500/30 transition-colors">
-            <Shield className="w-10 h-10 text-purple-400 mb-4" />
+          <div className="glass-card p-8 hover:border-cyan-500/30 transition-colors">
+            <Shield className="w-10 h-10 text-cyan-400 mb-4" />
             <h3 className="text-xl font-bold text-white mb-3">Antisísmico</h3>
             <p className="text-gray-400">
               A estrutura flexível de aço absorve energia sísmica melhor que o betão rígido, garantindo maior segurança.
             </p>
           </div>
-          <div className="glass-card p-8 hover:border-pink-500/30 transition-colors">
-            <Hammer className="w-10 h-10 text-pink-400 mb-4" />
+          <div className="glass-card p-8 hover:border-orange-500/30 transition-colors">
+            <Hammer className="w-10 h-10 text-orange-400 mb-4" />
             <h3 className="text-xl font-bold text-white mb-3">Precisão Milimétrica</h3>
             <p className="text-gray-400">
               Perfis cortados a laser em fábrica. Erro zero em obra, paredes perfeitamente direitas e esquadrias exatas.

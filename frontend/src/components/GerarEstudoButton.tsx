@@ -42,6 +42,20 @@ export default function GerarEstudoButton() {
         body: JSON.stringify(form),
       });
 
+      // Email notification via Resend
+      fetch("/api/notify-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: form.nome,
+          email: form.email,
+          telefone: form.telefone,
+          interesse_tipo: `Estudo Técnico ${form.tipologia} ${form.area}m²`,
+          mensagem: `Tipologia: ${form.tipologia}, Área: ${form.area}m², Pisos: ${form.pisos}, Localização: ${form.localizacao}, Estilo: ${form.estilo}`,
+          origem: "gerar_estudo",
+        }),
+      }).catch(() => {});
+
       if (resp.ok) {
         const data: EstudoResult = await resp.json();
         setResult(data);

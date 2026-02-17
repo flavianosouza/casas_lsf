@@ -15,16 +15,16 @@ const credentials = [
     title: "Empresa Registada",
     value: "NIF 515866989",
     desc: "OBRASNET UNIP LDA — Construção Civil e Engenharia",
-    color: "text-purple-400",
-    bg: "bg-purple-500/10",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
   },
   {
     icon: Award,
     title: "Especialização",
     value: "LSF",
     desc: "Light Steel Frame — tecnologia de construção a seco premium",
-    color: "text-pink-400",
-    bg: "bg-pink-500/10",
+    color: "text-orange-400",
+    bg: "bg-orange-500/10",
   },
 ];
 

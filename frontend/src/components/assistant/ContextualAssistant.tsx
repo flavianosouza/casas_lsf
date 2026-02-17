@@ -125,6 +125,18 @@ export default function ContextualAssistant() {
           estilo: "moderno",
         }),
       });
+      // Email notification via Resend
+      fetch("/api/notify-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: "Lead via Assistente",
+          telefone,
+          interesse_tipo: `Estudo ${tipologia} ${area}m²`,
+          mensagem: `Tipologia: ${tipologia}, Área: ${area}m², Localização: ${localizacao}`,
+          origem: "assistente_contextual",
+        }),
+      }).catch(() => {});
       setPhase("done");
     } catch {
       setPhase("error");

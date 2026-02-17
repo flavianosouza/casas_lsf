@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -8,11 +9,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Empresa */}
           <div>
-            <Link
-              href="/"
-              className="text-2xl font-black tracking-tighter mb-4 block"
-            >
-              CASAS<span className="text-blue-500">LSF</span>
+            <Link href="/" className="mb-4 block">
+              <Image src="/images/logo-obrasnet.png" alt="OBRASNET" width={150} height={38} />
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed mb-4">
               Construção em Light Steel Framing com inteligência e transparência.

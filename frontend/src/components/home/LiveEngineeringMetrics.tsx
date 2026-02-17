@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Users, FileText, Database, Layers, HardHat } from "lucide-react";
 
 /* ─── Count-up hook ─── */
@@ -95,22 +95,16 @@ const fallbackMetrics: Metric[] = [
   },
 ];
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://casas-lsf-backend.dy3pb5.easypanel.host";
-
 export default function LiveEngineeringMetrics() {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const [metrics, setMetrics] = useState<Metric[]>(fallbackMetrics);
 
-  /* Fetch real data */
+  /* Fetch real data from local API */
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_URL}/api/metricas`, {
-          next: { revalidate: 300 },
-        } as RequestInit);
+        const res = await fetch("/api/metricas");
         if (res.ok) {
           const data = await res.json();
           setMetrics((prev) =>
@@ -121,6 +115,10 @@ export default function LiveEngineeringMetrics() {
                 return { ...m, value: data.plantas_geradas };
               if (m.label === "Terrenos na Base" && data.terrenos)
                 return { ...m, value: data.terrenos };
+              if (m.label === "Composições Técnicas" && data.composicoes)
+                return { ...m, value: data.composicoes };
+              if (m.label === "Projetos em Análise" && data.projetos_analise)
+                return { ...m, value: data.projetos_analise };
               return m;
             })
           );

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -21,8 +22,8 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/5 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 tracking-tighter hover:opacity-80 transition-opacity">
-          CASAS<span className="text-blue-500">LSF</span>
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <Image src="/images/logo-obrasnet.png" alt="OBRASNET" width={160} height={41} priority />
         </Link>
 
         {/* Desktop Links - Centered */}

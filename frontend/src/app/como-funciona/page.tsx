@@ -36,13 +36,13 @@ export default function ComoFuncionaPage() {
         "Comece pelo nosso simulador online. Escolha a tipologia, área e acabamentos. A nossa IA gera uma estimativa preliminar e sugere plantas adaptadas ao seu terreno.",
     },
     {
-      icon: <ClipboardList className="w-8 h-8 text-purple-400" />,
+      icon: <ClipboardList className="w-8 h-8 text-cyan-400" />,
       title: "2. Orçamento Detalhado",
       description:
         "Após a simulação, receba um contacto da nossa equipa técnica. Validamos os requisitos e apresentamos um mapa de quantidades exato (estrutura, isolamentos, revestimentos).",
     },
     {
-      icon: <HardHat className="w-8 h-8 text-pink-400" />,
+      icon: <HardHat className="w-8 h-8 text-orange-400" />,
       title: "3. Produção & Construção",
       description:
         "A estrutura LSF é fabricada em fábrica com precisão milimétrica. A montagem em obra é 3x mais rápida que a alvenaria, sem desperdícios e com chaves na mão.",

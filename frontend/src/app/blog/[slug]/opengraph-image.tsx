@@ -86,7 +86,7 @@ export default async function OgImage({
             <div style={{ display: "flex" }}>
               <div
                 style={{
-                  backgroundColor: "#3b82f6",
+                  backgroundColor: "#178FC6",
                   color: "#ffffff",
                   fontSize: "16px",
                   fontWeight: 700,
@@ -136,7 +136,7 @@ export default async function OgImage({
             style={{
               width: "80px",
               height: "3px",
-              backgroundColor: "#06b6d4",
+              backgroundColor: "#F07D17",
               borderRadius: "2px",
             }}
           />
@@ -164,7 +164,7 @@ export default async function OgImage({
                 style={{
                   fontSize: "28px",
                   fontWeight: 800,
-                  color: "#3b82f6",
+                  color: "#178FC6",
                   letterSpacing: "1px",
                 }}
               >
