@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL = "https://casaslsf.com";
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface SlugItem {
   slug: string;

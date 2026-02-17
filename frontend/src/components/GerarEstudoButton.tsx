@@ -3,9 +3,7 @@
 import { useState } from "react";
 import { FileText, Send, X, Loader2, CheckCircle, Download } from "lucide-react";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface EstudoResult {
   status: string;

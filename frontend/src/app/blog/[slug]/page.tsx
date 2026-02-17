@@ -12,7 +12,7 @@ import RelatedArticles from "@/components/RelatedArticles";
 import GerarEstudoButton from "@/components/GerarEstudoButton";
 import AssistantLazy from "@/components/assistant/AssistantLazy";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const SITE_URL = "https://casaslsf.com";
 
 interface FaqItem {

@@ -56,9 +56,7 @@ const terminalSteps = [
   "Preparando estudo...",
 ];
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 type Phase = "form" | "processing" | "done" | "error";
 

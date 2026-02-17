@@ -5,9 +5,7 @@ export const alt = "Casas LSF - Artigo";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 const CATEGORIAS_LABELS: Record<string, string> = {
   "construcao-lsf": "Construção LSF",

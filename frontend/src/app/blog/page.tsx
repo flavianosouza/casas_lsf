@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 interface Artigo {
   id: string;
