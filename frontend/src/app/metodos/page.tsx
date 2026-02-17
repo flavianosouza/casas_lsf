@@ -1,5 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Hammer, Layers, Shield, Zap } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Método Construtivo LSF - Light Steel Framing",
+  description:
+    "Descubra o método construtivo LSF: paredes multicamada, resistência antissísmica, precisão milimétrica e construção 3x mais rápida que alvenaria. Casa pronta em 4-6 meses.",
+  keywords: [
+    "método construtivo LSF", "Light Steel Framing", "construção aço leve",
+    "LSF Portugal", "paredes LSF", "construção a seco", "steel frame",
+  ],
+  openGraph: {
+    title: "Método Construtivo LSF - Light Steel Framing",
+    description:
+      "Tecnologia aeronáutica aplicada à construção civil. Paredes multicamada, antissísmico e construção a seco.",
+    url: "https://casaslsf.com/metodos",
+  },
+  alternates: {
+    canonical: "https://casaslsf.com/metodos",
+  },
+};
 
 export default function MetodosPage() {
   return (

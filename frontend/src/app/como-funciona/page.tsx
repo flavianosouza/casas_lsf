@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -6,6 +7,25 @@ import {
   HardHat,
   PenTool,
 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Como Funciona a Construção LSF - Passo a Passo",
+  description:
+    "Conheça as 4 fases da construção LSF: simulação, orçamento detalhado, produção em fábrica e entrega chave na mão. Casa Classe A+ pronta em 4-6 meses.",
+  keywords: [
+    "como funciona LSF", "processo construção LSF", "etapas construção LSF",
+    "fases obra LSF", "construção chave na mão", "casa LSF passo a passo",
+  ],
+  openGraph: {
+    title: "Como Funciona a Construção LSF - Passo a Passo",
+    description:
+      "Da simulação online à entrega da casa. 4 passos simples para construir em LSF com a OBRASNET.",
+    url: "https://casaslsf.com/como-funciona",
+  },
+  alternates: {
+    canonical: "https://casaslsf.com/como-funciona",
+  },
+};
 
 export default function ComoFuncionaPage() {
   const steps = [

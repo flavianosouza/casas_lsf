@@ -6,6 +6,7 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 export const metadata: Metadata = {
   title: "Metodologia Construtiva LSF | Light Steel Framing",
@@ -91,6 +92,8 @@ export default function MetodologiaPage() {
               com superior desempenho térmico, acústico e sísmico.
             </p>
           </header>
+
+          <AssistantLazy />
 
           {/* O que é */}
           <section className="glass-card p-8 md:p-12 mb-12">

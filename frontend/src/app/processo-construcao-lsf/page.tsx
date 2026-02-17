@@ -6,6 +6,7 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 export const metadata: Metadata = {
   title: "Processo de Construção LSF Passo a Passo | 6 Fases",
@@ -129,6 +130,8 @@ export default function ProcessoPage() {
               construção em Light Steel Framing, com prazos reais e o que esperar em cada momento.
             </p>
           </header>
+
+          <AssistantLazy />
 
           {/* Timeline */}
           <section className="mb-12">

@@ -21,6 +21,14 @@ const APP_ROUTES = new Set([
   "/empresa-construcao-lsf-portugal",
 ]);
 
+// Old WordPress blog slugs → correct slugs (301 redirects)
+// These old URLs still receive significant Google impressions
+const BLOG_SLUG_REDIRECTS: Record<string, string> = {
+  "telhados-e-coberturas-preco-m2-portugal": "telhados-e-coberturas-precos",
+  "casas-modulares-t3-portugal-precos": "casas-modulares-portugal-chave-na-mao",
+  "manta-termica-telhado-preco-m2": "descubra-tudo-sobre-isolamento-termico-melhores-materiais-e-instalacao",
+};
+
 // Paths that should never be intercepted
 const SKIP_PREFIXES = [
   "/_next",
@@ -39,6 +47,17 @@ const SKIP_PREFIXES = [
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Redirect old blog slugs before skipping /blog/ prefix
+  if (pathname.startsWith("/blog/")) {
+    const slug = pathname.replace("/blog/", "").replace(/\/$/, "");
+    const newSlug = BLOG_SLUG_REDIRECTS[slug];
+    if (newSlug) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/blog/${newSlug}`;
+      return NextResponse.redirect(url, 301);
+    }
+  }
 
   // Skip static assets and known prefixes
   if (SKIP_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
@@ -95,7 +114,9 @@ export function middleware(request: NextRequest) {
   const slug = pathname.replace(/^\//, "").replace(/\/$/, "");
   if (slug && !slug.includes("/")) {
     const url = request.nextUrl.clone();
-    url.pathname = `/blog/${slug}`;
+    // Use corrected slug if an old→new mapping exists, avoiding double 301
+    const correctedSlug = BLOG_SLUG_REDIRECTS[slug] || slug;
+    url.pathname = `/blog/${correctedSlug}`;
     return NextResponse.redirect(url, 301);
   }
 

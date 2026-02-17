@@ -6,9 +6,10 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 export const metadata: Metadata = {
-  title: "Financiamento Casa LSF | Crédito Habitação Construção 2025",
+  title: "Financiamento Casa LSF | Crédito Habitação Construção 2026",
   description:
     "Como financiar a construção de uma casa em LSF: crédito habitação, documentos, spreads médios e bancos que financiam. Guia completo para Portugal.",
   keywords: [
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://casaslsf.com/casa-lsf-financiamento" },
   openGraph: {
-    title: "Financiamento Casa LSF | Crédito Habitação 2025",
+    title: "Financiamento Casa LSF | Crédito Habitação 2026",
     description: "Guia completo sobre financiamento para construção de casas em LSF em Portugal.",
     url: "https://casaslsf.com/casa-lsf-financiamento",
     type: "article",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 
 const faqs = [
   { pergunta: "Os bancos financiam construção em LSF?", resposta: "Sim. Todos os principais bancos portugueses (CGD, Millennium BCP, Santander, Novo Banco, BPI, Bankinter) financiam construção em LSF, desde que o projeto tenha licença de construção aprovada." },
-  { pergunta: "Qual é o spread médio para crédito habitação?", resposta: "O spread médio em Portugal situa-se entre 0,85% e 1,5% (2025), dependendo do banco, perfil do cliente, LTV e montante. Negociar com vários bancos pode poupar milhares de euros." },
+  { pergunta: "Qual é o spread médio para crédito habitação?", resposta: "O spread médio em Portugal situa-se entre 0,85% e 1,5% (2026), dependendo do banco, perfil do cliente, LTV e montante. Negociar com vários bancos pode poupar milhares de euros." },
   { pergunta: "Que percentagem o banco financia?", resposta: "Os bancos financiam tipicamente 80% a 90% do valor de avaliação do imóvel. Para construção, o financiamento é libertado em tranches conforme o avanço da obra." },
   { pergunta: "Preciso de terreno próprio para pedir crédito?", resposta: "Sim. O terreno deve estar em nome do requerente (ou com CPCV) e ter viabilidade de construção confirmada pela câmara municipal. O terreno pode entrar como capital próprio." },
   { pergunta: "O crédito para construção tem condições diferentes?", resposta: "Sim. O crédito para construção é libertado em tranches (3-5 fases) conforme o avanço da obra, avaliado por perito do banco. Durante a construção, paga apenas juros sobre o capital libertado." },
@@ -78,7 +79,7 @@ export default function FinanciamentoPage() {
 
           <header className="mb-16 animate-fade-in">
             <span className="inline-block px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-              Guia Financeiro 2025
+              Guia Financeiro 2026
             </span>
             <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-white">
               Financiamento{" "}
@@ -90,6 +91,8 @@ export default function FinanciamentoPage() {
               o seu projeto.
             </p>
           </header>
+
+          <AssistantLazy />
 
           {/* Como funciona */}
           <section className="glass-card p-8 md:p-12 mb-12">
@@ -125,7 +128,7 @@ export default function FinanciamentoPage() {
           {/* Tabela bancos */}
           <section className="mb-12">
             <h2 className="text-2xl md:text-3xl font-black text-white mb-8">
-              Spreads por Banco (2025)
+              Spreads por Banco (2026)
             </h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -150,7 +153,7 @@ export default function FinanciamentoPage() {
               </table>
             </div>
             <p className="text-xs text-gray-600 mt-4">
-              * Valores indicativos para 2025. Spreads variam conforme perfil do cliente, LTV e negociação. Consulte cada banco.
+              * Valores indicativos para 2026. Spreads variam conforme perfil do cliente, LTV e negociação. Consulte cada banco.
             </p>
           </section>
 

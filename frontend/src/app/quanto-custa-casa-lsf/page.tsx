@@ -6,9 +6,10 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 export const metadata: Metadata = {
-  title: "Quanto Custa uma Casa LSF em Portugal? | Guia 2025",
+  title: "Quanto Custa uma Casa LSF em Portugal? | Guia 2026",
   description:
     "Quanto custa construir uma casa em LSF? De 88.000€ (T1) a 360.000€ (T4 premium). Custos detalhados de terreno, projeto, obra e extras. Simulador grátis.",
   keywords: [
@@ -76,7 +77,7 @@ export default function QuantoCustaPage() {
 
           <header className="mb-16 animate-fade-in">
             <span className="inline-block px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-              Guia de Custos 2025
+              Guia de Custos 2026
             </span>
             <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-white">
               Quanto Custa uma{" "}
@@ -88,6 +89,8 @@ export default function QuantoCustaPage() {
               possa planear o seu investimento sem surpresas.
             </p>
           </header>
+
+          <AssistantLazy />
 
           {/* Resumo rápido */}
           <section className="glass-card p-8 md:p-12 mb-12">

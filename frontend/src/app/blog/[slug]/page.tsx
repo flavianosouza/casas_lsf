@@ -9,6 +9,7 @@ import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
 import RelatedArticles from "@/components/RelatedArticles";
 import GerarEstudoButton from "@/components/GerarEstudoButton";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://casas-lsf-backend.dy3pb5.easypanel.host";
 const SITE_URL = "https://casaslsf.com";
@@ -126,6 +127,26 @@ function getReadTime(artigo: Artigo): string {
   return `${Math.max(3, Math.ceil(words / 200))} min`;
 }
 
+function normalizeHtml(html: string): string {
+  // WordPress imports may have unwrapped text after headings.
+  // Wrap loose text nodes between block elements in <p> tags.
+  return html
+    .replace(/(<\/h[2-6]>)\s*(?!<)([\s\S]*?)(?=<h[2-6]|<p|<ul|<ol|<blockquote|<div|<table|<figure|$)/gi,
+      (_, close, text) => {
+        const trimmed = text.trim();
+        if (!trimmed) return close;
+        // Split on double line breaks into paragraphs
+        const paragraphs = trimmed
+          .split(/\n\s*\n/)
+          .map((p: string) => p.trim())
+          .filter(Boolean)
+          .map((p: string) => (p.startsWith("<") ? p : `<p>${p}</p>`))
+          .join("\n");
+        return `${close}\n${paragraphs}`;
+      }
+    );
+}
+
 function getWordCount(html: string): number {
   return html.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length;
 }
@@ -191,8 +212,9 @@ export default async function ArtigoPage({
     ? CATEGORIAS_LABELS[artigo.categoria] || artigo.categoria
     : null;
 
-  const wordCount = getWordCount(artigo.conteudo_html);
-  const [contentPart1, contentPart2] = splitContentAfterParagraph(artigo.conteudo_html, 2);
+  const normalizedHtml = normalizeHtml(artigo.conteudo_html);
+  const wordCount = getWordCount(normalizedHtml);
+  const [contentPart1, contentPart2] = splitContentAfterParagraph(normalizedHtml, 2);
 
   // Article JSON-LD
   const articleJsonLd = {
@@ -352,6 +374,8 @@ export default async function ArtigoPage({
 
           {/* If no split happened, add spacing */}
           {!contentPart2 && <div className="mb-16" />}
+
+          <AssistantLazy />
 
           {/* FAQ Section */}
           {artigo.faq_json && artigo.faq_json.length > 0 && (

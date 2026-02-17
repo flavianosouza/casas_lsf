@@ -6,9 +6,10 @@ import FaqSection from "@/components/FaqSection";
 import InlineCta from "@/components/InlineCta";
 import WhatsAppCta from "@/components/WhatsAppCta";
 import AuthorSection from "@/components/AuthorSection";
+import AssistantLazy from "@/components/assistant/AssistantLazy";
 
 export const metadata: Metadata = {
-  title: "Preço Construção LSF por m² em 2025 | Tabela Atualizada",
+  title: "Preço Construção LSF por m² em 2026 | Tabela Atualizada",
   description:
     "Preço de construção em LSF por m² em Portugal: de 1.100€ a 1.800€/m². Tabela atualizada com custos por tipologia, acabamento e região. Simulador grátis.",
   keywords: [
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "https://casaslsf.com/preco-construcao-lsf-por-m2" },
   openGraph: {
-    title: "Preço Construção LSF por m² em Portugal | Tabela 2025",
+    title: "Preço Construção LSF por m² em Portugal | Tabela 2026",
     description: "Tabela atualizada de preços de construção em LSF por m². De 1.100€ a 1.800€ conforme acabamentos.",
     url: "https://casaslsf.com/preco-construcao-lsf-por-m2",
     type: "article",
@@ -76,7 +77,7 @@ export default function PrecoM2Page() {
 
           <header className="mb-16 animate-fade-in">
             <span className="inline-block px-4 py-1.5 rounded-full border border-blue-500/20 bg-blue-500/5 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
-              Tabela de Preços 2025
+              Tabela de Preços 2026
             </span>
             <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-white">
               Preço Construção LSF{" "}
@@ -88,6 +89,8 @@ export default function PrecoM2Page() {
               acabamentos e tipologia.
             </p>
           </header>
+
+          <AssistantLazy />
 
           {/* Resumo preços */}
           <section className="grid md:grid-cols-3 gap-6 mb-16">
@@ -179,7 +182,7 @@ export default function PrecoM2Page() {
               </table>
             </div>
             <p className="text-xs text-gray-600 mt-4">
-              * Valores indicativos para projetos chave na mão em Portugal continental (2025). Consulte-nos para orçamento personalizado.
+              * Valores indicativos para projetos chave na mão em Portugal continental (2026). Consulte-nos para orçamento personalizado.
             </p>
           </section>
 

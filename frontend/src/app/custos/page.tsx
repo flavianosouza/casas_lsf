@@ -1,5 +1,25 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Calculator, CheckCircle } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Custos de Construção LSF em Portugal 2026",
+  description:
+    "Quanto custa construir uma casa LSF? Preços de estrutura desde 350€/m² e chave na mão desde 1.100€/m². Orçamento fechado, sem derrapagens. Simule grátis.",
+  keywords: [
+    "custo construção LSF", "preço LSF m2 2026", "construção LSF preço",
+    "quanto custa construir casa LSF", "preço metro quadrado LSF",
+  ],
+  openGraph: {
+    title: "Custos de Construção LSF em Portugal 2026",
+    description:
+      "Preços reais de construção LSF: estrutura desde 350€/m², chave na mão desde 1.100€/m². Sem surpresas.",
+    url: "https://casaslsf.com/custos",
+  },
+  alternates: {
+    canonical: "https://casaslsf.com/custos",
+  },
+};
 
 export default function CustosPage() {
   return (
