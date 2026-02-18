@@ -79,6 +79,41 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/metricas")
+async def get_metricas(db: AsyncSession = Depends(get_db)):
+    """Return real-time metrics from database for the dashboard."""
+    queries = {
+        "total_leads": "SELECT COUNT(*) FROM leads",
+        "plantas_geradas": "SELECT COUNT(*) FROM plantas_geradas",
+        "terrenos": "SELECT COUNT(*) FROM terrenos",
+        "terrenos_projeto_aprovado": "SELECT COUNT(*) FROM terrenos_projeto_aprovado",
+        "composicoes": "SELECT COUNT(*) FROM composicoes",
+        "composicao_itens": "SELECT COUNT(*) FROM composicao_itens",
+        "precos_materiais": "SELECT COUNT(*) FROM precos_materiais",
+        "artigos": "SELECT COUNT(*) FROM artigos",
+    }
+    result = {}
+    for key, sql in queries.items():
+        try:
+            row = await db.execute(text(sql))
+            result[key] = row.scalar() or 0
+        except Exception:
+            result[key] = 0
+
+    return {
+        "total_leads": result["total_leads"],
+        "plantas_geradas": result["plantas_geradas"],
+        "terrenos": result["terrenos"] + result["terrenos_projeto_aprovado"],
+        "composicoes_tecnicas": (
+            result["composicoes"]
+            + result["composicao_itens"]
+            + result["precos_materiais"]
+        ),
+        "projetos_analise": result["terrenos_projeto_aprovado"],
+        "artigos": result["artigos"],
+    }
+
+
 @app.post("/api/migrate-seo")
 async def migrate_seo_fields():
     """One-time migration to add SEO columns to artigos table."""

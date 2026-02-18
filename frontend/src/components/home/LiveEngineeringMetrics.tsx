@@ -57,50 +57,27 @@ interface Metric {
   sparkline: number[];
 }
 
-const fallbackMetrics: Metric[] = [
-  {
-    icon: Users,
-    label: "Leads Ativos",
-    value: 49,
-    color: "#3b82f6",
-    sparkline: [5, 12, 8, 22, 18, 31, 28, 35, 42, 49],
-  },
-  {
-    icon: FileText,
-    label: "Plantas Geradas",
-    value: 7,
-    color: "#06b6d4",
-    sparkline: [0, 1, 1, 2, 3, 3, 5, 5, 6, 7],
-  },
-  {
-    icon: Database,
-    label: "Terrenos na Base",
-    value: 68,
-    color: "#3b82f6",
-    sparkline: [12, 18, 25, 32, 38, 45, 52, 58, 63, 68],
-  },
-  {
-    icon: Layers,
-    label: "Composições Técnicas",
-    value: 847,
-    color: "#06b6d4",
-    sparkline: [320, 410, 480, 550, 620, 680, 720, 780, 820, 847],
-  },
-  {
-    icon: HardHat,
-    label: "Projetos em Análise",
-    value: 12,
-    color: "#3b82f6",
-    sparkline: [2, 3, 5, 4, 7, 8, 6, 9, 10, 12],
-  },
+function buildSparkline(end: number): number[] {
+  const steps = 10;
+  return Array.from({ length: steps }, (_, i) =>
+    Math.round((end * (i + 1)) / steps)
+  );
+}
+
+const defaultMetrics: Metric[] = [
+  { icon: Users, label: "Leads Ativos", value: 0, color: "#3b82f6", sparkline: [0] },
+  { icon: FileText, label: "Plantas Geradas", value: 0, color: "#06b6d4", sparkline: [0] },
+  { icon: Database, label: "Terrenos na Base", value: 0, color: "#3b82f6", sparkline: [0] },
+  { icon: Layers, label: "Composições Técnicas", value: 0, color: "#06b6d4", sparkline: [0] },
+  { icon: HardHat, label: "Projetos em Análise", value: 0, color: "#3b82f6", sparkline: [0] },
 ];
 
 export default function LiveEngineeringMetrics() {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
-  const [metrics, setMetrics] = useState<Metric[]>(fallbackMetrics);
+  const [metrics, setMetrics] = useState<Metric[]>(defaultMetrics);
 
-  /* Fetch real data from local API */
+  /* Fetch real data from backend API */
   useEffect(() => {
     (async () => {
       try {
@@ -109,17 +86,13 @@ export default function LiveEngineeringMetrics() {
           const data = await res.json();
           setMetrics((prev) =>
             prev.map((m) => {
-              if (m.label === "Leads Ativos" && data.total_leads)
-                return { ...m, value: data.total_leads };
-              if (m.label === "Plantas Geradas" && data.plantas_geradas)
-                return { ...m, value: data.plantas_geradas };
-              if (m.label === "Terrenos na Base" && data.terrenos)
-                return { ...m, value: data.terrenos };
-              if (m.label === "Composições Técnicas" && data.composicoes)
-                return { ...m, value: data.composicoes };
-              if (m.label === "Projetos em Análise" && data.projetos_analise)
-                return { ...m, value: data.projetos_analise };
-              return m;
+              let val = 0;
+              if (m.label === "Leads Ativos") val = data.total_leads || 0;
+              if (m.label === "Plantas Geradas") val = data.plantas_geradas || 0;
+              if (m.label === "Terrenos na Base") val = data.terrenos || 0;
+              if (m.label === "Composições Técnicas") val = data.composicoes_tecnicas || 0;
+              if (m.label === "Projetos em Análise") val = data.projetos_analise || 0;
+              return val > 0 ? { ...m, value: val, sparkline: buildSparkline(val) } : m;
             })
           );
         }
