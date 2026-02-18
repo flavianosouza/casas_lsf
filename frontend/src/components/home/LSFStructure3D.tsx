@@ -206,16 +206,6 @@ function SteelProfile({
   );
 }
 
-/* ═══════════════════════════════════════════════════ */
-function Ground() {
-  return (
-    <mesh position={[0, -0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[20, 20]} />
-      <meshBasicMaterial color="#0a0a0a" />
-    </mesh>
-  );
-}
-
 function Particles() {
   const ref = useRef<THREE.Points>(null);
   const geo = useMemo(() => {
@@ -265,7 +255,6 @@ function Scene({ scrollProgress }: { scrollProgress?: { current: number } }) {
         <SteelProfile key={i} data={data} scrollProgress={scrollProgress} />
       ))}
 
-      <Ground />
       <Particles />
 
       <OrbitControls

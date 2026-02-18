@@ -208,11 +208,11 @@ export default function ContextualAssistant() {
                     onChange={(e) => setTipologia(e.target.value)}
                     className="assistant-input"
                   >
-                    <option value="T1">T1</option>
-                    <option value="T2">T2</option>
-                    <option value="T3">T3</option>
-                    <option value="T4">T4</option>
-                    <option value="T5">T5</option>
+                    <option value="T1" className="bg-gray-900 text-white">T1</option>
+                    <option value="T2" className="bg-gray-900 text-white">T2</option>
+                    <option value="T3" className="bg-gray-900 text-white">T3</option>
+                    <option value="T4" className="bg-gray-900 text-white">T4</option>
+                    <option value="T5" className="bg-gray-900 text-white">T5</option>
                   </select>
                   <input
                     type="text"
