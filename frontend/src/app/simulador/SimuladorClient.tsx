@@ -160,12 +160,13 @@ export default function SimuladorClient() {
                       value={formData.interesse_tipo}
                       onChange={handleChange}
                       className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-blue-500 focus:bg-white/10 outline-none transition-all appearance-none cursor-pointer"
+                      style={{ colorScheme: "dark" }}
                     >
-                      <option value="T1" className="bg-gray-900 text-white">T1 (50-70 m²)</option>
-                      <option value="T2" className="bg-gray-900 text-white">T2 (80-110 m²)</option>
-                      <option value="T3" className="bg-gray-900 text-white">T3 (120-160 m²)</option>
-                      <option value="T4" className="bg-gray-900 text-white">T4+ (170+ m²)</option>
-                      <option value="Outro" className="bg-gray-900 text-white">Outro / Personalizado</option>
+                      <option value="T1">T1 (50-70 m²)</option>
+                      <option value="T2">T2 (80-110 m²)</option>
+                      <option value="T3">T3 (120-160 m²)</option>
+                      <option value="T4">T4+ (170+ m²)</option>
+                      <option value="Outro">Outro / Personalizado</option>
                     </select>
                   </div>
 
