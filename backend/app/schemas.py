@@ -39,6 +39,7 @@ class ArtigoBase(BaseModel):
     autor: Optional[str] = "Equipa Casas LSF"
     tags: Optional[list[str]] = None
     imagem_destaque_url: Optional[str] = None
+    imagem_alt_text: Optional[str] = None
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
     faq_json: Optional[list[dict[str, str]]] = None
@@ -61,6 +62,7 @@ class ArtigoUpdate(BaseModel):
     autor: Optional[str] = None
     tags: Optional[list[str]] = None
     imagem_destaque_url: Optional[str] = None
+    imagem_alt_text: Optional[str] = None
     meta_title: Optional[str] = None
     meta_description: Optional[str] = None
     status: Optional[str] = None
@@ -91,6 +93,7 @@ class ArtigoListItem(BaseModel):
     autor: str
     tags: Optional[list[str]] = None
     imagem_destaque_url: Optional[str] = None
+    imagem_alt_text: Optional[str] = None
     published_at: Optional[datetime] = None
     created_at: datetime
 

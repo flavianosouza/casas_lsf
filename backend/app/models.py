@@ -34,6 +34,7 @@ class Artigo(Base):
     autor = Column(String(100), default="Equipa Casas LSF")
     tags = Column(ARRAY(String), nullable=True)
     imagem_destaque_url = Column(Text, nullable=True)
+    imagem_alt_text = Column(String(255), nullable=True)
     meta_title = Column(String(255), nullable=True)
     meta_description = Column(String(320), nullable=True)
     status = Column(String(50), default="rascunho")
