@@ -44,7 +44,7 @@ function MiniDashboard({ active }: { active: boolean }) {
     { value: 230, label: "Materiais Ativos" },
     { value: 34, label: "Composições" },
     { value: 13, label: "Cat. Orçamento" },
-    { value: 8, label: "Meses Prazo" },
+    { value: 0, label: "Meses Prazo", display: "6 a 12" },
   ];
 
   return (
@@ -64,7 +64,7 @@ function MiniDashboard({ active }: { active: boolean }) {
       </div>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3">
         {metrics.map((m, i) => (
-          <DashboardMetric key={i} {...m} active={active} delay={300 + i * 200} />
+          <DashboardMetric key={i} value={m.value} label={m.label} display={m.display} active={active} delay={300 + i * 200} />
         ))}
       </div>
       <div className="mt-4 pt-3 border-t border-white/10 flex items-center gap-2">
@@ -86,11 +86,13 @@ function MiniDashboard({ active }: { active: boolean }) {
 function DashboardMetric({
   value,
   label,
+  display,
   active,
   delay,
 }: {
   value: number;
   label: string;
+  display?: string;
   active: boolean;
   delay: number;
 }) {
@@ -104,7 +106,7 @@ function DashboardMetric({
       }}
     >
       <div className="text-xl font-black text-white font-mono leading-none tracking-tight">
-        {count}
+        {display || count}
       </div>
       <div className="text-[8px] uppercase tracking-wider text-gray-500 mt-1 leading-tight">
         {label}
