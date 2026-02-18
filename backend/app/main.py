@@ -79,6 +79,38 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/debug-db")
+async def debug_db():
+    """Diagnostic endpoint to check engineering DB connection."""
+    import os
+    from .database import ENGINEERING_DB_URL, engineering_engine
+
+    env_raw = os.getenv("ENGINEERING_DB_URL", "<NOT SET>")
+    info = {
+        "env_var_set": env_raw != "<NOT SET>" and env_raw != "",
+        "env_var_length": len(env_raw) if env_raw else 0,
+        "engine_created": engineering_engine is not None,
+    }
+
+    if engineering_engine:
+        try:
+            async with engineering_engine.connect() as conn:
+                row = await conn.execute(text("SELECT 1"))
+                info["connection"] = "OK"
+                # Try listing tables
+                tables = await conn.execute(text(
+                    "SELECT table_name FROM information_schema.tables "
+                    "WHERE table_schema = 'public' LIMIT 20"
+                ))
+                info["tables"] = [r[0] for r in tables.fetchall()]
+        except Exception as e:
+            info["connection"] = f"FAILED: {e}"
+    else:
+        info["connection"] = "No engine (env var missing or empty)"
+
+    return info
+
+
 @app.get("/api/metricas")
 async def get_metricas(db: AsyncSession = Depends(get_db)):
     """Return real-time metrics from database for the dashboard."""
