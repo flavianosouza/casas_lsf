@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Users, FileText, Database, Layers, HardHat } from "lucide-react";
+import { Users, FileText, Database, Calculator, HardHat } from "lucide-react";
 
 /* ─── Count-up hook ─── */
 function useCountUp(end: number, duration: number, active: boolean) {
@@ -68,7 +68,7 @@ const defaultMetrics: Metric[] = [
   { icon: Users, label: "Leads Ativos", value: 0, color: "#3b82f6", sparkline: [0] },
   { icon: FileText, label: "Plantas Geradas", value: 0, color: "#06b6d4", sparkline: [0] },
   { icon: Database, label: "Terrenos na Base", value: 0, color: "#3b82f6", sparkline: [0] },
-  { icon: Layers, label: "Composições Técnicas", value: 0, color: "#06b6d4", sparkline: [0] },
+  { icon: Calculator, label: "Orçamentos Gerados", value: 0, color: "#06b6d4", sparkline: [0] },
   { icon: HardHat, label: "Projetos em Análise", value: 0, color: "#3b82f6", sparkline: [0] },
 ];
 
@@ -90,7 +90,7 @@ export default function LiveEngineeringMetrics() {
               if (m.label === "Leads Ativos") val = data.total_leads || 0;
               if (m.label === "Plantas Geradas") val = data.plantas_geradas || 0;
               if (m.label === "Terrenos na Base") val = data.terrenos || 0;
-              if (m.label === "Composições Técnicas") val = data.composicoes_tecnicas || 0;
+              if (m.label === "Orçamentos Gerados") val = data.orcamentos_gerados || 0;
               if (m.label === "Projetos em Análise") val = data.projetos_analise || 0;
               return val > 0 ? { ...m, value: val, sparkline: buildSparkline(val) } : m;
             })

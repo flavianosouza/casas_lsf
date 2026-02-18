@@ -137,11 +137,13 @@ async def get_metricas(db: AsyncSession = Depends(get_db)):
             await db.rollback()
             result[key] = 0
 
-    # Queries for the engineering database (n8n-evo)
+    # Queries for the engineering database (postgres on n8n-evo server)
     eng_queries = {
+        "eng_leads": "SELECT COUNT(*) FROM leads",
         "plantas_geradas": "SELECT COUNT(*) FROM plantas_geradas",
         "terrenos": "SELECT COUNT(*) FROM terrenos",
         "terrenos_projeto_aprovado": "SELECT COUNT(*) FROM terrenos_projeto_aprovado",
+        "orcamentos": "SELECT COUNT(*) FROM orcamentos",
         "composicoes": "SELECT COUNT(*) FROM composicoes",
         "composicao_itens": "SELECT COUNT(*) FROM composicao_itens",
         "precos_materiais": "SELECT COUNT(*) FROM precos_materiais",
@@ -159,9 +161,10 @@ async def get_metricas(db: AsyncSession = Depends(get_db)):
             result[key] = 0
 
     return {
-        "total_leads": result["total_leads"],
+        "total_leads": result.get("eng_leads", 0) or result["total_leads"],
         "plantas_geradas": result["plantas_geradas"],
         "terrenos": result["terrenos"] + result["terrenos_projeto_aprovado"],
+        "orcamentos_gerados": result["orcamentos"],
         "composicoes_tecnicas": (
             result["composicoes"]
             + result["composicao_itens"]

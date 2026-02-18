@@ -19,6 +19,7 @@ export async function GET() {
     total_leads: 0,
     plantas_geradas: 0,
     terrenos: 0,
+    orcamentos_gerados: 0,
     composicoes_tecnicas: 0,
     projetos_analise: 0,
     artigos: 0,
