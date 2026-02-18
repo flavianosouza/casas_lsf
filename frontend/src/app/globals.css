@@ -42,6 +42,7 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
+  color-scheme: dark;
 }
 
 body {
@@ -159,12 +160,6 @@ html {
 
 .assistant-input::placeholder {
   color: #64748b;
-}
-
-/* Dark dropdown options — all selects site-wide */
-select, select option {
-  background-color: #0f172a;
-  color: #e2e8f0;
 }
 
 .assistant-input option {
