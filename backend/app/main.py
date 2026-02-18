@@ -23,6 +23,15 @@ async def lifespan(app: FastAPI):
     try:
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
+            # Add columns that create_all won't add to existing tables
+            migrations = [
+                "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS imagem_alt_text VARCHAR(255)",
+            ]
+            for stmt in migrations:
+                try:
+                    await conn.execute(text(stmt))
+                except Exception:
+                    pass
         print("✅ Database connected and tables created.")
     except Exception as e:
         print(f"⚠️ Database not available on startup: {e}")
