@@ -209,9 +209,10 @@ function SteelProfile({
 /* ═══════════════════════════════════════════════════ */
 function Ground() {
   return (
-    <group position={[0, -0.02, 0]}>
-      <gridHelper args={[16, 32, "#1a3a5c", "#0f2440"]} />
-    </group>
+    <mesh position={[0, -0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[20, 20]} />
+      <meshBasicMaterial color="#0a0a0a" />
+    </mesh>
   );
 }
 
