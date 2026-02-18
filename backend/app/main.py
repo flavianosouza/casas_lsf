@@ -91,6 +91,9 @@ async def get_metricas(db: AsyncSession = Depends(get_db)):
         "composicao_itens": "SELECT COUNT(*) FROM composicao_itens",
         "precos_materiais": "SELECT COUNT(*) FROM precos_materiais",
         "artigos": "SELECT COUNT(*) FROM artigos",
+        "artigos_publicados": "SELECT COUNT(*) FROM artigos WHERE status = 'publicado'",
+        "categorias": "SELECT COUNT(DISTINCT categoria) FROM artigos WHERE categoria IS NOT NULL",
+        "artigos_com_imagem": "SELECT COUNT(*) FROM artigos WHERE imagem_destaque_url LIKE '%media.casaslsf.com%'",
     }
     result = {}
     for key, sql in queries.items():
@@ -98,6 +101,7 @@ async def get_metricas(db: AsyncSession = Depends(get_db)):
             row = await db.execute(text(sql))
             result[key] = row.scalar() or 0
         except Exception:
+            await db.rollback()
             result[key] = 0
 
     return {
@@ -111,6 +115,9 @@ async def get_metricas(db: AsyncSession = Depends(get_db)):
         ),
         "projetos_analise": result["terrenos_projeto_aprovado"],
         "artigos": result["artigos"],
+        "artigos_publicados": result["artigos_publicados"],
+        "categorias": result["categorias"],
+        "artigos_com_imagem": result["artigos_com_imagem"],
     }
 
 

@@ -22,5 +22,8 @@ export async function GET() {
     composicoes_tecnicas: 0,
     projetos_analise: 0,
     artigos: 0,
+    artigos_publicados: 0,
+    categorias: 0,
+    artigos_com_imagem: 0,
   });
 }
