@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 import httpx
 import logging
-from .database import engine, Base, get_db
+from .database import engine, engineering_engine, Base, get_db
 from .models import Lead
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -82,26 +82,43 @@ async def health_check():
 @app.get("/api/metricas")
 async def get_metricas(db: AsyncSession = Depends(get_db)):
     """Return real-time metrics from database for the dashboard."""
-    queries = {
+
+    # Queries for the main casas_lsf database
+    local_queries = {
         "total_leads": "SELECT COUNT(*) FROM leads",
-        "plantas_geradas": "SELECT COUNT(*) FROM plantas_geradas",
-        "terrenos": "SELECT COUNT(*) FROM terrenos",
-        "terrenos_projeto_aprovado": "SELECT COUNT(*) FROM terrenos_projeto_aprovado",
-        "composicoes": "SELECT COUNT(*) FROM composicoes",
-        "composicao_itens": "SELECT COUNT(*) FROM composicao_itens",
-        "precos_materiais": "SELECT COUNT(*) FROM precos_materiais",
         "artigos": "SELECT COUNT(*) FROM artigos",
         "artigos_publicados": "SELECT COUNT(*) FROM artigos WHERE status = 'publicado'",
         "categorias": "SELECT COUNT(DISTINCT categoria) FROM artigos WHERE categoria IS NOT NULL",
         "artigos_com_imagem": "SELECT COUNT(*) FROM artigos WHERE imagem_destaque_url LIKE '%media.casaslsf.com%'",
     }
     result = {}
-    for key, sql in queries.items():
+    for key, sql in local_queries.items():
         try:
             row = await db.execute(text(sql))
             result[key] = row.scalar() or 0
         except Exception:
             await db.rollback()
+            result[key] = 0
+
+    # Queries for the engineering database (n8n-evo)
+    eng_queries = {
+        "plantas_geradas": "SELECT COUNT(*) FROM plantas_geradas",
+        "terrenos": "SELECT COUNT(*) FROM terrenos",
+        "terrenos_projeto_aprovado": "SELECT COUNT(*) FROM terrenos_projeto_aprovado",
+        "composicoes": "SELECT COUNT(*) FROM composicoes",
+        "composicao_itens": "SELECT COUNT(*) FROM composicao_itens",
+        "precos_materiais": "SELECT COUNT(*) FROM precos_materiais",
+    }
+    if engineering_engine:
+        async with engineering_engine.connect() as conn:
+            for key, sql in eng_queries.items():
+                try:
+                    row = await conn.execute(text(sql))
+                    result[key] = row.scalar() or 0
+                except Exception:
+                    result[key] = 0
+    else:
+        for key in eng_queries:
             result[key] = 0
 
     return {

@@ -32,6 +32,26 @@ engine = create_async_engine(
     connect_args=connect_args
 )
 
+# Engineering DB (n8n-evo) — optional second database for metrics
+ENGINEERING_DB_URL = os.getenv("ENGINEERING_DB_URL", "")
+
+
+def _make_eng_engine():
+    if not ENGINEERING_DB_URL:
+        return None
+    p = urlparse(ENGINEERING_DB_URL)
+    qp = parse_qs(p.query)
+    sm = qp.pop("sslmode", [None])[0]
+    cq = urlencode({k: v[0] for k, v in qp.items()})
+    url = urlunparse(p._replace(query=cq))
+    ca = {}
+    if sm == "disable":
+        ca["ssl"] = False
+    return create_async_engine(url, echo=False, future=True, connect_args=ca)
+
+
+engineering_engine = _make_eng_engine()
+
 # Session Factory
 AsyncSessionLocal = sessionmaker(
     bind=engine,
