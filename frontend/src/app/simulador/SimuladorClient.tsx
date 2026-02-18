@@ -160,7 +160,6 @@ export default function SimuladorClient() {
                       value={formData.interesse_tipo}
                       onChange={handleChange}
                       className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-blue-500 focus:bg-white/10 outline-none transition-all appearance-none cursor-pointer"
-                      style={{ colorScheme: "dark" }}
                     >
                       <option value="T1">T1 (50-70 m²)</option>
                       <option value="T2">T2 (80-110 m²)</option>

@@ -207,7 +207,6 @@ export default function ContextualAssistant() {
                     value={tipologia}
                     onChange={(e) => setTipologia(e.target.value)}
                     className="assistant-input"
-                    style={{ colorScheme: "dark" }}
                   >
                     <option value="T1">T1</option>
                     <option value="T2">T2</option>
