@@ -38,6 +38,154 @@ function useCountUp(end: number, duration: number, active: boolean) {
   return count;
 }
 
+/* ─── Grinder Spark Effect ─── */
+interface Spark {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  decay: number;
+  size: number;
+}
+
+function useGrinderSparks() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const sparksRef = useRef<Spark[]>([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const hoveringRef = useRef(false);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const title = titleRef.current;
+    if (!canvas || !title) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      const p = canvas.parentElement;
+      if (!p) return;
+      canvas.width = p.clientWidth;
+      canvas.height = p.clientHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const emit = (cx: number, cy: number, count: number) => {
+      for (let i = 0; i < count; i++) {
+        const angle = -Math.PI * 0.5 + (Math.random() - 0.5) * Math.PI * 1.4;
+        const isStreaker = Math.random() > 0.82;
+        const speed = isStreaker
+          ? 5 + Math.random() * 5
+          : 1.5 + Math.random() * 4;
+        sparksRef.current.push({
+          x: cx + (Math.random() - 0.5) * 8,
+          y: cy + (Math.random() - 0.5) * 4,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: isStreaker
+            ? 0.006 + Math.random() * 0.008
+            : 0.018 + Math.random() * 0.022,
+          size: isStreaker
+            ? 1.2 + Math.random() * 1.5
+            : 0.5 + Math.random() * 2,
+        });
+      }
+      if (sparksRef.current.length > 600) {
+        sparksRef.current = sparksRef.current.slice(-400);
+      }
+    };
+
+    const onMove = (e: MouseEvent) => {
+      const r = canvas.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+      emit(mouseRef.current.x, mouseRef.current.y, 4 + Math.floor(Math.random() * 5));
+    };
+
+    const onEnter = (e: MouseEvent) => {
+      hoveringRef.current = true;
+      const r = canvas.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+      emit(mouseRef.current.x, mouseRef.current.y, 18 + Math.floor(Math.random() * 12));
+    };
+
+    const onLeave = () => {
+      hoveringRef.current = false;
+    };
+
+    title.addEventListener("mousemove", onMove);
+    title.addEventListener("mouseenter", onEnter);
+    title.addEventListener("mouseleave", onLeave);
+
+    const animate = () => {
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "rgba(0,0,0,0.08)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = "source-over";
+
+      if (hoveringRef.current) {
+        const { x, y } = mouseRef.current;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 40);
+        g.addColorStop(0, "rgba(255,150,50,0.15)");
+        g.addColorStop(0.5, "rgba(255,100,20,0.06)");
+        g.addColorStop(1, "rgba(255,60,0,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, 40, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      sparksRef.current = sparksRef.current.filter((s) => s.life > 0);
+
+      for (const s of sparksRef.current) {
+        s.vy += 0.1;
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= s.decay;
+
+        const hue = 15 + s.life * 30;
+        const lit = 40 + s.life * 50;
+        const a = Math.min(s.life * 1.5, 1);
+        const radius = s.size * Math.max(s.life, 0.3);
+
+        ctx.shadowBlur = s.size * 4;
+        ctx.shadowColor = `hsla(${hue},100%,60%,${a * 0.7})`;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue},100%,${lit}%,${a})`;
+        ctx.fill();
+
+        if (s.size > 1.5 && s.life > 0.4) {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, radius * 0.3, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(50,100%,95%,${a * 0.8})`;
+          ctx.fill();
+        }
+      }
+
+      ctx.shadowBlur = 0;
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+      title.removeEventListener("mousemove", onMove);
+      title.removeEventListener("mouseenter", onEnter);
+      title.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
+  return { canvasRef, titleRef };
+}
+
 /* ─── Mini Dashboard ─── */
 function MiniDashboard({ active }: { active: boolean }) {
   const metrics = [
@@ -133,6 +281,7 @@ export default function HeroEngineering2030() {
   const [scrollMode, setScrollMode] = useState(false);
   const [phase, setPhase] = useState(-1);
   const [buildComplete, setBuildComplete] = useState(false);
+  const { canvasRef, titleRef } = useGrinderSparks();
 
   /* Detect desktop for scroll mode */
   useEffect(() => {
@@ -203,6 +352,13 @@ export default function HeroEngineering2030() {
         {/* Grid background */}
         <div className="absolute inset-0 hero-grid-bg pointer-events-none" />
 
+        {/* Grinder spark canvas overlay */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 z-30 pointer-events-none"
+          style={{ mixBlendMode: "screen" }}
+        />
+
         <div className="max-w-7xl mx-auto px-6 py-24 md:py-0 w-full relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* ─── Left: Content ─── */}
@@ -212,12 +368,15 @@ export default function HeroEngineering2030() {
               </div>
 
               <h1
-                className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-[0.95] animate-fade-in"
+                ref={titleRef}
+                className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-[0.95] animate-fade-in grinder-hover"
                 style={{ animationDelay: "0.15s" }}
               >
-                Construção LSF
-                <br />
-                <span className="text-gradient">Inteligente.</span>
+                <span className="grinder-text inline-block">
+                  Construção LSF
+                  <br />
+                  <span className="text-gradient">Inteligente.</span>
+                </span>
               </h1>
 
               <p
