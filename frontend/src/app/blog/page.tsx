@@ -175,13 +175,13 @@ export default async function BlogPage({
                 className="glass-card p-8 hover:-translate-y-2 transition-transform duration-300 flex flex-col group"
               >
                 {artigo.imagem_destaque_url ? (
-                  <div className="w-full h-48 rounded-xl overflow-hidden mb-6 bg-white/5 relative">
+                  <div className="w-full aspect-[1200/630] rounded-xl overflow-hidden mb-6 bg-white/5 relative">
                     {artigo.imagem_destaque_url.includes("media.casaslsf.com") ? (
                       <Image
                         src={artigo.imagem_destaque_url}
                         alt={artigo.imagem_alt_text || artigo.titulo}
-                        width={400}
-                        height={225}
+                        width={1200}
+                        height={630}
                         loading="lazy"
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -195,7 +195,7 @@ export default async function BlogPage({
                     )}
                   </div>
                 ) : (
-                  <div className="w-full h-48 rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-blue-600/20 to-blue-900/20 border border-white/5 flex flex-col items-center justify-center gap-3">
+                  <div className="w-full aspect-[1200/630] rounded-xl overflow-hidden mb-6 bg-gradient-to-br from-blue-600/20 to-blue-900/20 border border-white/5 flex flex-col items-center justify-center gap-3">
                     <BookOpen className="w-8 h-8 text-blue-400/40" />
                     <span className="text-[10px] uppercase tracking-widest text-blue-400/50 font-bold">
                       {CATEGORIAS_LABELS[artigo.categoria || ""] || "Artigo"}
