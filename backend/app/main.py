@@ -95,14 +95,19 @@ async def debug_db():
     if engineering_engine:
         try:
             async with engineering_engine.connect() as conn:
-                row = await conn.execute(text("SELECT 1"))
+                await conn.execute(text("SELECT 1"))
                 info["connection"] = "OK"
-                # Try listing tables
+                # List tables
                 tables = await conn.execute(text(
                     "SELECT table_name FROM information_schema.tables "
-                    "WHERE table_schema = 'public' LIMIT 20"
+                    "WHERE table_schema = 'public' LIMIT 30"
                 ))
                 info["tables"] = [r[0] for r in tables.fetchall()]
+                # List all databases on this server
+                dbs = await conn.execute(text(
+                    "SELECT datname FROM pg_database WHERE datistemplate = false"
+                ))
+                info["databases"] = [r[0] for r in dbs.fetchall()]
         except Exception as e:
             info["connection"] = f"FAILED: {e}"
     else:
