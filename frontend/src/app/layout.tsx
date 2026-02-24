@@ -149,14 +149,3 @@ export default function RootLayout({
     </html>
   );
 }
-```
-
----
-
-## 🔧 PASSOS
-```
-1. Seleciona TODO o texto no GitHub (Ctrl+A)
-2. Cola este código novo
-3. Clica "Commit changes..."
-4. Clica "Commit changes" (confirmar)
-5. EasyPanel → frontend → Implantar
