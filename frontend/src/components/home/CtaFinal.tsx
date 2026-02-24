@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 export default function CtaFinal() {
   return (
@@ -30,6 +33,7 @@ export default function CtaFinal() {
               href="https://wa.me/351930423456"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick("cta_final_homepage")}
               className="btn-secondary rounded-full px-10 py-5 text-lg font-bold flex items-center justify-center gap-2 hover:border-green-500/40 hover:text-green-400 transition-colors"
             >
               <MessageCircle className="w-5 h-5" /> Falar com Especialista

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, CheckCircle, Home, MapPin, Ruler, User } from "lucide-react";
 import Link from "next/link";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 export default function SimuladorClient() {
   const [step, setStep] = useState(1);
@@ -98,6 +99,7 @@ export default function SimuladorClient() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick("simulador_sucesso")}
             className="inline-flex items-center justify-center gap-3 w-full py-4 rounded-full text-white font-bold text-lg transition-all hover:brightness-110"
             style={{ backgroundColor: "#25D366" }}
           >

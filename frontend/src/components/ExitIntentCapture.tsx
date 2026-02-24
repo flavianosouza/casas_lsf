@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { X, Send, Loader2, CheckCircle } from "lucide-react";
+import { trackExitIntentShown, trackExitIntentConvert } from "@/lib/analytics";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -17,6 +18,7 @@ export default function ExitIntentCapture() {
       const dismissed = sessionStorage.getItem("exit_intent_dismissed");
       if (!dismissed) {
         setShow(true);
+        trackExitIntentShown();
       }
     }
   }, [show]);
@@ -63,6 +65,7 @@ export default function ExitIntentCapture() {
         body: JSON.stringify(leadData),
       }).catch(() => {});
       setSuccess(true);
+      trackExitIntentConvert();
       setTimeout(dismiss, 3000);
     } catch {
       dismiss();

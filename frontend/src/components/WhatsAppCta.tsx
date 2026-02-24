@@ -1,4 +1,7 @@
+"use client";
+
 import { MessageCircle } from "lucide-react";
+import { trackWhatsAppClick } from "@/lib/analytics";
 
 interface WhatsAppCtaProps {
   articleTitle?: string;
@@ -26,6 +29,7 @@ export default function WhatsAppCta({ articleTitle, titulo }: WhatsAppCtaProps) 
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackWhatsAppClick("artigo_blog")}
         className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-green-600 text-white font-bold hover:bg-green-500 transition-colors"
       >
         <MessageCircle className="w-5 h-5" /> Falar no WhatsApp

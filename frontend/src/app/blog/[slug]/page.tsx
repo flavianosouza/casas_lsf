@@ -11,6 +11,7 @@ import AuthorSection from "@/components/AuthorSection";
 import RelatedArticles from "@/components/RelatedArticles";
 import GerarEstudoButton from "@/components/GerarEstudoButton";
 import AssistantLazy from "@/components/assistant/AssistantLazy";
+import ArticleTracker from "@/components/ArticleTracker";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const SITE_URL = "https://casaslsf.com";
@@ -297,6 +298,7 @@ export default async function ArtigoPage({
         />
       )}
 
+      <ArticleTracker slug={slug} />
       <main className="min-h-screen bg-[url('/bg-grid.svg')] bg-fixed bg-cover py-32 px-6">
         <article className="container mx-auto max-w-3xl">
           {/* Breadcrumbs */}

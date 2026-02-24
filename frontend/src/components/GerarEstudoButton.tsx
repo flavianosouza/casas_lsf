@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FileText, Send, X, Loader2, CheckCircle, Download } from "lucide-react";
+import { trackGerarEstudo } from "@/lib/analytics";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -33,6 +34,7 @@ export default function GerarEstudoButton() {
     if (!form.nome.trim() || !form.telefone.trim() || !form.localizacao.trim()) return;
 
     setLoading(true);
+    trackGerarEstudo(form.tipologia, form.area.toString());
     try {
       const resp = await fetch(`${API_URL}/api/gerar-estudo`, {
         method: "POST",
