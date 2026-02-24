@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -128,6 +129,18 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9HVPSLW5W5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9HVPSLW5W5');
+          `}
+        </Script>
         <Navbar />
         {children}
         <Footer />
@@ -136,3 +149,14 @@ export default function RootLayout({
     </html>
   );
 }
+```
+
+---
+
+## 🔧 PASSOS
+```
+1. Seleciona TODO o texto no GitHub (Ctrl+A)
+2. Cola este código novo
+3. Clica "Commit changes..."
+4. Clica "Commit changes" (confirmar)
+5. EasyPanel → frontend → Implantar
