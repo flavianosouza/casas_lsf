@@ -167,6 +167,12 @@ html {
   color: #e2e8f0;
 }
 
+/* ─── Select/Option Dark Theme Global ─── */
+select option {
+  background: #1a1a1a;
+  color: #ededed;
+}
+
 /* Terminal animation */
 .assistant-terminal {
   background: rgba(0, 0, 0, 0.4);
