@@ -67,6 +67,7 @@ export default function ContextualAssistant() {
   const [revealed, setRevealed] = useState(false);
 
   /* Form state */
+  const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [area, setArea] = useState("");
   const [tipologia, setTipologia] = useState("T3");
@@ -115,6 +116,7 @@ export default function ContextualAssistant() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          nome: nome.trim(),
           telefone,
           area: Number(area),
           tipologia,
@@ -128,7 +130,7 @@ export default function ContextualAssistant() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome: "Lead via Assistente",
+          nome: nome.trim() || "Lead via Assistente",
           telefone,
           interesse_tipo: `Estudo ${tipologia} ${area}m²`,
           mensagem: `Tipologia: ${tipologia}, Área: ${area}m², Localização: ${localizacao}`,
@@ -143,7 +145,7 @@ export default function ContextualAssistant() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!telefone || !area) return;
+    if (!nome.trim() || !telefone || !area) return;
     setVisibleSteps([]);
     setPhase("processing");
   }
@@ -182,6 +184,14 @@ export default function ContextualAssistant() {
           <div>
             {phase === "form" && (
               <form onSubmit={handleSubmit} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="O seu nome *"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  required
+                  className="assistant-input"
+                />
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     type="tel"
@@ -250,7 +260,7 @@ export default function ContextualAssistant() {
 
             {phase === "done" && (() => {
               const whatsappMsg = encodeURIComponent(
-                `Olá! Preenchi o formulário no site e gostaria de receber o meu estudo técnico:\n` +
+                `Olá! Sou ${nome}, preenchi o formulário no site e gostaria de receber o meu estudo técnico:\n` +
                 `- Tipologia: ${tipologia}\n` +
                 `- Área: ${area} m²\n` +
                 (localizacao ? `- Localização: ${localizacao}\n` : "")
