@@ -65,10 +65,12 @@ const FAQS = [
 ];
 
 const GALLERY = [
-  { title: "T3 Contemporânea", loc: "Sintra", area: "150 m²" },
-  { title: "T4 Premium", loc: "Cascais", area: "220 m²" },
-  { title: "T3 Moderna", loc: "Mafra", area: "130 m²" },
-  { title: "T2 Minimalista", loc: "Sesimbra", area: "95 m²" },
+  { title: "T3 Chave-na-Mão", loc: "Exterior acabado", img: "https://media.casaslsf.com/galeria/obra1-exterior-acabado.jpg" },
+  { title: "T3 Fachada", loc: "Revestimento pedra", img: "https://media.casaslsf.com/galeria/obra1-fachada-revestimento.jpg" },
+  { title: "Estrutura LSF", loc: "Interior com perfis e OSB", img: "https://media.casaslsf.com/galeria/obra1-estrutura-interior.jpg" },
+  { title: "Interior em Obra", loc: "OSB e janelas instaladas", img: "https://media.casaslsf.com/galeria/obra1-interior-osb-janelas.jpg" },
+  { title: "Perfis Galvanizados", loc: "Detalhe aço Z275", img: "https://media.casaslsf.com/galeria/obra2-perfis-lsf-detalhe.jpg" },
+  { title: "Estrutura 2 Pisos", loc: "Obra 2 — vista exterior", img: "https://media.casaslsf.com/galeria/obra2-estrutura-2pisos.jpg" },
 ];
 
 const TESTIMONIALS = [
@@ -373,18 +375,20 @@ export default function AnalisePlantaClient() {
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-3">Obras Reais OBRASNET</h2>
         <p className="text-gray-400 text-center mb-10">Por fora, impossível distinguir de alvenaria</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {GALLERY.map((g, i) => (
             <div key={i} className="glass-card overflow-hidden group">
-              <div className="aspect-[4/3] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-3xl mb-2 opacity-30">🏠</div>
-                  <p className="text-gray-500 text-sm">{g.title}</p>
-                </div>
+              <div className="aspect-[4/3] bg-gray-900 overflow-hidden">
+                <img
+                  src={g.img}
+                  alt={`${g.title} — Obra OBRASNET`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
               <div className="p-4">
                 <h3 className="text-white font-semibold text-sm">{g.title}</h3>
-                <p className="text-gray-500 text-xs">{g.loc} — {g.area}</p>
+                <p className="text-gray-500 text-xs">{g.loc}</p>
               </div>
             </div>
           ))}
