@@ -30,7 +30,7 @@ const COMPARISON = [
 
 const STEPS = [
   { icon: Upload, title: "Envie a planta", desc: "Foto, PDF ou screenshot — até do telemóvel" },
-  { icon: Zap, title: "IA analisa em minutos", desc: "Claude Vision extrai tipologia, área e divisões" },
+  { icon: Zap, title: "Analisamos em minutos", desc: "A nossa equipa extrai tipologia, área e divisões" },
   { icon: BarChart3, title: "Receba comparação", desc: "Relatório completo alvenaria vs LSF por WhatsApp" },
 ];
 
@@ -52,7 +52,7 @@ const FAQS = [
   },
   {
     q: "Quanto custa a conversão para LSF?",
-    a: "Depende da área e dos acabamentos. Gama Base: 1 000–1 500 €/m², Gama Média: 1 400–2 000 €/m², Gama Premium: 1 800–2 500 €/m² (sem IVA). Valores reais calculados pelo Motor BOM com 114 itens.",
+    a: "Depende da área e dos acabamentos. Gama Base: 1 000–1 500 €/m², Gama Média: 1 400–2 000 €/m², Gama Premium: 1 800–2 500 €/m² (sem IVA). Valores calculados com base em projectos reais.",
   },
   {
     q: "Os bancos financiam casas em LSF?",
@@ -134,7 +134,7 @@ export default function AnalisePlantaClient() {
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
             <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-            Análise gratuita com IA
+            Análise gratuita
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
             Tem uma planta em alvenaria?{" "}
@@ -251,7 +251,7 @@ export default function AnalisePlantaClient() {
               <label className="flex gap-3 items-start mb-6 cursor-pointer">
                 <input type="checkbox" checked={gdpr} onChange={(e) => setGdpr(e.target.checked)} className="mt-1 accent-blue-500 w-4 h-4 shrink-0" />
                 <span className="text-xs text-gray-400 leading-relaxed">
-                  Autorizo o tratamento dos meus dados para análise do projecto e contacto comercial. Os dados serão processados por inteligência artificial.{" "}
+                  Autorizo o tratamento dos meus dados para análise do projecto e contacto comercial.{" "}
                   <a href="/privacidade" className="text-blue-400 hover:underline">Política de Privacidade</a>
                 </span>
               </label>
@@ -302,7 +302,7 @@ export default function AnalisePlantaClient() {
       {/* ─── VIDEO ─── */}
       <section id="video" className="max-w-3xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-3">Veja em 2 minutos</h2>
-        <p className="text-gray-400 text-center mb-8">Como a IA analisa a sua planta e gera a comparação</p>
+        <p className="text-gray-400 text-center mb-8">Como analisamos a sua planta e geramos a comparação</p>
         <div className="relative rounded-2xl overflow-hidden aspect-video bg-gray-900 shadow-2xl shadow-blue-500/10">
           {showVideo ? (
             <iframe
@@ -346,7 +346,7 @@ export default function AnalisePlantaClient() {
       {/* ─── COMPARACAO ─── */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-3">Alvenaria vs LSF</h2>
-        <p className="text-gray-400 text-center mb-10">Dados reais do Motor BOM — 114 itens, 18 categorias</p>
+        <p className="text-gray-400 text-center mb-10">Comparação baseada em projectos reais OBRASNET</p>
         <div className="overflow-x-auto rounded-xl border border-white/10">
           <table className="w-full text-sm">
             <thead>
