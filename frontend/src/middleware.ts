@@ -19,6 +19,7 @@ const APP_ROUTES = new Set([
   "/quanto-custa-casa-lsf",
   "/casa-lsf-financiamento",
   "/empresa-construcao-lsf-portugal",
+  "/analise-planta",
 ]);
 
 // Old WordPress blog slugs → correct slugs (301 redirects)
