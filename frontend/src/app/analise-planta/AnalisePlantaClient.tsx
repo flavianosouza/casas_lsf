@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { trackMetaLead, trackAnalisePlantaSubmit } from "@/lib/analytics";
 import {
   Upload,
   CheckCircle,
@@ -30,7 +31,7 @@ const COMPARISON = [
 
 const STEPS = [
   { icon: Upload, title: "Envie a planta", desc: "Foto, PDF ou screenshot — até do telemóvel" },
-  { icon: Zap, title: "Analisamos em minutos", desc: "A nossa equipa extrai tipologia, área e divisões" },
+  { icon: Zap, title: "IA analisa em minutos", desc: "Extraímos tipologia, área e divisões automaticamente" },
   { icon: BarChart3, title: "Receba comparação", desc: "Relatório completo alvenaria vs LSF por WhatsApp" },
 ];
 
@@ -117,10 +118,47 @@ export default function AnalisePlantaClient() {
   const handleSubmit = async () => {
     if (!file || !nome.trim() || telefone.replace(/\s/g, "").length < 9 || !gdpr) return;
     setSending(true);
-    // simular envio (será ligado ao FastAPI)
-    await new Promise((r) => setTimeout(r, 1500));
-    setSending(false);
-    setSent(true);
+
+    // UTM params from URL
+    const params = new URLSearchParams(window.location.search);
+    const utm_source = params.get("utm_source") || "";
+    const utm_medium = params.get("utm_medium") || "";
+    const utm_campaign = params.get("utm_campaign") || "";
+
+    // Event ID for Meta dedup (Pixel + CAPI)
+    const eventId = crypto.randomUUID();
+
+    try {
+      // TODO: Replace with real FastAPI call when backend is ready
+      // const formData = new FormData();
+      // formData.append("file", file);
+      // formData.append("nome", nome);
+      // formData.append("telefone", telefone.replace(/\s/g, ""));
+      // formData.append("utm_source", utm_source);
+      // formData.append("utm_medium", utm_medium);
+      // formData.append("utm_campaign", utm_campaign);
+      // const resp = await fetch("/api/analise-planta", { method: "POST", body: formData });
+      await new Promise((r) => setTimeout(r, 1500));
+
+      // Track: Google Analytics
+      trackAnalisePlantaSubmit();
+
+      // Track: Meta Pixel (client-side)
+      trackMetaLead(eventId);
+
+      // Track: Meta CAPI (server-side dedup)
+      fetch("/api/meta-capi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ event_id: eventId, nome, telefone: telefone.replace(/\s/g, ""), utm_source, utm_medium, utm_campaign }),
+      }).catch(() => {});
+
+      setSent(true);
+    } catch {
+      alert("Erro ao enviar. Tente novamente.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const valid = file && nome.trim().length >= 2 && telefone.replace(/\s/g, "").length >= 9 && gdpr;
@@ -134,7 +172,7 @@ export default function AnalisePlantaClient() {
         <div className="relative max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-6">
             <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-            Análise gratuita
+            Análise gratuita com IA
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
             Tem uma planta em alvenaria?{" "}
@@ -302,7 +340,7 @@ export default function AnalisePlantaClient() {
       {/* ─── VIDEO ─── */}
       <section id="video" className="max-w-3xl mx-auto px-6 py-16">
         <h2 className="text-3xl font-bold text-white text-center mb-3">Veja em 2 minutos</h2>
-        <p className="text-gray-400 text-center mb-8">Como analisamos a sua planta e geramos a comparação</p>
+        <p className="text-gray-400 text-center mb-8">Como a nossa IA analisa a sua planta</p>
         <div className="relative rounded-2xl overflow-hidden aspect-video bg-gray-900 shadow-2xl shadow-blue-500/10">
           {showVideo ? (
             <iframe

@@ -2,6 +2,7 @@ declare global {
   interface Window {
     gtag: (...args: unknown[]) => void;
     dataLayer: unknown[];
+    fbq: (...args: unknown[]) => void;
   }
 }
 
@@ -36,4 +37,17 @@ export function trackEngagedReader(slug: string) {
 
 export function trackDeepScroll(slug: string) {
   trackEvent('deep_scroll', { event_category: 'engajamento', event_label: slug });
+}
+
+// ─── Meta Pixel ───
+export function trackMetaLead(eventId: string) {
+  if (typeof window === 'undefined' || !window.fbq) return;
+  window.fbq('track', 'Lead', {
+    content_name: 'analise_planta',
+    content_category: 'campanha',
+  }, { eventID: eventId });
+}
+
+export function trackAnalisePlantaSubmit() {
+  trackEvent('analise_planta_submit', { event_category: 'conversao', value: 5 });
 }
