@@ -92,6 +92,7 @@ async def analise_planta(
     request: Request,
     file: UploadFile = File(...),
     nome: str = Form(...),
+    email: str = Form(""),
     telefone: str = Form(...),
     utm_source: str = Form(""),
     utm_medium: str = Form(""),
@@ -168,11 +169,11 @@ async def analise_planta(
             import asyncpg
             conn = await asyncpg.connect(ENG_DB_URL.replace("+asyncpg", "").replace("postgresql://", "postgresql://"))
             row = await conn.fetchrow(
-                """INSERT INTO leads (telefone, nome, origem, utm_source, utm_medium, utm_campaign)
-                   VALUES ($1, $2, 'campanha_analise_planta', $3, $4, $5)
+                """INSERT INTO leads (telefone, nome, email, origem, utm_source, utm_medium, utm_campaign)
+                   VALUES ($1, $2, $3, 'campanha_analise_planta', $4, $5, $6)
                    ON CONFLICT DO NOTHING
                    RETURNING id""",
-                phone_normalized, nome,
+                phone_normalized, nome, email.strip() or None,
                 utm_source or None, utm_medium or None, utm_campaign or None
             )
             if row:
@@ -195,6 +196,7 @@ async def analise_planta(
         async with httpx.AsyncClient(timeout=15.0) as client:
             resp = await client.post(N8N_CAMPANHA_WEBHOOK, json={
                 "nome": nome,
+                "email": email.strip(),
                 "telefone": phone_normalized,
                 "r2_url": r2_url,
                 "lead_id": lead_id,

@@ -84,6 +84,7 @@ const TESTIMONIALS = [
 export default function AnalisePlantaClient() {
   const [file, setFile] = useState<File | null>(null);
   const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [gdpr, setGdpr] = useState(false);
   const [sending, setSending] = useState(false);
@@ -133,6 +134,7 @@ export default function AnalisePlantaClient() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("nome", nome);
+      formData.append("email", email);
       formData.append("telefone", telefone.replace(/\s/g, ""));
       formData.append("utm_source", utm_source);
       formData.append("utm_medium", utm_medium);
@@ -278,6 +280,18 @@ export default function AnalisePlantaClient() {
                 <input
                   type="text" value={nome} onChange={(e) => setNome(e.target.value)}
                   placeholder="O seu nome"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* email */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                  Email (para receber a análise)
+                </label>
+                <input
+                  type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                  placeholder="o.seu@email.com"
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition-colors"
                 />
               </div>
