@@ -129,16 +129,25 @@ export default function AnalisePlantaClient() {
     const eventId = crypto.randomUUID();
 
     try {
-      // TODO: Replace with real FastAPI call when backend is ready
-      // const formData = new FormData();
-      // formData.append("file", file);
-      // formData.append("nome", nome);
-      // formData.append("telefone", telefone.replace(/\s/g, ""));
-      // formData.append("utm_source", utm_source);
-      // formData.append("utm_medium", utm_medium);
-      // formData.append("utm_campaign", utm_campaign);
-      // const resp = await fetch("/api/analise-planta", { method: "POST", body: formData });
-      await new Promise((r) => setTimeout(r, 1500));
+      // Upload to FastAPI backend
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("nome", nome);
+      formData.append("telefone", telefone.replace(/\s/g, ""));
+      formData.append("utm_source", utm_source);
+      formData.append("utm_medium", utm_medium);
+      formData.append("utm_campaign", utm_campaign);
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const resp = await fetch(`${apiUrl}/api/analise-planta`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ detail: "Erro desconhecido" }));
+        throw new Error(err.detail || `Erro ${resp.status}`);
+      }
 
       // Track: Google Analytics
       trackAnalisePlantaSubmit();
@@ -154,8 +163,8 @@ export default function AnalisePlantaClient() {
       }).catch(() => {});
 
       setSent(true);
-    } catch {
-      alert("Erro ao enviar. Tente novamente.");
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erro ao enviar. Tente novamente.");
     } finally {
       setSending(false);
     }

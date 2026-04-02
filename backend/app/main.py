@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from .routers import router as leads_router
 from .artigos_router import router as artigos_router
+from .analise_planta_router import router as analise_planta_router
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +66,7 @@ app.add_middleware(
 
 app.include_router(leads_router)
 app.include_router(artigos_router)
+app.include_router(analise_planta_router)
 
 @app.get("/")
 async def root():
