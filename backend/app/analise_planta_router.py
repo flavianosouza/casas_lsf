@@ -209,10 +209,12 @@ async def analise_planta(
         pass  # Webhook is best-effort
 
     if not wa_link:
-        wa_link = f"https://wa.me/351930423456?text={httpx.URL('').copy_merge_params({'text': f'Olá! Enviei a minha planta para análise. O meu nome é {nome}.'})}"
-        # Simpler fallback
         import urllib.parse
-        msg = urllib.parse.quote(f"Olá! Enviei a minha planta para análise no site. O meu nome é {nome}.")
+        msg = urllib.parse.quote(
+            f"Olá! Enviei a minha planta para análise no site casaslsf.com.\n"
+            f"O meu nome é {nome}.\n"
+            f"Planta: {r2_url}"
+        )
         wa_link = f"https://wa.me/351930423456?text={msg}"
 
     return {
