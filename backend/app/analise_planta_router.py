@@ -226,3 +226,37 @@ async def analise_planta(
         "wa_link": wa_link,
         "message": "Planta recebida com sucesso. Vamos analisar e contactar por WhatsApp em 24h.",
     }
+
+
+@router.post("/api/upload-report")
+async def upload_report(request: Request):
+    """Upload filled HTML report to R2. Called by N8N after generating the report."""
+    try:
+        body = await request.json()
+        html_content = body.get("html", "")
+        telefone = body.get("telefone", "unknown")
+        if not html_content or len(html_content) < 100:
+            raise HTTPException(422, "HTML content too short")
+
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        r2_key = f"pdfs/analise-{telefone}-{ts}.html"
+
+        s3 = boto3.client(
+            "s3",
+            endpoint_url=R2_ENDPOINT,
+            aws_access_key_id=R2_ACCESS_KEY,
+            aws_secret_access_key=R2_SECRET_KEY,
+            config=BotoConfig(signature_version="s3v4"),
+            region_name="auto",
+        )
+        s3.put_object(
+            Bucket=R2_BUCKET,
+            Key=r2_key,
+            Body=html_content.encode("utf-8"),
+            ContentType="text/html",
+        )
+        return {"success": True, "url": f"{R2_PUBLIC_URL}/{r2_key}"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Upload failed: {str(e)[:100]}")
