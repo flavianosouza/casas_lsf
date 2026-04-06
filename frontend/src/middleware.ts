@@ -28,6 +28,20 @@ const BLOG_SLUG_REDIRECTS: Record<string, string> = {
   "telhados-e-coberturas-preco-m2-portugal": "telhados-e-coberturas-precos",
   "casas-modulares-t3-portugal-precos": "casas-modulares-portugal-chave-na-mao",
   "manta-termica-telhado-preco-m2": "descubra-tudo-sobre-isolamento-termico-melhores-materiais-e-instalacao",
+  // 2023 slug updates — remove outdated year from URLs
+  "5-maneiras-de-otimizar-o-valor-do-metro-quadrado-de-construcao-em-2023": "5-maneiras-de-otimizar-o-valor-do-metro-quadrado-de-construcao",
+  "descubra-as-10-melhores-empresas-de-construcao-lsf-em-2023": "descubra-as-10-melhores-empresas-de-construcao-lsf",
+  "iva-autoliquidacao-na-construcao-civil-em-2023-tudo-o-que-voce-precisa-saber": "iva-autoliquidacao-na-construcao-civil-tudo-o-que-voce-precisa-saber",
+  "preco-das-casas-em-portugal-com-queda-ate-44-em-2023": "preco-das-casas-em-portugal-tendencias-e-previsoes",
+  "curso-lsf-portugal-2023-tudo-o-que-precisa-saber-para-comecar": "curso-lsf-portugal-tudo-o-que-precisa-saber-para-comecar",
+  "the-average-cost-to-build-a-1500-sq-ft-house-in-2023": "the-average-cost-to-build-a-1500-sq-ft-house",
+  "quanto-custa-construir-uma-moradia-em-2023": "quanto-custa-construir-uma-moradia",
+  "tabela-preco-construcao-civil-metro-quadrado-2023-portugal-guia-completo": "tabela-preco-construcao-civil-metro-quadrado-portugal-guia-completo",
+  "how-much-does-it-cost-to-build-a-house-in-2023": "how-much-does-it-cost-to-build-a-house",
+  "vale-a-pena-vender-um-apartamento-para-construir-uma-casa-em-lsf-em-2023": "vale-a-pena-vender-um-apartamento-para-construir-uma-casa-em-lsf",
+  "qual-e-o-melhor-metodo-construtivo-de-2023": "qual-e-o-melhor-metodo-construtivo",
+  "por-causa-das-chuvas-a-casa-ficou-inundada-precos-low-cost-2023": "por-causa-das-chuvas-a-casa-ficou-inundada-precos-low-cost",
+  "incentivos-para-a-recuperacao-de-casas-antigas-2023": "incentivos-para-a-recuperacao-de-casas-antigas",
 };
 
 // Paths that should never be intercepted
