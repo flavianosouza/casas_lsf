@@ -81,6 +81,40 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/debug-schema/{table_name}")
+async def debug_schema(table_name: str):
+    """Return columns + sample row from a table in the engineering DB."""
+    from .database import engineering_engine
+    if not engineering_engine:
+        return {"error": "No engineering engine"}
+    allowed = {"projetos", "plantas_geradas", "orcamentos", "galeria_obras", "briefings_arquitetonicos"}
+    if table_name not in allowed:
+        return {"error": f"Table {table_name} not allowed"}
+    try:
+        async with engineering_engine.connect() as conn:
+            cols = await conn.execute(text(
+                "SELECT column_name, data_type FROM information_schema.columns "
+                "WHERE table_name = :t ORDER BY ordinal_position"
+            ), {"t": table_name})
+            columns = [{"name": r[0], "type": r[1]} for r in cols.fetchall()]
+
+            count = await conn.execute(text(f"SELECT COUNT(*) FROM {table_name}"))
+            total = count.scalar()
+
+            sample = await conn.execute(text(f"SELECT * FROM {table_name} LIMIT 1"))
+            row = sample.fetchone()
+            sample_data = dict(row._mapping) if row else None
+            if sample_data:
+                for k, v in sample_data.items():
+                    if hasattr(v, "isoformat"):
+                        sample_data[k] = v.isoformat()
+                    elif not isinstance(v, (str, int, float, bool, type(None), list, dict)):
+                        sample_data[k] = str(v)[:200]
+        return {"table": table_name, "total_rows": total, "columns": columns, "sample": sample_data}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.get("/api/debug-db")
 async def debug_db():
     """Diagnostic endpoint to check engineering DB connection."""
