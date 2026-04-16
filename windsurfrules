@@ -1,0 +1,187 @@
+# CASAS LSF - Regras do Projeto
+# Antigravity/Windsurf - LER ANTES DE QUALQUER ALTERAÇÃO
+
+## IDENTIDADE DO PROJETO
+- **Função:** Website público de geração de leads para casas LSF
+- **Domínio:** https://casaslsf.com
+- **Empresa:** OBRASNET UNIP LDA (NIF 515866989, Alvará IMPIC 94665)
+- **Deploy:** EasyPanel (auto-deploy a cada git push para GitHub)
+- **GitHub:** https://github.com/flavianosouza/casas_lsf.git
+
+---
+
+## STACK TÉCNICA
+
+| Camada | Tecnologia | Versão |
+|--------|-----------|--------|
+| Frontend | Next.js (App Router) | 16 |
+| Styling | Tailwind CSS | v4 |
+| Backend | FastAPI + async SQLAlchemy | 0.110+ |
+| Base de Dados | PostgreSQL via asyncpg | - |
+| Hosting | EasyPanel | - |
+
+**URLs de produção:**
+| Serviço | URL |
+|---------|-----|
+| Frontend | https://casas-lsf-frontend.dy3pb5.easypanel.host |
+| Backend API | https://casas-lsf-backend.dy3pb5.easypanel.host |
+| Domínio | https://casaslsf.com |
+| Docs API | https://casas-lsf-backend.dy3pb5.easypanel.host/docs |
+
+---
+
+## ESTRUTURA DO PROJETO
+
+```
+CASAS LSF/
+├── frontend/src/app/
+│   ├── page.tsx                          # Homepage
+│   ├── layout.tsx                        # Root layout + JSON-LD Organization
+│   ├── robots.ts                         # Robots.txt
+│   ├── sitemap.ts                        # Sitemap dinâmico (14 páginas + 222 artigos)
+│   ├── blog/
+│   │   ├── page.tsx                      # Blog listing
+│   │   └── [slug]/page.tsx               # Artigo individual SEO
+│   ├── simulador/page.tsx
+│   ├── plantas/page.tsx
+│   ├── custos/page.tsx
+│   ├── metodos/page.tsx
+│   ├── como-funciona/page.tsx
+│   ├── sobre-obrasnet/page.tsx           # E-E-A-T
+│   ├── metodologia-construtiva/page.tsx  # Pilar SEO
+│   ├── processo-construcao-lsf/page.tsx  # Pilar SEO
+│   ├── preco-construcao-lsf-por-m2/page.tsx  # 7307 cliques GSC
+│   ├── quanto-custa-casa-lsf/page.tsx
+│   ├── casa-lsf-financiamento/page.tsx
+│   └── empresa-construcao-lsf-portugal/page.tsx
+├── frontend/src/components/
+│   ├── GerarEstudoButton.tsx             # Formulário → N8N webhook (269 linhas)
+│   ├── ExitIntentCapture.tsx             # Modal exit intent (148 linhas)
+│   ├── Footer.tsx                        # 5 colunas (164 linhas)
+│   ├── Navbar.tsx                        # Navegação (75 linhas)
+│   ├── RelatedArticles.tsx               # 4 artigos relacionados (64 linhas)
+│   ├── AuthorSection.tsx                 # Bio autor E-E-A-T (38 linhas)
+│   ├── Breadcrumbs.tsx                   # Navegação breadcrumb (33 linhas)
+│   ├── WhatsAppCta.tsx                   # CTA WhatsApp wa.me (35 linhas)
+│   ├── InlineCta.tsx                     # CTA após 2.º parágrafo (44 linhas)
+│   └── FaqSection.tsx                    # FAQ sem JS (34 linhas)
+├── frontend/src/middleware.ts            # Redirects 301 + 15 rotas + 3 blog slugs
+├── backend/app/
+│   ├── main.py                           # FastAPI + /api/gerar-estudo
+│   ├── models.py                         # SQLAlchemy Lead + Artigo
+│   ├── schemas.py                        # Pydantic schemas
+│   ├── artigos_router.py                 # Endpoints artigos + related
+│   └── routers.py                        # CRUD leads
+```
+
+---
+
+## ⚠️ REGRAS CRÍTICAS - NUNCA QUEBRAR
+
+### REGRA #1 - Deploy
+- Qualquer `git push` para GitHub dispara deploy automático no EasyPanel
+- **Sempre testar localmente antes de fazer push**
+- Verificar que o build Next.js não tem erros TypeScript
+
+### REGRA #2 - Middleware (middleware.ts)
+- Contém 15+ redirects 301 críticos para SEO
+- Contém 3 blog slug redirects (URLs com 200K+ impressões no GSC)
+  - `telhados-e-coberturas-preco-m2-portugal` → `telhados-e-coberturas-precos`
+  - `casas-modulares-t3-portugal-precos` → `casas-modulares-portugal-chave-na-mao`
+  - `manta-termica-telhado-preco-m2` → `descubra-tudo-sobre-isolamento-termico-melhores-materiais-e-instalacao`
+- **NUNCA** remover redirects existentes (quebra SEO)
+- Ao adicionar redirects novos: colocar ANTES do catch-all
+
+### REGRA #3 - SEO (não degradar)
+- JSON-LD obrigatório em todas as páginas: Organization, LocalBusiness
+- Artigos individuais: Article + BreadcrumbList + FAQPage (quando faq_json existe)
+- Meta titles: máximo 60 caracteres
+- Meta descriptions: máximo 155 caracteres
+- Imagens: sempre com `alt` descritivo + `loading="lazy"`
+- H1: apenas 1 por página (o título do artigo)
+- Restantes headings: H2, H3 (nunca H1 dentro de artigo)
+
+### REGRA #4 - Base de Dados Artigos
+- **222 artigos** importados do WordPress — não duplicar
+- **14 categorias SEO** — não criar categorias novas sem planeamento
+- Campos SEO existentes por artigo: `faq_json`, `search_intent`, `internal_links_json`, `pillar_slug`, `read_time_minutes`, `updated_at`
+- API de artigos: `GET /api/artigos/{slug}`, `PUT /api/artigos/{id}`
+
+### REGRA #5 - Componentes (não alterar sem razão)
+- `GerarEstudoButton.tsx` — liga ao N8N webhook, qualquer alteração afeta leads
+- `ExitIntentCapture.tsx` — usa sessionStorage para não repetir modal
+- `FaqSection.tsx` — usa `details/summary` nativo (sem JavaScript)
+- `InlineCta.tsx` — inserido após 2.º parágrafo, não mudar posição
+
+### REGRA #6 - Backend FastAPI
+- Endpoint `/api/gerar-estudo` — salva lead + envia N8N + trigger WhatsApp
+- Endpoint `/api/artigos/related/{slug}` — retorna 4 artigos da mesma categoria
+- **Nunca** alterar schemas Pydantic sem verificar impacto no frontend
+
+---
+
+## ENDPOINTS API BACKEND
+
+| Método | Endpoint | Função |
+|--------|----------|--------|
+| GET | `/health` | Status check |
+| POST | `/api/leads/` | Criar lead |
+| GET | `/api/leads/` | Listar leads |
+| GET | `/api/artigos/` | Listar artigos (paginado) |
+| GET | `/api/artigos/slugs` | Todos os slugs (sitemap) |
+| GET | `/api/artigos/categories` | Listar categorias |
+| GET | `/api/artigos/related/{slug}` | Artigos relacionados |
+| GET | `/api/artigos/{slug}` | Artigo por slug |
+| PUT | `/api/artigos/{id}` | Atualizar artigo |
+| POST | `/api/gerar-estudo` | Gerar estudo técnico (→ N8N) |
+
+---
+
+## SEO - ESTADO ATUAL (17/02/2026)
+
+**Fases concluídas:**
+- ✅ Fase 1: Técnica (JSON-LD, breadcrumbs, FAQ, meta, campos BD)
+- ✅ Fase 2: Autoridade E-E-A-T (7 páginas pilar, footer 5 colunas, internal links)
+- ✅ Fase 3: Conversão (GerarEstudoButton, ExitIntent, InlineCta, WhatsAppCta)
+- ✅ Fase 4: CTR + Redirects (5 meta titles, 3 redirects 404→301, keywords, 2025→2026)
+
+**Distribuição dos 222 artigos:**
+- 112 informacional (50.5%)
+- 72 comercial (32.4%)
+- 38 transacional (17.1%)
+
+**Sitemap:** 14 páginas estáticas + 222 artigos (revalidate 300s)
+
+---
+
+## COMMITS IMPORTANTES (referência)
+
+| Hash | Data | Descrição |
+|------|------|-----------|
+| latest | 17/02/2026 | SEO Fase 4: 301 redirects, meta CTR, 2025→2026 |
+| 9cde69c | 15/02/2026 | SEO Fase 2: 7 páginas autoridade, Footer, RelatedArticles |
+| 8589bf7 | 15/02/2026 | SEO Fase 3: Gerar Estudo Técnico, Exit Intent |
+
+---
+
+## COMO A IA DEVE TRABALHAR NESTE PROJETO
+
+1. **Antes de criar uma página nova:** verificar se já existe em `src/app/`
+2. **Antes de criar um componente:** verificar se já existe em `src/components/`
+3. **Nunca** remover ou alterar redirects no `middleware.ts`
+4. **Nunca** degradar elementos SEO existentes (JSON-LD, meta, alt text)
+5. **Sempre** usar Tailwind v4 para estilos (classes existentes: `glass-card`, `btn-primary`, `text-gradient`)
+6. **Ao atualizar artigos:** usar `PUT /api/artigos/{id}` com os campos corretos
+7. **Verificar** sempre que TypeScript compila sem erros antes de push
+8. **Não** criar ficheiros CSS separados — tudo via Tailwind no componente
+
+---
+
+## LIGAÇÃO COM O OUTRO PROJETO
+
+Este projeto (CASAS LSF) está ligado ao projeto **LSF-Intelligence-AI** através de:
+- `POST /api/gerar-estudo` → envia para N8N webhook do Qualificador WhatsApp
+- Exit Intent leads → guardados na BD e enviados para WhatsApp via N8N
+- WhatsApp: +351 930 423 456 (wa.me link nos CTAs)
+
+**Não misturar os dois projetos.** Cada um tem o seu repositório e deploy separado.
