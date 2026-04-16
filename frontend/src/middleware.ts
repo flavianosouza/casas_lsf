@@ -73,6 +73,12 @@ export function middleware(request: NextRequest) {
       url.pathname = `/blog/${newSlug}`;
       return NextResponse.redirect(url, 301);
     }
+    // If a root-level authority route exists for this slug, redirect out of /blog/
+    if (APP_ROUTES.has(`/${slug}`)) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/${slug}`;
+      return NextResponse.redirect(url, 301);
+    }
   }
 
   // Skip static assets and known prefixes
