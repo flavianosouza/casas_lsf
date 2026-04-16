@@ -1,0 +1,4 @@
+Gravidade,Problema,Validação,URLs
+Ruins,Problema de LCP: mais de 4 s (dispositivos móveis),Aprovado,0
+Melhorias necessárias,"Problema de CLS: mais de 0,1 (dispositivos móveis)",N/D,0
+Melhorias necessárias,"Problema de LCP: mais de 2,5s (dispositivos móveis)",N/D,0

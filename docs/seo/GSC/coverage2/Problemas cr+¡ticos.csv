@@ -1,0 +1,10 @@
+Motivo,Fonte,Validação,Páginas
+Não encontrado (404),Site,Falha,1167
+Página com redirecionamento,Site,Não foi iniciado,723
+"Excluída pela tag ""noindex""",Site,Não foi iniciado,458
+Página alternativa com tag canônica adequada,Site,Não foi iniciado,317
+Erro no servidor (5xx),Site,Não foi iniciado,1
+"Rastreada, mas não indexada no momento",Sistemas do Google,Não foi iniciado,11506
+"Detectada, mas não indexada no momento",Sistemas do Google,Não foi iniciado,11
+Erro soft 404,Site,N/D,0
+Cópia sem página canônica selecionada pelo usuário,Site,N/D,0

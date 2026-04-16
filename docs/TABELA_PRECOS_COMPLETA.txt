@@ -1,0 +1,233 @@
+DESCRICAO                                     GAMA   UN |     MAT  D%  +DESP  +MARG  =MAT.C |     MO  +DERR  +LUCR   =MO.C |    FINAL
+--------------------------------------------------------------------------------------------------------------------------------------------
+Multi-split 2 unidades interiores + exter        -   un | 2200.00  0%   0.00 770.00 2970.00 | 650.00  97.50 261.62 1009.12 |  3979.12
+AR CONDICIONADO MULTI                            -   un | 2800.00  0%   0.00 980.00 3780.00 | 650.00  97.50 261.62 1009.12 |  4789.12
+
+AR CONDICIONADO SPLIT                            -   un | 1100.00  0%   0.00 385.00 1485.00 | 450.00  67.50 181.12  698.62 |  2183.62
+Fornecimento e instalacao de sistema AVAC        -   vg | 4500.00  0%   0.00 1575.00 6075.00 | 450.00  67.50 181.12  698.62 |  6773.62
+
+AZULEJO BASICO                                base   m² |   35.00 10%   3.50  13.47   51.98 |  13.00   1.95   5.23   20.18 |    72.16
+AZULEJO MEDIO                                media   m² |   55.00 10%   5.50  21.17   81.67 |  13.00   1.95   5.23   20.18 |   101.86
+AZULEJO PREMIUM                            premium   m² |   85.00 10%   8.50  32.73  126.22 |  13.00   1.95   5.23   20.18 |   146.41
+
+BANCADA GRANITO ML                            base   ml |  280.00  0%   0.00  98.00  378.00 |  60.00   9.00  24.15   93.15 |   471.15
+Cozinha modular completa (módulos+bancada    media   ml |  450.00  0%   0.00 157.50  607.50 |  60.00   9.00  24.15   93.15 |   700.65
+BANCADA SILESTONE ML                       premium   ml |  450.00  0%   0.00 157.50  607.50 |  60.00   9.00  24.15   93.15 |   700.65
+
+Manga Plástica 200 Myc 312M2 Preta TECpla     base   m2 |    0.26  5%   0.01   0.10    0.37 |   2.00   0.30   0.80    3.10 |     3.47
+Barreira pára-vapor AXTON Polietileno         base   m2 |    1.15  5%   0.06   0.42    1.63 |   2.00   0.30   0.80    3.10 |     4.74
+Membrana Transpirante com Adesivo Transpi     base   m2 |    1.34  5%   0.07   0.49    1.90 |   2.00   0.30   0.80    3.10 |     5.00
+Tela Barreira Vapor Renolit ALKORPLUS 810     base   m2 |    1.36  5%   0.07   0.50    1.93 |   2.00   0.30   0.80    3.10 |     5.03
+Barreira pára-vapor polietileno 200μm         base   m2 |    1.80  5%   0.09   0.66    2.55 |   2.00   0.30   0.80    3.10 |     5.66
+Membrana Barreira ao Vapor Impervap Núcle     base   m2 |    8.08  5%   0.40   2.97   11.45 |   2.00   0.30   0.80    3.10 |    14.56
+
+Base duche acrílica 80x80 + resguardo         base   un |  180.00  0%   0.00  63.00  243.00 | 220.00  33.00  88.55  341.55 |   584.55
+BASE DUCHE 80X80                              base   un |  320.00  0%   0.00 112.00  432.00 | 220.00  33.00  88.55  341.55 |   773.55
+BASE DUCHE 100X80                            media   un |  420.00  0%   0.00 147.00  567.00 | 220.00  33.00  88.55  341.55 |   908.55
+Base duche resina/slate extra-plana 120x8  premium   un |  550.00  0%   0.00 192.50  742.50 | 220.00  33.00  88.55  341.55 |  1084.05
+
+Betao pronto C25/30 com bomba                 base   m3 |  110.00  5%   5.50  40.42  155.93 |  25.00   3.75  10.06   38.81 |   194.74
+
+BETONILHA                                        -   m² |   18.00  5%   0.90   6.61   25.51 |  12.00   1.80   4.83   18.63 |    44.14
+
+Bomba de calor AQS 200L                          -   un | 1800.00  0%   0.00 630.00 2430.00 | 350.00  52.50 140.88  543.38 |  2973.38
+BOMBA CALOR                                      -   un | 5500.00  0%   0.00 1925.00 7425.00 | 350.00  52.50 140.88  543.38 |  7968.38
+
+Caleira aluminio lacado 125mm                    -   ml |   18.00  3%   0.54   6.49   25.03 |  12.00   1.80   4.83   18.63 |    43.66
+Caleira zinco 333mm desenvolvimento              -   ml |   18.00  3%   0.54   6.49   25.03 |  12.00   1.80   4.83   18.63 |    43.66
+CALEIRAS                                         -   ml |   32.00  3%   0.96  11.54   44.50 |  12.00   1.80   4.83   18.63 |    63.13
+
+Saco Cimento Cimpor 25KG CEM II/B-L 32,5         -   un |    4.21  5%   0.21   1.55    5.97 |   0.00   0.00   0.00    0.00 |     5.97
+
+PAVIMENTO DECK                                   -   m² |   90.00  8%   7.20  34.02  131.22 |  22.00   3.30   8.86   34.16 |   165.38
+
+ESPELHO WC                                       -   un |  150.00  0%   0.00  52.50  202.50 |  30.00   4.50  12.07   46.58 |   249.07
+
+Esquentador ventilado 14L                        -   un |  350.00  0%   0.00 122.50  472.50 | 100.00  15.00  40.25  155.25 |   627.75
+ESQUENTADOR                                      -   un |  450.00  0%   0.00 157.50  607.50 | 100.00  15.00  40.25  155.25 |   762.75
+Fornecimento e execucao de rede de gas na        -   vg | 2100.00  0%   0.00 735.00 2835.00 | 100.00  15.00  40.25  155.25 |  2990.25
+
+ETICS                                            -   m² |   50.00 10%   5.00  19.25   74.25 |  25.00   3.75  10.06   38.81 |   113.06
+Sistema ETICS completo 60mm (EPS+cola+red     base   m2 |   38.00 10%   3.80  14.63   56.43 |  25.00   3.75  10.06   38.81 |    95.24
+Sistema ETICS completo 80mm                  media   m2 |   42.00 10%   4.20  16.17   62.37 |  25.00   3.75  10.06   38.81 |   101.18
+Sistema ETICS EPS Grafite 100mm (Grafitec  premium   m2 |   48.00 10%   4.80  18.48   71.28 |  25.00   3.75  10.06   38.81 |   110.09
+
+Parafuso ponta broca Phillips 4.2x13mm           -   un |    0.05 10%   0.01   0.02    0.07 |   0.00   0.00   0.00    0.00 |     0.07
+
+Parafuso gesso cartonado 3.5x35mm                -   un |    0.03 10%   0.00   0.01    0.04 |   0.00   0.00   0.00    0.00 |     0.04
+
+Parafuso OSB 4.5x45mm                            -   un |    0.06 10%   0.01   0.02    0.09 |   8.00   1.20   3.22   12.42 |    12.51
+Parafuso auto-perfurante hex 6.3x25mm            -   un |    0.08 10%   0.01   0.03    0.12 |   0.00   0.00   0.00    0.00 |     0.12
+
+Placa Gesso Cartonado Knauf Standard BA13     base   m2 |    2.44  8%   0.20   0.92    3.56 |  10.00   1.50   4.02   15.52 |    19.08
+Pasta de juntas + lixamento gesso cartona     base   m2 |    2.50  8%   0.20   0.94    3.65 |  10.00   1.50   4.02   15.52 |    19.17
+Placa de gesso cartonado normal 13mm 2500     base   m2 |    2.59  8%   0.21   0.98    3.78 |  10.00   1.50   4.02   15.52 |    19.30
+Placa Gesso Cartonado Anti-Fogo Gypfor Fi     base   m2 |    3.50  8%   0.28   1.32    5.10 |  10.00   1.50   4.02   15.52 |    20.63
+Placa de gesso cartonado hidro 13mm 2600      base   m2 |    3.89  8%   0.31   1.47    5.67 |  10.00   1.50   4.02   15.52 |    21.20
+Placa de gesso cartonado fire 15mm 2500 G    media   m2 |    4.49  8%   0.36   1.70    6.55 |  10.00   1.50   4.02   15.52 |    22.07
+Placa de gesso cartonado Hidro 13mm 2000     media   m2 |    4.59  8%   0.37   1.74    6.69 |  10.00   1.50   4.02   15.52 |    22.22
+Placa de gesso cartonado fire 15mm 2500 P    media   m2 |    5.69  8%   0.46   2.15    8.30 |  10.00   1.50   4.02   15.52 |    23.82
+Placa gesso cartonado standard 12.5mm        media   m2 |    5.80  8%   0.46   2.19    8.46 |  10.00   1.50   4.02   15.52 |    23.98
+Placa gesso cartonado fogo 15mm            premium   m2 |    9.50  8%   0.76   3.59   13.85 |  10.00   1.50   4.02   15.52 |    29.38
+
+Placa Gesso Cartonado Knauf Hidrófuga H1         -   m2 |    4.17  8%   0.33   1.58    6.08 |  10.00   1.50   4.02   15.52 |    21.60
+Placa Gesso Cartonado Hidrofugada Resiste        -   un |    7.70  8%   0.62   2.91   11.23 |  10.00   1.50   4.02   15.52 |    26.75
+Placa gesso cartonado hidrófuga 12.5mm           -   m2 |    8.20  8%   0.66   3.10   11.96 |  10.00   1.50   4.02   15.52 |    27.48
+
+Tela Betuminosa Asfáltica APP Impermeabil        -   m2 |    3.41  5%   0.17   1.25    4.83 |  14.00   2.10   5.63   21.73 |    26.57
+Tela Betuminosa Asfáltica Impermeabilizaç        -   m2 |    4.79  5%   0.24   1.76    6.79 |  14.00   2.10   5.63   21.73 |    28.52
+Tela Betuminosa Asfáltica Impermeabilizaç        -   m2 |    5.48  5%   0.27   2.01    7.77 |  14.00   2.10   5.63   21.73 |    29.50
+Tela asfáltica betuminosa 4mm                    -   m2 |    8.50  5%   0.43   3.12   12.05 |  14.00   2.10   5.63   21.73 |    33.78
+Tela asfáltica SBS 3kg/m2 AXTON                  -   m2 |   16.99  5%   0.85   6.24   24.08 |  14.00   2.10   5.63   21.73 |    45.82
+
+Impermeabilização líquida poliuretano            -   m2 |   12.00  5%   0.60   4.41   17.01 |  10.00   1.50   4.02   15.52 |    32.53
+Impermeabilizante líquido AXTON 5kg              - embalagem |   14.50  5%   0.73   5.33   20.55 |  10.00   1.50   4.02   15.52 |    36.08
+Impermeabilizante liquido para WCs e zona        -   kg |   15.00  5%   0.75   5.51   21.26 |  10.00   1.50   4.02   15.52 |    36.79
+Membrana Elástica Impermeabilização Reves        -   un |   32.89  5%   1.64  12.09   46.62 |  10.00   1.50   4.02   15.52 |    62.15
+Membrana Líquida Elástica Secagem Rápida         -   un |   66.90  5%   3.35  24.59   94.83 |  10.00   1.50   4.02   15.52 |   110.36
+Membrana betuminosa ASFALDAN ALU EXTRA 25        -   un |   69.00  5%   3.45  25.36   97.81 |  10.00   1.50   4.02   15.52 |   113.33
+
+Isolamento acustico la mineral 50mm (pare        -   m2 |    5.50  5%   0.28   2.02    7.80 |   4.00   0.60   1.61    6.21 |    14.01
+
+Isolamento la rocha 100mm cobertura              -   m2 |    9.50  5%   0.48   3.49   13.47 |   5.00   0.75   2.01    7.76 |    21.23
+Lã mineral rocha 150mm (cobertura)         premium   m2 |   13.50  5%   0.68   4.96   19.14 |   5.00   0.75   2.01    7.76 |    26.90
+
+Poliestireno expandido EPS 40mm                  -   m2 |    4.50  5%   0.23   1.65    6.38 |  25.00   3.75  10.06   38.81 |    45.19
+Poliestireno expandido EPS 60mm                  -   m2 |    6.50  5%   0.33   2.39    9.21 |  25.00   3.75  10.06   38.81 |    48.03
+Lã Mineral Volcalis Alpha 50mm (Vol. Conf     base   m2 |    4.20  5%   0.21   1.54    5.95 |   4.00   0.60   1.61    6.21 |    12.16
+Lã mineral rocha 50mm (parede)                base   m2 |    5.50  5%   0.28   2.02    7.80 |   4.00   0.60   1.61    6.21 |    14.01
+Lã mineral rocha 80mm (parede)               media   m2 |    7.80  5%   0.39   2.87   11.06 |   4.00   0.60   1.61    6.21 |    17.27
+Lã mineral rocha 100mm (cobertura)         premium   m2 |    9.50  5%   0.48   3.49   13.47 |   4.00   0.60   1.61    6.21 |    19.68
+
+Janela PVC Cortizo - standard (base para      base   m2 |  350.00  0%   0.00  35.00  385.00 |   0.00   0.00   0.00    0.00 |   385.00
+
+LAVATORIO POUSAR                              base   un |  180.00  0%   0.00  63.00  243.00 |  60.00   9.00  24.15   93.15 |   336.15
+LAVATORIO SUSPENSO                           media   un |  280.00  0%   0.00  98.00  378.00 |  60.00   9.00  24.15   93.15 |   471.15
+Lavatório de pousar design premium         premium   un |  380.00  0%   0.00 133.00  513.00 |  60.00   9.00  24.15   93.15 |   606.15
+
+Malha electrosoldada 150x150x3mm-2.4x25m(     base   m2 |    4.28  5%   0.21   1.57    6.07 |   6.00   0.90   2.42    9.32 |    15.38
+Malha electrosoldada 150x150x3mm-1.2x50m(     base   m2 |    4.28  5%   0.21   1.57    6.07 |   6.00   0.90   2.42    9.32 |    15.38
+Malha electrossoldada AQ50                    base   m2 |    4.50  5%   0.23   1.65    6.38 |   6.00   0.90   2.42    9.32 |    15.69
+Malha electrosoldada 150x150x3mm-2.4x50m(     base   m2 |    8.61  5%   0.43   3.16   12.20 |   6.00   0.90   2.42    9.32 |    21.52
+
+MOVEIS COZINHA BASICO                         base   ml |  250.00  0%   0.00  87.50  337.50 |  80.00  12.00  32.20  124.20 |   461.70
+MOVEIS COZINHA MEDIO                         media   ml |  400.00  0%   0.00 140.00  540.00 |  80.00  12.00  32.20  124.20 |   664.20
+MOVEIS COZINHA PREMIUM                     premium   ml |  650.00  0%   0.00 227.50  877.50 |  80.00  12.00  32.20  124.20 |  1001.70
+
+MOVEL WC                                         -   un |  450.00  0%   0.00 157.50  607.50 | 110.00  16.50  44.27  170.78 |   778.27
+
+Placa OSB 9-22MM Resistente à Humidade LS     base   m2 |    7.59  8%   0.61   2.87   11.07 |   8.00   1.20   3.22   12.42 |    23.49
+Placa OSB3 12mm (2500x1250)                   base   m2 |    8.50  8%   0.68   3.21   12.39 |   8.00   1.20   3.22   12.42 |    24.81
+Placa OSB 9-30MM Resistente à Humidade LS    media   m2 |   11.84  8%   0.95   4.48   17.26 |   8.00   1.20   3.22   12.42 |    29.68
+Placa OSB 9-22MM Resistente à Humidade LS    media   m2 |   11.84  8%   0.95   4.48   17.26 |   8.00   1.20   3.22   12.42 |    29.68
+Placa OSB3 18mm (2500x1250)                  media   m2 |   12.00  8%   0.96   4.54   17.50 |   8.00   1.20   3.22   12.42 |    29.92
+Placa osb3 9mm 2500x1250mm bb&f              media   m2 |   15.99  8%   1.28   6.04   23.31 |   8.00   1.20   3.22   12.42 |    35.73
+Placa 12mm 2500x1250 OSB3                  premium   m2 |   21.89  8%   1.75   8.27   31.92 |   8.00   1.20   3.22   12.42 |    44.34
+Placa OSB3 2500X1250x12 mm amarelo BB&F    premium   m2 |   21.89  8%   1.75   8.27   31.92 |   8.00   1.20   3.22   12.42 |    44.34
+
+Painel sandwich 50mm (cobertura)                 -   m2 |   28.00  5%   1.40  10.29   39.69 |  15.00   2.25   6.04   23.29 |    62.98
+
+Painel sandwich 80mm (cobertura)                 -   m2 |   35.00  5%   1.75  12.86   49.61 |  15.00   2.25   6.04   23.29 |    72.90
+
+PAINEL SOLAR TERMICO                             -   un | 2200.00  0%   0.00 770.00 2970.00 | 500.00  75.00 201.25  776.25 |  3746.25
+
+PAVIMENTO CERAMICO BASICO                     base   m² |   35.00 10%   3.50  13.47   51.98 |  13.00   1.95   5.23   20.18 |    72.16
+PAVIMENTO CERAMICO MEDIO                     media   m² |   50.00 10%   5.00  19.25   74.25 |  13.00   1.95   5.23   20.18 |    94.43
+PAVIMENTO CERAMICO PREMIUM                 premium   m² |   80.00 10%   8.00  30.80  118.80 |  13.00   1.95   5.23   20.18 |   138.98
+
+PAVIMENTO EXTERIOR CERAMICO                  media   m² |   45.00  0%   0.00  15.75   60.75 |  13.00   1.95   5.23   20.18 |    80.93
+
+Pavimento flutuante laminado AC4 8mm          base   m2 |   14.00  8%   1.12   5.29   20.41 |  11.00   1.65   4.43   17.08 |    37.49
+PAVIMENTO MADEIRA FLUTUANTE                  media   m² |   45.00  8%   3.60  17.01   65.61 |  11.00   1.65   4.43   17.08 |    82.69
+PAVIMENTO MADEIRA MACICA                   premium   m² |   95.00  8%   7.60  35.91  138.51 |  11.00   1.65   4.43   17.08 |   155.59
+
+Pavimento vinílico SPC clique 5mm                -   m2 |   22.00  8%   1.76   8.32   32.08 |   8.00   1.20   3.22   12.42 |    44.50
+Pavimento Vinílico SPC Premium Carvalho R        -   m2 |   32.50  8%   2.60  12.29   47.39 |   8.00   1.20   3.22   12.42 |    59.81
+PAVIMENTO VINILICO                               -   m² |   35.00  8%   2.80  13.23   51.03 |   8.00   1.20   3.22   12.42 |    63.45
+
+Guia U89 x 0.8mm galvanizado                     -   ml |    2.40  3%   0.07   0.87    3.34 |   6.00   0.90   2.42    9.32 |    12.65
+Montante C89 x 0.8mm galvanizado                 -   ml |    2.85  3%   0.09   1.03    3.96 |   6.00   0.90   2.42    9.32 |    13.28
+Guia U150 x 1.0mm galvanizado                    -   ml |    3.80  3%   0.11   1.37    5.28 |   6.00   0.90   2.42    9.32 |    14.60
+Montante C150 x 1.0mm galvanizado                -   ml |    4.20  3%   0.13   1.51    5.84 |   6.00   0.90   2.42    9.32 |    15.16
+Guia U200 x 1.2mm galvanizado                    -   ml |    5.10  3%   0.15   1.84    7.09 |   6.00   0.90   2.42    9.32 |    16.41
+Montante C200 x 1.2mm galvanizado                -   ml |    5.60  3%   0.17   2.02    7.79 |   6.00   0.90   2.42    9.32 |    17.10
+
+Pintura exterior (primário + 2 demãos acr     base   m2 |    4.50 10%   0.45   1.73    6.68 |   7.00   1.05   2.82   10.87 |    17.55
+
+Pintura interior (primário + 2 demãos tin     base   m2 |    3.50 10%   0.35   1.35    5.20 |   5.50   0.82   2.21    8.54 |    13.74
+
+PISO RADIANTE                                    -   m² |   45.00  0%   0.00  15.75   60.75 |  18.00   2.70   7.24   27.95 |    88.69
+
+Placa Cimenticia Betopan Cinza Bruto - Mu        -   m2 |    8.00  8%   0.64   3.02   11.66 |  12.00   1.80   4.83   18.63 |    30.29
+Placa fibrocimento 8mm                           -   m2 |   14.00  8%   1.12   5.29   20.41 |  12.00   1.80   4.83   18.63 |    39.04
+Placa Duripanel Cimentícia 12mm                  -   m2 |   18.29  8%   1.46   6.91   26.67 |  12.00   1.80   4.83   18.63 |    45.30
+Placa cimentícia exterior 12mm                   -   m2 |   18.50  8%   1.48   6.99   26.97 |  12.00   1.80   4.83   18.63 |    45.60
+
+PORTA CORRER                                  base   un |  550.00  0%   0.00 192.50  742.50 | 300.00  45.00 120.75  465.75 |  1208.25
+Porta de correr alumínio HST (2.4x2.2m)    premium   un | 1800.00  0%   0.00 630.00 2430.00 | 300.00  45.00 120.75  465.75 |  2895.75
+
+Porta exterior segurança blindada             base   un |  650.00  0%   0.00 227.50  877.50 | 350.00  52.50 140.88  543.38 |  1420.88
+PORTA ENTRADA                                media   un | 1200.00  0%   0.00 420.00 1620.00 | 350.00  52.50 140.88  543.38 |  2163.38
+
+Porta interior favo 80x200cm + aro            base   un |   95.00  0%   0.00  33.25  128.25 | 150.00  22.50  60.37  232.88 |   361.12
+Porta interior maciça 80x200cm + aro         media   un |  180.00  0%   0.00  63.00  243.00 | 150.00  22.50  60.37  232.88 |   475.88
+PORTA INTERIOR BASICA                        media   un |  180.00  0%   0.00  63.00  243.00 | 150.00  22.50  60.37  232.88 |   475.88
+PORTA INTERIOR MEDIA                         media   un |  280.00  0%   0.00  98.00  378.00 | 150.00  22.50  60.37  232.88 |   610.88
+PORTA INTERIOR PREMIUM                     premium   un |  450.00  0%   0.00 157.50  607.50 | 150.00  22.50  60.37  232.88 |   840.38
+
+PORTAO GARAGEM                                base   un | 2200.00  0%   0.00 770.00 2970.00 | 400.00  60.00 161.00  621.00 |  3591.00
+Fornecimento e montagem de portao de corr  premium   un | 2200.00  0%   0.00 770.00 2970.00 | 150.00  22.50  60.37  232.88 |  3202.88
+PORTAO ENTRADA                             premium   un | 2800.00  0%   0.00 980.00 3780.00 | 350.00  52.50 140.88  543.38 |  4323.38
+
+RELVA NATURAL                                    -   m² |   12.00  0%   0.00   4.20   16.20 |   6.00   0.90   2.42    9.32 |    25.52
+
+RELVA SINTETICA                                  -   m² |   35.00  0%   0.00  12.25   47.25 |  10.00   1.50   4.02   15.52 |    62.77
+
+RUFOS                                            -   ml |   28.00  3%   0.84  10.09   38.93 |  10.00   1.50   4.02   15.52 |    54.46
+
+Pack sanita back to wall rimless branca B     base   un |  109.00  0%   0.00  38.15  147.15 |  65.00   9.75  26.16  100.91 |   248.06
+SANITA CHAO                                  media   un |  220.00  0%   0.00  77.00  297.00 |  65.00   9.75  26.16  100.91 |   397.91
+SANITA SUSPENSA                            premium   un |  380.00  0%   0.00 133.00  513.00 |  65.00   9.75  26.16  100.91 |   613.91
+Sanita suspensa rimless design premium     premium   un |  500.00  0%   0.00 175.00  675.00 |  65.00   9.75  26.16  100.91 |   775.91
+
+Membrana respirável AXTON 135g 75m2              -   m2 |    1.05  5%   0.05   0.39    1.49 |   5.00   0.75   2.01    7.76 |     9.25
+Membrana respirável / pára-vento                 -   m2 |    3.50  5%   0.18   1.29    4.96 |   5.00   0.75   2.01    7.76 |    12.72
+Subtelha ondulada ventilada                      -   m2 |    6.50  5%   0.33   2.39    9.21 |   5.00   0.75   2.01    7.76 |    16.98
+SUBTELHA                                         -   m² |   12.00  5%   0.60   4.41   17.01 |   5.00   0.75   2.01    7.76 |    24.77
+
+Telha cerâmica Lusa                              -   m2 |   12.00  5%   0.60   4.41   17.01 |  15.00   2.25   6.04   23.29 |    40.30
+TELHA CERAMICA                                   -   m² |   35.00  5%   1.75  12.86   49.61 |  15.00   2.25   6.04   23.29 |    72.90
+
+Termoacumulador electrico 150L                   -   un |  450.00  0%   0.00 157.50  607.50 | 150.00  22.50  60.37  232.88 |   840.38
+TERMOACUMULADOR 150L                             -   un |  550.00  0%   0.00 192.50  742.50 | 150.00  22.50  60.37  232.88 |   975.38
+
+TERMOACUMULADOR 80L                              -   un |  380.00  0%   0.00 133.00  513.00 | 120.00  18.00  48.30  186.30 |   699.30
+
+TOALHEIRO                                        -   un |   85.00  0%   0.00  29.75  114.75 |  20.00   3.00   8.05   31.05 |   145.80
+
+TORNEIRA DUCHE                                   -   un |  180.00  0%   0.00  63.00  243.00 |  45.00   6.75  18.11   69.86 |   312.86
+Fornecimento e montagem de coluna de duch        -   un |  280.00  0%   0.00  98.00  378.00 |  45.00   6.75  18.11   69.86 |   447.86
+
+TORNEIRA LAVATORIO                               -   un |  120.00  0%   0.00  42.00  162.00 |  35.00   5.25  14.09   54.34 |   216.34
+
+VMC simples fluxo higroregulável                 -   un |  450.00  0%   0.00 157.50  607.50 | 400.00  60.00 161.00  621.00 |  1228.50
+VMC                                              -   un | 1800.00  0%   0.00 630.00 2430.00 | 400.00  60.00 161.00  621.00 |  3051.00
+VMC duplo fluxo com recuperador de calor         -   un | 2500.00  0%   0.00 875.00 3375.00 | 400.00  60.00 161.00  621.00 |  3996.00
+
+Poliestireno extrudido XPS 40mm                  -   m2 |    8.00  5%   0.40   2.94   11.34 |   4.00   0.60   1.61    6.21 |    17.55
+Poliestireno extrudido XPS 60mm                  -   m2 |   11.50  5%   0.58   4.23   16.30 |   4.00   0.60   1.61    6.21 |    22.51
+
+============================================================================================================================================
+
+FORMULA:
+  MATERIAL: Preco x (1 + Desperdicio%) x (1 + Margem%) = Material ao Cliente
+  MO:       MO    x (1 + 15% Derrapagem) x (1 + 35% Lucro) = MO ao Cliente
+  FINAL:    Material ao Cliente + MO ao Cliente = PRECO CONSUMIDOR FINAL
+
+  Margem Material padrao: 35% (standard mercado)
+  Margem Janela:          10% (preco ja inclui instalacao)
+  Derrapagem MO:          15%
+  Lucro MO:               35%
+
+  Total: 157 produtos activos
+  Gerado: 2026-02-20 21:30
