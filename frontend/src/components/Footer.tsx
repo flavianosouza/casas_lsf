@@ -59,6 +59,7 @@ export default function Footer() {
               {[
                 { href: "/preco-construcao-lsf-por-m2", label: "Preço por m²" },
                 { href: "/quanto-custa-casa-lsf", label: "Quanto Custa Casa LSF" },
+                { href: "/pladur-preco", label: "Pladur Preço m²" },
                 { href: "/metodologia-construtiva", label: "Metodologia LSF" },
                 { href: "/processo-construcao-lsf", label: "Processo Construtivo" },
                 { href: "/casa-lsf-financiamento", label: "Financiamento" },

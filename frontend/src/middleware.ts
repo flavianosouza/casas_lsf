@@ -20,6 +20,7 @@ const APP_ROUTES = new Set([
   "/casa-lsf-financiamento",
   "/empresa-construcao-lsf-portugal",
   "/analise-planta",
+  "/pladur-preco",
 ]);
 
 // Old WordPress blog slugs → correct slugs (301 redirects)
