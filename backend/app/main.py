@@ -81,6 +81,50 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/debug-planta-details/{projeto_id}")
+async def debug_planta_details(projeto_id: int):
+    """Get full details of a project's plant (prompt, drive link) for manual review."""
+    from .database import engineering_engine
+    if not engineering_engine:
+        return {"error": "No engineering engine"}
+    try:
+        async with engineering_engine.connect() as conn:
+            result = await conn.execute(text("""
+                SELECT
+                    pg.id AS planta_id,
+                    pg.versao,
+                    pg.prompt_original,
+                    pg.prompt_atual,
+                    pg.google_drive_link,
+                    pg.google_drive_file_id,
+                    pg.created_at,
+                    o.valor_total,
+                    o.area_construcao,
+                    o.padrao_acabamento,
+                    o.titulo_projeto,
+                    o.descricao_projeto
+                FROM plantas_geradas pg
+                LEFT JOIN orcamentos o ON o.projeto_id = pg.projeto_id
+                WHERE pg.projeto_id = :pid
+                  AND pg.google_drive_link IS NOT NULL
+                ORDER BY pg.versao DESC, pg.created_at DESC
+                LIMIT 5
+            """), {"pid": projeto_id})
+            rows = result.fetchall()
+            items = []
+            for r in rows:
+                d = dict(r._mapping)
+                for k, v in d.items():
+                    if hasattr(v, "isoformat"):
+                        d[k] = v.isoformat()
+                    elif not isinstance(v, (str, int, float, bool, type(None))):
+                        d[k] = str(v)
+                items.append(d)
+            return {"projeto_id": projeto_id, "plantas": items}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.get("/api/debug-top-plantas")
 async def debug_top_plantas():
     """Show top projects with budget — candidates for public portfolio."""
