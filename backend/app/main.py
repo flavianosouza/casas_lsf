@@ -81,6 +81,56 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/debug-top-plantas")
+async def debug_top_plantas():
+    """Show top projects with budget — candidates for public portfolio."""
+    from .database import engineering_engine
+    if not engineering_engine:
+        return {"error": "No engineering engine"}
+    try:
+        async with engineering_engine.connect() as conn:
+            # Projects that have at least 1 orçamento AND at least 1 planta gerada
+            result = await conn.execute(text("""
+                SELECT
+                    p.id AS projeto_id,
+                    p.tipologia,
+                    p.area_m2,
+                    p.num_pisos,
+                    p.tem_cave,
+                    p.tem_sotao,
+                    p.nome_projeto,
+                    p.created_at,
+                    (SELECT COUNT(*) FROM plantas_geradas pg WHERE pg.projeto_id = p.id) AS num_plantas,
+                    (SELECT MAX(versao) FROM plantas_geradas pg WHERE pg.projeto_id = p.id) AS max_versao_planta,
+                    (SELECT COUNT(*) FROM plantas_geradas pg WHERE pg.projeto_id = p.id AND pg.google_drive_link IS NOT NULL) AS plantas_drive,
+                    (SELECT COUNT(*) FROM orcamentos o WHERE o.projeto_id = p.id) AS num_orcamentos,
+                    (SELECT MAX(valor_total) FROM orcamentos o WHERE o.projeto_id = p.id) AS max_valor_orcamento,
+                    (SELECT MAX(padrao_acabamento) FROM orcamentos o WHERE o.projeto_id = p.id) AS padrao_acabamento
+                FROM projetos p
+                WHERE p.ativo = true
+                  AND p.deleted_at IS NULL
+                  AND p.tipo_obra = 'moradia'
+                  AND p.tipologia IS NOT NULL
+                  AND EXISTS (SELECT 1 FROM orcamentos o WHERE o.projeto_id = p.id)
+                  AND EXISTS (SELECT 1 FROM plantas_geradas pg WHERE pg.projeto_id = p.id AND pg.google_drive_link IS NOT NULL)
+                ORDER BY p.updated_at DESC NULLS LAST
+                LIMIT 30
+            """))
+            rows = result.fetchall()
+            items = []
+            for r in rows:
+                d = dict(r._mapping)
+                for k, v in d.items():
+                    if hasattr(v, "isoformat"):
+                        d[k] = v.isoformat()
+                    elif not isinstance(v, (str, int, float, bool, type(None))):
+                        d[k] = str(v)
+                items.append(d)
+            return {"total": len(items), "items": items}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @app.get("/api/debug-schema/{table_name}")
 async def debug_schema(table_name: str):
     """Return columns + sample row from a table in the engineering DB."""
