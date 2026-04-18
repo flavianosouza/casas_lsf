@@ -596,13 +596,15 @@ async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
     )
     webhook_secret = os.environ.get("N8N_WEBHOOK_SECRET", "diagnostico-lsf-2026-abril")
 
+    # NOTE: intentionally do NOT pass projeto_id — the workflow SQL uses NULLIF
+    # casts that break when projeto_id is provided as number. Passing only
+    # telefone works (matches the signature used when Felipe Cardoso agent calls).
     try:
         async with httpx.AsyncClient(timeout=10.0) as client:
             resp = await client.post(
                 webhook_url,
                 headers={"X-Casaslsf-Secret": webhook_secret, "Content-Type": "application/json"},
                 json={
-                    "projeto_id": ctx["projeto_id"],
                     "telefone": ctx.get("telefone"),
                 },
             )
