@@ -271,6 +271,145 @@ async def get_planta_detail(projeto_id: int):
     )
 
 
+@router.get("/api/admin/lead-diagnostico")
+async def lead_diagnostico(telefone: str, secret: str):
+    """Diagnostic endpoint: given a telefone, report if the projeto qualifies
+    for public auto-publishing. Identifies which of the 3 requirements is
+    missing (tipologia/ativo, plantas_geradas.google_drive_link, orcamentos).
+
+    Protected by a shared secret query param to avoid PII leak.
+    """
+    import os
+
+    expected_secret = os.environ.get("ADMIN_DIAG_SECRET", "diagnostico-lsf-2026-abril")
+    if secret != expected_secret:
+        raise HTTPException(404, "Not found")
+
+    if not engineering_engine:
+        raise HTTPException(503, "Engineering DB unavailable")
+
+    # Normalize phone (strip +, spaces)
+    tel_clean = "".join(c for c in telefone if c.isdigit())
+
+    try:
+        async with engineering_engine.connect() as conn:
+            # Find projeto by phone (try both raw telefone and common variations)
+            projeto_row = (
+                await conn.execute(
+                    text("""
+                        SELECT id, ativo, deleted_at, tipo_obra, tipologia, area_m2,
+                               num_pisos, created_at, updated_at
+                          FROM projetos
+                         WHERE telefone = :tel
+                            OR telefone = CONCAT('+351', :tel)
+                            OR telefone = CONCAT('351', :tel)
+                         ORDER BY created_at DESC
+                         LIMIT 1
+                    """),
+                    {"tel": tel_clean},
+                )
+            ).fetchone()
+
+            if not projeto_row:
+                return {
+                    "found": False,
+                    "telefone_consultado": tel_clean,
+                    "conclusion": "Nenhum projeto encontrado com este telefone na engineering DB",
+                }
+
+            p = dict(projeto_row._mapping)
+            projeto_id = p["id"]
+
+            # Check plantas_geradas
+            pg_row = (
+                await conn.execute(
+                    text("""
+                        SELECT COUNT(*) AS total,
+                               COUNT(google_drive_link) AS com_drive_link,
+                               COUNT(google_drive_file_id) AS com_file_id,
+                               MAX(created_at) AS ultima_criada
+                          FROM plantas_geradas
+                         WHERE projeto_id = :pid
+                    """),
+                    {"pid": projeto_id},
+                )
+            ).fetchone()
+            pg = dict(pg_row._mapping) if pg_row else {}
+
+            # Check orcamentos
+            orc_row = (
+                await conn.execute(
+                    text("""
+                        SELECT COUNT(*) AS total,
+                               MAX(valor_total) AS maior_valor,
+                               MAX(updated_at) AS ultimo_update,
+                               (SELECT padrao_acabamento
+                                  FROM orcamentos o2
+                                 WHERE o2.projeto_id = :pid
+                                 ORDER BY valor_total DESC NULLS LAST
+                                 LIMIT 1) AS padrao_top
+                          FROM orcamentos
+                         WHERE projeto_id = :pid
+                    """),
+                    {"pid": projeto_id},
+                )
+            ).fetchone()
+            orc = dict(orc_row._mapping) if orc_row else {}
+
+    except Exception as e:
+        raise HTTPException(500, f"Query error: {str(e)[:120]}")
+
+    # Evaluate qualification
+    blockers = []
+    if not p.get("ativo"):
+        blockers.append("projetos.ativo = false")
+    if p.get("deleted_at"):
+        blockers.append(f"projetos.deleted_at = {p['deleted_at']}")
+    if p.get("tipo_obra") != "moradia":
+        blockers.append(f"tipo_obra = '{p.get('tipo_obra')}' (precisa 'moradia')")
+    if not p.get("tipologia"):
+        blockers.append("tipologia está vazia")
+    if (pg.get("com_drive_link") or 0) == 0:
+        blockers.append("plantas_geradas não tem nenhum registo com google_drive_link")
+    if (orc.get("total") or 0) == 0:
+        blockers.append("não existe registo em orcamentos")
+
+    qualified = len(blockers) == 0
+
+    return {
+        "found": True,
+        "projeto_id": projeto_id,
+        "qualified": qualified,
+        "blockers": blockers,
+        "projeto": {
+            "ativo": p.get("ativo"),
+            "deleted_at": p["deleted_at"].isoformat() if p.get("deleted_at") else None,
+            "tipo_obra": p.get("tipo_obra"),
+            "tipologia": p.get("tipologia"),
+            "area_m2": float(p["area_m2"]) if p.get("area_m2") is not None else None,
+            "created_at": p["created_at"].isoformat() if p.get("created_at") else None,
+            "updated_at": p["updated_at"].isoformat() if p.get("updated_at") else None,
+        },
+        "plantas_geradas": {
+            "total_registos": pg.get("total") or 0,
+            "com_drive_link": pg.get("com_drive_link") or 0,
+            "com_file_id": pg.get("com_file_id") or 0,
+            "ultima_criada": pg["ultima_criada"].isoformat() if pg.get("ultima_criada") else None,
+        },
+        "orcamentos": {
+            "total": orc.get("total") or 0,
+            "maior_valor": float(orc["maior_valor"]) if orc.get("maior_valor") is not None else None,
+            "padrao": orc.get("padrao_top"),
+            "ultimo_update": orc["ultimo_update"].isoformat() if orc.get("ultimo_update") else None,
+        },
+        "url_publico": (
+            f"/plantas/tipologia/{(p.get('tipologia') or '').lower()}/"
+            f"{int(p['area_m2']) if p.get('area_m2') else 'modelo'}m2-chave-na-mao-{projeto_id}"
+            if qualified else None
+        ),
+    }
+
+
 @router.get("/api/asset/{projeto_id}/{tipo}/{index}")
 async def asset_proxy(projeto_id: int, tipo: str, index: int):
     """Proxy a Drive asset without exposing the filename (which may contain PII)."""
