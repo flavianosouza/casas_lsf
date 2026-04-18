@@ -81,6 +81,80 @@ async def health_check():
     return {"status": "ok"}
 
 
+@app.get("/api/portfolio/{projeto_id}")
+async def portfolio_public(projeto_id: int):
+    """Public portfolio endpoint. Returns whitelist only — no PII exposed.
+
+    Used by /portfolio/[slug] pages on the frontend.
+    """
+    from fastapi.responses import JSONResponse
+    from .database import engineering_engine
+    if not engineering_engine:
+        raise HTTPException(503, "Engineering DB unavailable")
+    try:
+        async with engineering_engine.connect() as conn:
+            row = (
+                await conn.execute(
+                    text(
+                        """
+                        SELECT
+                            p.id AS projeto_id,
+                            p.tipologia,
+                            p.area_m2,
+                            p.num_pisos,
+                            p.tem_cave,
+                            p.tem_sotao,
+                            (SELECT pg.google_drive_file_id
+                               FROM plantas_geradas pg
+                              WHERE pg.projeto_id = p.id
+                                AND pg.google_drive_file_id IS NOT NULL
+                              ORDER BY pg.versao DESC, pg.created_at DESC
+                              LIMIT 1) AS drive_file_id,
+                            (SELECT MAX(o.valor_total)
+                               FROM orcamentos o
+                              WHERE o.projeto_id = p.id) AS valor_total,
+                            (SELECT o.padrao_acabamento
+                               FROM orcamentos o
+                              WHERE o.projeto_id = p.id
+                              ORDER BY o.valor_total DESC
+                              LIMIT 1) AS padrao_acabamento
+                        FROM projetos p
+                        WHERE p.id = :pid
+                          AND p.ativo = true
+                          AND p.deleted_at IS NULL
+                        """
+                    ),
+                    {"pid": projeto_id},
+                )
+            ).fetchone()
+
+            if not row:
+                raise HTTPException(404, "Projeto not found")
+
+            d = dict(row._mapping)
+            if d.get("drive_file_id"):
+                d["drive_url"] = f"https://lh3.googleusercontent.com/d/{d['drive_file_id']}"
+            else:
+                d["drive_url"] = None
+
+            # Coerce types for JSON
+            if d.get("area_m2") is not None:
+                d["area_m2"] = float(d["area_m2"])
+            if d.get("valor_total") is not None:
+                d["valor_total"] = float(d["valor_total"])
+
+            return JSONResponse(
+                content=d,
+                headers={
+                    "Cache-Control": "public, max-age=3600, s-maxage=86400",
+                },
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Internal error: {str(e)[:120]}")
+
+
 @app.get("/api/debug-planta-details/{projeto_id}")
 async def debug_planta_details(projeto_id: int):
     """Get full details of a project's plant (prompt, drive link) for manual review."""
