@@ -3,6 +3,27 @@ import { PORTFOLIO_ENTRIES } from "@/data/portfolio-map";
 
 const SITE_URL = "https://casaslsf.com";
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const TIPOLOGIAS = ["t1", "t2", "t3", "t4"];
+
+interface PlantaSitemapItem {
+  tipologia: string;
+  slug: string;
+  url: string;
+  created_at: string | null;
+}
+
+async function getPlantasPublicas(): Promise<PlantaSitemapItem[]> {
+  try {
+    const res = await fetch(`${API_URL}/api/plantas-publicas?limit=500`, {
+      next: { revalidate: 3600 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.items || [];
+  } catch {
+    return [];
+  }
+}
 
 interface SlugItem {
   slug: string;
@@ -23,6 +44,7 @@ async function getSlugs(): Promise<SlugItem[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getSlugs();
+  const plantasPublicas = await getPlantasPublicas();
 
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -143,5 +165,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...portfolioPages, ...artigoPages];
+  const tipologiaPages: MetadataRoute.Sitemap = TIPOLOGIAS.map((t) => ({
+    url: `${SITE_URL}/plantas/tipologia/${t}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
+  const plantaDetailPages: MetadataRoute.Sitemap = plantasPublicas.map((p) => ({
+    url: `${SITE_URL}${p.url}`,
+    lastModified: p.created_at ? new Date(p.created_at) : new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [
+    ...staticPages,
+    ...portfolioPages,
+    ...tipologiaPages,
+    ...plantaDetailPages,
+    ...artigoPages,
+  ];
 }

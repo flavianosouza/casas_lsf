@@ -54,6 +54,7 @@ const SKIP_PREFIXES = [
   "/sitemap",
   "/blog/",
   "/portfolio/",
+  "/plantas/tipologia/",
   "/manifest",
   "/sw.",
   "/bg-",
