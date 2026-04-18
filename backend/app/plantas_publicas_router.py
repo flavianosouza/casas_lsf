@@ -18,17 +18,11 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query, Response
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from .database import engineering_engine, engine as casas_lsf_engine
-from .drive_helper import (
-    extract_drive_file_ids,
-    fetch_drive_bytes,
-    lh3_url,
-    drive_uc_url,
-    PDF_TITULOS,
-)
+from .drive_helper import extract_drive_file_ids, fetch_drive_bytes
 
 
 router = APIRouter(tags=["plantas-publicas"])
@@ -107,7 +101,7 @@ async def list_plantas(
         projeto_id = d["id"]
         area_m2 = float(d["area_m2"]) if d.get("area_m2") is not None else None
         area_int = int(area_m2) if area_m2 else 0
-        slug = f"{area_int}m2-{projeto_id}" if area_int else f"modelo-{projeto_id}"
+        slug = f"{area_int}m2-chave-na-mao-{projeto_id}" if area_int else f"modelo-chave-na-mao-{projeto_id}"
         tipo_lower = (d.get("tipologia") or "").lower()
         items.append({
             "id": projeto_id,
@@ -219,7 +213,11 @@ async def get_planta_detail(projeto_id: int):
         d["created_at"] = d["created_at"].isoformat()
 
     area_int = int(d["area_m2"]) if d.get("area_m2") else 0
-    slug = f"{area_int}m2-{projeto_id}" if area_int else f"modelo-{projeto_id}"
+    slug = (
+        f"{area_int}m2-chave-na-mao-{projeto_id}"
+        if area_int
+        else f"modelo-chave-na-mao-{projeto_id}"
+    )
     tipo_lower = (d.get("tipologia") or "").lower()
 
     return JSONResponse(
