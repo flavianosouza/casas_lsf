@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager
 from .routers import router as leads_router
 from .artigos_router import router as artigos_router
 from .analise_planta_router import router as analise_planta_router
+from .plantas_publicas_router import router as plantas_publicas_router
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,15 @@ async def lifespan(app: FastAPI):
             # Add columns that create_all won't add to existing tables
             migrations = [
                 "ALTER TABLE artigos ADD COLUMN IF NOT EXISTS imagem_alt_text VARCHAR(255)",
+                """
+                CREATE TABLE IF NOT EXISTS projeto_assets_cache (
+                    projeto_id INTEGER PRIMARY KEY,
+                    render_3d_drive_ids TEXT[],
+                    pdf_drive_ids TEXT[],
+                    pdf_titulos TEXT[],
+                    synced_at TIMESTAMP DEFAULT NOW()
+                )
+                """,
             ]
             for stmt in migrations:
                 try:
@@ -67,6 +77,7 @@ app.add_middleware(
 app.include_router(leads_router)
 app.include_router(artigos_router)
 app.include_router(analise_planta_router)
+app.include_router(plantas_publicas_router)
 
 @app.get("/")
 async def root():
