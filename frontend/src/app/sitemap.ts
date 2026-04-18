@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { PORTFOLIO_ENTRIES } from "@/data/portfolio-map";
 
 const SITE_URL = "https://casaslsf.com";
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -135,5 +136,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...artigoPages];
+  const portfolioPages: MetadataRoute.Sitemap = PORTFOLIO_ENTRIES.map((e) => ({
+    url: `${SITE_URL}/portfolio/${e.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...portfolioPages, ...artigoPages];
 }

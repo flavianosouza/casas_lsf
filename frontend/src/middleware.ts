@@ -53,6 +53,7 @@ const SKIP_PREFIXES = [
   "/robots",
   "/sitemap",
   "/blog/",
+  "/portfolio/",
   "/manifest",
   "/sw.",
   "/bg-",
@@ -96,8 +97,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // /portfolio/* → /plantas (these were house model pages)
-  if (pathname.startsWith("/portfolio")) {
+  // /portfolio/* — handled by dynamic route at src/app/portfolio/[slug]/page.tsx
+  // Unmatched slugs fall through to page component which calls permanentRedirect to /plantas.
+  // The /portfolio/ prefix is already in SKIP_PREFIXES above so no redirect logic needed here.
+
+  // Bare /portfolio → /plantas (no index page for portfolio)
+  if (pathname === "/portfolio" || pathname === "/portfolio/") {
     const url = request.nextUrl.clone();
     url.pathname = "/plantas";
     return NextResponse.redirect(url, 301);
