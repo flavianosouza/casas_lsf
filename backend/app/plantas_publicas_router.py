@@ -448,22 +448,54 @@ async def sync_assets(
     if not exists:
         raise HTTPException(404, f"Projeto {projeto_id} not found or inactive")
 
-    render_ids = payload.get("render_3d_drive_ids") or []
-    pdf_ids = payload.get("pdf_drive_ids") or []
-    pdf_titulos = payload.get("pdf_titulos") or []
+    # Only update fields present in payload. Preserves other assets when
+    # called from separate workflows (PDFs workflow vs 3D workflow).
+    has_renders = "render_3d_drive_ids" in payload
+    has_pdfs = "pdf_drive_ids" in payload
 
-    # Sanity
-    if not isinstance(render_ids, list) or not isinstance(pdf_ids, list):
-        raise HTTPException(422, "render_3d_drive_ids and pdf_drive_ids must be arrays")
-    if len(pdf_titulos) and len(pdf_titulos) != len(pdf_ids):
-        raise HTTPException(422, "pdf_titulos length must match pdf_drive_ids length")
+    if not has_renders and not has_pdfs:
+        raise HTTPException(422, "payload must include render_3d_drive_ids and/or pdf_drive_ids")
 
-    render_ids = [str(x) for x in render_ids][:10]
-    pdf_ids = [str(x) for x in pdf_ids][:10]
-    pdf_titulos = [str(x) for x in pdf_titulos][:10]
+    render_ids = payload.get("render_3d_drive_ids") if has_renders else None
+    pdf_ids = payload.get("pdf_drive_ids") if has_pdfs else None
+    pdf_titulos = payload.get("pdf_titulos") if has_pdfs else None
 
+    if has_renders:
+        if not isinstance(render_ids, list):
+            raise HTTPException(422, "render_3d_drive_ids must be an array")
+        render_ids = [str(x) for x in render_ids][:10]
+    if has_pdfs:
+        if not isinstance(pdf_ids, list):
+            raise HTTPException(422, "pdf_drive_ids must be an array")
+        pdf_ids = [str(x) for x in pdf_ids][:10]
+        pdf_titulos = pdf_titulos or [f"Documento {i+1}" for i in range(len(pdf_ids))]
+        if not isinstance(pdf_titulos, list) or len(pdf_titulos) != len(pdf_ids):
+            raise HTTPException(422, "pdf_titulos length must match pdf_drive_ids length")
+        pdf_titulos = [str(x) for x in pdf_titulos][:10]
+
+    # Read current row for merge
     try:
         async with casas_lsf_engine.begin() as conn:
+            current = (
+                await conn.execute(
+                    text("""
+                        SELECT render_3d_drive_ids, pdf_drive_ids, pdf_titulos
+                          FROM projeto_assets_cache WHERE projeto_id = :pid
+                    """),
+                    {"pid": projeto_id},
+                )
+            ).fetchone()
+
+            final_renders = render_ids if has_renders else (
+                list(current._mapping.get("render_3d_drive_ids") or []) if current else []
+            )
+            final_pdfs = pdf_ids if has_pdfs else (
+                list(current._mapping.get("pdf_drive_ids") or []) if current else []
+            )
+            final_titulos = pdf_titulos if has_pdfs else (
+                list(current._mapping.get("pdf_titulos") or []) if current else []
+            )
+
             await conn.execute(
                 text("""
                     INSERT INTO projeto_assets_cache (projeto_id, render_3d_drive_ids, pdf_drive_ids, pdf_titulos, synced_at)
@@ -476,9 +508,9 @@ async def sync_assets(
                 """),
                 {
                     "pid": projeto_id,
-                    "rids": render_ids,
-                    "pids": pdf_ids,
-                    "ptitles": pdf_titulos,
+                    "rids": final_renders,
+                    "pids": final_pdfs,
+                    "ptitles": final_titulos,
                 },
             )
     except Exception as e:
@@ -487,9 +519,106 @@ async def sync_assets(
     return {
         "ok": True,
         "projeto_id": projeto_id,
-        "render_3d_count": len(render_ids),
-        "pdf_count": len(pdf_ids),
-        "url_publico": f"/api/plantas-publicas/{projeto_id}",
+        "updated_renders": has_renders,
+        "updated_pdfs": has_pdfs,
+        "render_3d_count": len(final_renders),
+        "pdf_count": len(final_pdfs),
+    }
+
+
+@router.post("/api/admin/generate-3d/{projeto_id}")
+async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
+    """Trigger 3D generation for a projeto via the n8n wrapper workflow.
+
+    Useful for SEO: projetos that were published (have planta 2D + orçamento)
+    but lack 3D renders (because the lead never asked) — we generate them
+    proactively to enrich the detail page.
+
+    Flow:
+      1. Fetch projeto's telefone + lead_id from engineering DB
+      2. POST to n8n webhook https://n8n.lsfbuilderpro.com/webhook/generate-3d-casaslsf
+      3. n8n wrapper calls Gerar 3D sub-workflow → generates 6 renders
+      4. Gerar 3D's own sync node calls back /api/admin/sync-assets → cache populated
+      5. Detail page now shows 3D
+    """
+    import os
+    import httpx
+
+    expected_secret = os.environ.get("ADMIN_DIAG_SECRET", "diagnostico-lsf-2026-abril")
+    if secret != expected_secret:
+        raise HTTPException(404, "Not found")
+
+    if not engineering_engine:
+        raise HTTPException(503, "Engineering DB unavailable")
+
+    # Fetch projeto context
+    async with engineering_engine.connect() as conn:
+        row = (
+            await conn.execute(
+                text("""
+                    SELECT p.id AS projeto_id, p.telefone,
+                           (SELECT lead_id FROM plantas_geradas pg
+                             WHERE pg.projeto_id = p.id
+                               AND pg.lead_id IS NOT NULL
+                             ORDER BY created_at DESC LIMIT 1) AS lead_id
+                      FROM projetos p
+                     WHERE p.id = :pid AND p.ativo = true AND p.deleted_at IS NULL
+                """),
+                {"pid": projeto_id},
+            )
+        ).fetchone()
+
+    if not row:
+        raise HTTPException(404, f"Projeto {projeto_id} not found or inactive")
+
+    ctx = dict(row._mapping)
+
+    # Check if already has 3D (avoid duplicate/costly regeneration)
+    async with casas_lsf_engine.connect() as conn:
+        cache = (
+            await conn.execute(
+                text("""
+                    SELECT array_length(render_3d_drive_ids, 1) AS n_renders
+                      FROM projeto_assets_cache WHERE projeto_id = :pid
+                """),
+                {"pid": projeto_id},
+            )
+        ).fetchone()
+    if cache and (cache._mapping.get("n_renders") or 0) > 0:
+        return {
+            "skipped": True,
+            "reason": f"Projeto {projeto_id} already has {cache._mapping['n_renders']} renders in cache",
+        }
+
+    # Fire the webhook (non-blocking — Gerar 3D takes ~60-120s, we return immediately)
+    webhook_url = os.environ.get(
+        "N8N_WEBHOOK_GENERATE_3D",
+        "https://n8n.lsfbuilderpro.com/webhook/generate-3d-casaslsf",
+    )
+    webhook_secret = os.environ.get("N8N_WEBHOOK_SECRET", "diagnostico-lsf-2026-abril")
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.post(
+                webhook_url,
+                headers={"X-Casaslsf-Secret": webhook_secret, "Content-Type": "application/json"},
+                json={
+                    "projeto_id": ctx["projeto_id"],
+                    "telefone": ctx.get("telefone"),
+                    "lead_id": ctx.get("lead_id"),
+                },
+            )
+            triggered_at = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
+    except httpx.HTTPError as e:
+        raise HTTPException(502, f"n8n webhook unreachable: {str(e)[:120]}")
+
+    return {
+        "triggered": True,
+        "projeto_id": projeto_id,
+        "n8n_status": resp.status_code,
+        "n8n_response": triggered_at,
+        "expected_completion_seconds": 120,
+        "check_status_via": f"GET /api/plantas-publicas/{projeto_id} after 2min (render_3d_count)",
     }
 
 
