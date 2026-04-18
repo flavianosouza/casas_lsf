@@ -551,22 +551,21 @@ async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
     if not engineering_engine:
         raise HTTPException(503, "Engineering DB unavailable")
 
-    # Fetch projeto context
-    async with engineering_engine.connect() as conn:
-        row = (
-            await conn.execute(
-                text("""
-                    SELECT p.id AS projeto_id, p.telefone,
-                           (SELECT lead_id FROM plantas_geradas pg
-                             WHERE pg.projeto_id = p.id
-                               AND pg.lead_id IS NOT NULL
-                             ORDER BY created_at DESC LIMIT 1) AS lead_id
-                      FROM projetos p
-                     WHERE p.id = :pid AND p.ativo = true AND p.deleted_at IS NULL
-                """),
-                {"pid": projeto_id},
-            )
-        ).fetchone()
+    # Fetch projeto context — just telefone (n8n wrapper resolves lead_id itself)
+    try:
+        async with engineering_engine.connect() as conn:
+            row = (
+                await conn.execute(
+                    text("""
+                        SELECT p.id AS projeto_id, p.telefone
+                          FROM projetos p
+                         WHERE p.id = :pid AND p.ativo = true AND p.deleted_at IS NULL
+                    """),
+                    {"pid": projeto_id},
+                )
+            ).fetchone()
+    except Exception as e:
+        raise HTTPException(500, f"DB lookup failed: {str(e)[:120]}")
 
     if not row:
         raise HTTPException(404, f"Projeto {projeto_id} not found or inactive")
@@ -605,10 +604,13 @@ async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
                 json={
                     "projeto_id": ctx["projeto_id"],
                     "telefone": ctx.get("telefone"),
-                    "lead_id": ctx.get("lead_id"),
                 },
             )
-            triggered_at = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
+            triggered_at = (
+                resp.json()
+                if resp.headers.get("content-type", "").startswith("application/json")
+                else {"raw": resp.text[:200]}
+            )
     except httpx.HTTPError as e:
         raise HTTPException(502, f"n8n webhook unreachable: {str(e)[:120]}")
 
