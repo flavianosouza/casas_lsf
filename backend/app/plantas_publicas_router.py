@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, Body, HTTPException, Query, Response
+from fastapi import APIRouter, BackgroundTasks, Body, HTTPException, Query, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
@@ -527,7 +527,11 @@ async def sync_assets(
 
 
 @router.post("/api/admin/generate-3d/{projeto_id}")
-async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
+async def trigger_3d_generation(
+    projeto_id: int,
+    secret: str = Query(...),
+    background_tasks: BackgroundTasks = None,
+):
     """Trigger 3D generation for a projeto via the n8n wrapper workflow.
 
     Useful for SEO: projetos that were published (have planta 2D + orçamento)
@@ -589,38 +593,37 @@ async def trigger_3d_generation(projeto_id: int, secret: str = Query(...)):
             "reason": f"Projeto {projeto_id} already has {cache._mapping['n_renders']} renders in cache",
         }
 
-    # Fire the webhook (non-blocking — Gerar 3D takes ~60-120s, we return immediately)
+    # Fire the webhook in background — Gerar 3D runs synchronously (60-120s)
+    # so we can't await the response or EasyPanel proxy times out at ~10s.
+    # We schedule the POST and return 202 immediately.
     webhook_url = os.environ.get(
         "N8N_WEBHOOK_GENERATE_3D",
         "https://n8n.lsfbuilderpro.com/webhook/generate-3d-casaslsf",
     )
     webhook_secret = os.environ.get("N8N_WEBHOOK_SECRET", "diagnostico-lsf-2026-abril")
+    telefone = ctx.get("telefone")
 
-    # NOTE: intentionally do NOT pass projeto_id — the workflow SQL uses NULLIF
-    # casts that break when projeto_id is provided as number. Passing only
-    # telefone works (matches the signature used when Felipe Cardoso agent calls).
-    try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            resp = await client.post(
-                webhook_url,
-                headers={"X-Casaslsf-Secret": webhook_secret, "Content-Type": "application/json"},
-                json={
-                    "telefone": ctx.get("telefone"),
-                },
-            )
-            triggered_at = (
-                resp.json()
-                if resp.headers.get("content-type", "").startswith("application/json")
-                else {"raw": resp.text[:200]}
-            )
-    except httpx.HTTPError as e:
-        raise HTTPException(502, f"n8n webhook unreachable: {str(e)[:120]}")
+    async def _fire_webhook():
+        try:
+            async with httpx.AsyncClient(timeout=180.0) as client:
+                await client.post(
+                    webhook_url,
+                    headers={"X-Casaslsf-Secret": webhook_secret, "Content-Type": "application/json"},
+                    json={"telefone": telefone},
+                )
+        except Exception:
+            pass  # Fire-and-forget; sync endpoint will be called back when workflow completes
+
+    if background_tasks is not None:
+        background_tasks.add_task(_fire_webhook)
+    else:
+        import asyncio
+        asyncio.create_task(_fire_webhook())
 
     return {
         "triggered": True,
         "projeto_id": projeto_id,
-        "n8n_status": resp.status_code,
-        "n8n_response": triggered_at,
+        "telefone": telefone,
         "expected_completion_seconds": 120,
         "check_status_via": f"GET /api/plantas-publicas/{projeto_id} after 2min (render_3d_count)",
     }
