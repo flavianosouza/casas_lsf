@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query, Response
+from fastapi import APIRouter, Body, HTTPException, Query, Response
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
@@ -407,6 +407,89 @@ async def lead_diagnostico(telefone: str, secret: str):
             f"{int(p['area_m2']) if p.get('area_m2') else 'modelo'}m2-chave-na-mao-{projeto_id}"
             if qualified else None
         ),
+    }
+
+
+@router.post("/api/admin/sync-assets/{projeto_id}")
+async def sync_assets(
+    projeto_id: int,
+    secret: str = Query(...),
+    payload: dict = Body(...),
+):
+    """Upsert assets cache for a projeto.
+
+    Accepts Drive file IDs discovered by n8n (or manual curl) and stores them
+    in `projeto_assets_cache`. After upsert, the detail page + asset proxy
+    immediately serve the new 3D renders and PDFs.
+
+    Payload shape:
+    {
+      "render_3d_drive_ids": ["1abc...", "2def...", ...],  // up to 7
+      "pdf_drive_ids": ["3ghi...", "4jkl...", ...],        // up to 4
+      "pdf_titulos": ["Mapa de Quantidades", "Cronograma Financeiro", ...]
+    }
+    """
+    import os
+
+    expected_secret = os.environ.get("ADMIN_DIAG_SECRET", "diagnostico-lsf-2026-abril")
+    if secret != expected_secret:
+        raise HTTPException(404, "Not found")
+
+    # Validate projeto exists and is qualifying
+    if not engineering_engine:
+        raise HTTPException(503, "Engineering DB unavailable")
+    async with engineering_engine.connect() as conn:
+        exists = (
+            await conn.execute(
+                text("SELECT 1 FROM projetos WHERE id = :pid AND ativo = true AND deleted_at IS NULL"),
+                {"pid": projeto_id},
+            )
+        ).scalar()
+    if not exists:
+        raise HTTPException(404, f"Projeto {projeto_id} not found or inactive")
+
+    render_ids = payload.get("render_3d_drive_ids") or []
+    pdf_ids = payload.get("pdf_drive_ids") or []
+    pdf_titulos = payload.get("pdf_titulos") or []
+
+    # Sanity
+    if not isinstance(render_ids, list) or not isinstance(pdf_ids, list):
+        raise HTTPException(422, "render_3d_drive_ids and pdf_drive_ids must be arrays")
+    if len(pdf_titulos) and len(pdf_titulos) != len(pdf_ids):
+        raise HTTPException(422, "pdf_titulos length must match pdf_drive_ids length")
+
+    render_ids = [str(x) for x in render_ids][:10]
+    pdf_ids = [str(x) for x in pdf_ids][:10]
+    pdf_titulos = [str(x) for x in pdf_titulos][:10]
+
+    try:
+        async with casas_lsf_engine.begin() as conn:
+            await conn.execute(
+                text("""
+                    INSERT INTO projeto_assets_cache (projeto_id, render_3d_drive_ids, pdf_drive_ids, pdf_titulos, synced_at)
+                    VALUES (:pid, :rids, :pids, :ptitles, NOW())
+                    ON CONFLICT (projeto_id) DO UPDATE SET
+                        render_3d_drive_ids = EXCLUDED.render_3d_drive_ids,
+                        pdf_drive_ids = EXCLUDED.pdf_drive_ids,
+                        pdf_titulos = EXCLUDED.pdf_titulos,
+                        synced_at = NOW()
+                """),
+                {
+                    "pid": projeto_id,
+                    "rids": render_ids,
+                    "pids": pdf_ids,
+                    "ptitles": pdf_titulos,
+                },
+            )
+    except Exception as e:
+        raise HTTPException(500, f"Upsert error: {str(e)[:120]}")
+
+    return {
+        "ok": True,
+        "projeto_id": projeto_id,
+        "render_3d_count": len(render_ids),
+        "pdf_count": len(pdf_ids),
+        "url_publico": f"/api/plantas-publicas/{projeto_id}",
     }
 
 
