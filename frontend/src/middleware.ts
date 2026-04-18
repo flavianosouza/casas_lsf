@@ -21,6 +21,7 @@ const APP_ROUTES = new Set([
   "/empresa-construcao-lsf-portugal",
   "/analise-planta",
   "/pladur-preco",
+  "/iva-6-construcao",
 ]);
 
 // Old WordPress blog slugs → correct slugs (301 redirects)

@@ -28,6 +28,10 @@ interface PlantaDetail {
   valor_materiais: number | null;
   valor_mao_obra: number | null;
   valor_indiretos: number | null;
+  valor_sem_iva: number | null;
+  iva_percentual: number | null;
+  iva_valor: number | null;
+  preco_m2: number | null;
   bdi_percentual: number | null;
   padrao_acabamento: string | null;
   url: string;
@@ -264,7 +268,7 @@ export default async function PlantaDetailPage({
           {data.valor_total && (
             <section className="glass-card p-8 md:p-10 mb-12 text-center">
               <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">
-                Preço chave na mão — referência real
+                Preço chave na mão (c/ IVA) — referência real
               </div>
               <div className="text-4xl md:text-5xl font-black text-white mb-2">
                 {formatEur(data.valor_total)}
@@ -310,18 +314,80 @@ export default async function PlantaDetailPage({
                       </span>
                     </div>
                   )}
-                {data.bdi_percentual !== null &&
-                  data.bdi_percentual !== undefined && (
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-white/5">
-                      <span className="text-gray-300">BDI</span>
+                {data.valor_sem_iva !== null &&
+                  data.valor_sem_iva !== undefined && (
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-white/10 border border-white/10">
+                      <span className="text-gray-200 font-semibold">
+                        Subtotal (s/ IVA)
+                      </span>
                       <span className="text-white font-bold">
-                        {data.bdi_percentual}%
+                        {formatEur(data.valor_sem_iva)}
                       </span>
                     </div>
                   )}
+                {data.iva_valor !== null && data.iva_valor !== undefined && (
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-white/5">
+                    <span className="text-gray-300">
+                      IVA
+                      {data.iva_percentual
+                        ? ` (${Math.round(data.iva_percentual)}%)`
+                        : ""}
+                    </span>
+                    <span className="text-white font-bold">
+                      {formatEur(data.iva_valor)}
+                    </span>
+                  </div>
+                )}
+                {data.valor_total !== null && data.valor_total !== undefined && (
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                    <span className="text-white font-bold">
+                      Total chave na mão (c/ IVA)
+                    </span>
+                    <span className="text-white font-black text-lg">
+                      {formatEur(data.valor_total)}
+                    </span>
+                  </div>
+                )}
               </div>
+              <p className="text-xs text-gray-500 mt-6 leading-relaxed">
+                Valores de referência com base em projecto real orçamentado.
+                IVA à taxa legal em vigor (23% construção por empreitada com
+                OBRASNET UNIP LDA).
+              </p>
             </section>
           )}
+
+          {/* IVA 6% callout — mostra reembolso estimado */}
+          {data.valor_sem_iva !== null &&
+            data.valor_sem_iva !== undefined &&
+            data.valor_sem_iva > 0 && (
+              <section className="glass-card p-6 md:p-8 mb-12 border border-green-500/30 bg-green-500/5">
+                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                  <div className="flex-1">
+                    <div className="text-xs text-green-300 uppercase tracking-wider font-bold mb-2">
+                      💡 Habitação Própria Permanente
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-black text-white mb-2">
+                      Recupere cerca de{" "}
+                      {formatEur(Math.round(data.valor_sem_iva * 0.17))} junto
+                      da Autoridade Tributária
+                    </h3>
+                    <p className="text-sm text-gray-300 leading-relaxed">
+                      Ao abrigo da Lei n.º 9-A/2026, clientes em habitação
+                      própria e permanente recebem reembolso de 17% (diferença
+                      entre 23% e 6%) no prazo de 150 dias após a licença de
+                      utilização.
+                    </p>
+                  </div>
+                  <Link
+                    href="/iva-6-construcao"
+                    className="btn-primary rounded-full px-6 py-3 font-bold inline-flex items-center gap-2 whitespace-nowrap"
+                  >
+                    Como funciona →
+                  </Link>
+                </div>
+              </section>
+            )}
 
           <InlineCta searchIntent="comercial" />
 

@@ -212,6 +212,25 @@ async def get_planta_detail(projeto_id: int):
     if d.get("created_at"):
         d["created_at"] = d["created_at"].isoformat()
 
+    # Extract IVA + material breakdown from quantitativos.resumo (authoritative source).
+    # DB column `valor_materiais` is misleading — it stores total_sem_iva (material + MO),
+    # not just material cost. Use resumo.total_material for the real material number.
+    quant = d.get("quantitativos") or {}
+    resumo = quant.get("resumo") if isinstance(quant, dict) else None
+    resumo = resumo if isinstance(resumo, dict) else {}
+
+    def _num(x):
+        try:
+            return float(x) if x is not None else None
+        except (TypeError, ValueError):
+            return None
+
+    valor_material = _num(resumo.get("total_material"))
+    valor_sem_iva = _num(resumo.get("total_sem_iva"))
+    iva_percentual = _num(resumo.get("iva_percentual"))
+    iva_valor = _num(resumo.get("iva_valor"))
+    preco_m2 = _num(resumo.get("preco_m2"))
+
     area_int = int(d["area_m2"]) if d.get("area_m2") else 0
     slug = (
         f"{area_int}m2-chave-na-mao-{projeto_id}"
@@ -230,9 +249,13 @@ async def get_planta_detail(projeto_id: int):
             "tem_cave": d.get("tem_cave"),
             "tem_sotao": d.get("tem_sotao"),
             "valor_total": d.get("valor_total"),
-            "valor_materiais": d.get("valor_materiais"),
+            "valor_materiais": valor_material if valor_material is not None else d.get("valor_materiais"),
             "valor_mao_obra": d.get("valor_mao_obra"),
             "valor_indiretos": d.get("valor_indiretos"),
+            "valor_sem_iva": valor_sem_iva,
+            "iva_percentual": iva_percentual,
+            "iva_valor": iva_valor,
+            "preco_m2": preco_m2,
             "bdi_percentual": d.get("bdi_percentual"),
             "padrao_acabamento": d.get("padrao_acabamento"),
             "quantitativos": d.get("quantitativos"),
