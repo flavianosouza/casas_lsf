@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E2 — Dashboard Cliente</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:24px; justify-content:center; }
+  .dash-head { display:flex; justify-content:space-between; align-items:center; }
+  .dash-title { font-size:30px; font-weight:800; }
+  .dash-sub { font-size:14px; color:#64748b; margin-top:2px; letter-spacing:1px; text-transform:uppercase; }
+  .avatar-mini { width:56px; height:56px; border-radius:50%;
+                 background:linear-gradient(135deg,#178FC6,#F07D17); display:flex;
+                 align-items:center; justify-content:center; font-weight:700; font-size:22px; }
+  .prog-card {
+    background:linear-gradient(165deg,rgba(23,143,198,0.15),rgba(23,143,198,0.02));
+    border:1px solid rgba(23,143,198,0.3); border-radius:20px; padding:30px; position:relative;
+  }
+  .prog-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:16px; }
+  .prog-top-l { font-size:16px; color:#94a3b8; letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+  .prog-big { font-size:88px; font-weight:900; font-family:'JetBrains Mono',monospace;
+              background:linear-gradient(135deg,#178FC6,#F07D17); -webkit-background-clip:text; background-clip:text; color:transparent; line-height:1; }
+  .prog-track { height:16px; background:rgba(255,255,255,0.08); border-radius:8px; overflow:hidden; }
+  .prog-fill { height:100%; background:linear-gradient(90deg,#178FC6,#F07D17); width:0%; transition:width 3s cubic-bezier(0.4,0,0.2,1); box-shadow:0 0 20px rgba(23,143,198,0.5); }
+  .metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .metric {
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px; padding:16px;
+  }
+  .metric-l { font-size:11px; color:#64748b; letter-spacing:1.5px; text-transform:uppercase; }
+  .metric-v { font-size:26px; font-weight:800; margin-top:4px; font-family:'JetBrains Mono',monospace; }
+  .metric .v-good { color:#22c55e; }
+  .metric .v-blue { color:#5bbde0; }
+  .phases-list { display:flex; flex-direction:column; gap:10px; }
+  .phase-row {
+    display:flex; gap:14px; align-items:center; padding:16px; border-radius:12px;
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06);
+    opacity:0; transform:translateX(-10px); transition:all 0.5s;
+  }
+  .phase-row.show { opacity:1; transform:translateX(0); }
+  .phase-status { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0; font-size:16px; }
+  .phase-done { background:#22c55e; color:#fff; }
+  .phase-now { background:rgba(240,125,23,0.2); border:2px solid #F07D17; color:#F07D17; animation:pulseNow 1.5s infinite; }
+  .phase-next { background:rgba(255,255,255,0.06); color:#64748b; }
+  @keyframes pulseNow { 0%,100% { box-shadow:0 0 0 0 rgba(240,125,23,0.5); } 50% { box-shadow:0 0 0 8px rgba(240,125,23,0); } }
+  .phase-name { flex:1; font-weight:600; font-size:16px; }
+  .phase-date { font-size:13px; color:#64748b; font-family:'JetBrains Mono',monospace; }
+  .photos { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .photo { aspect-ratio:1; border-radius:12px; opacity:0; transform:scale(0.9); transition:all 0.5s;
+           background:linear-gradient(135deg,#178FC6,#1a3a5e); border:1px solid rgba(255,255,255,0.08);
+           display:flex; align-items:center; justify-content:center; font-size:30px; }
+  .photo.show { opacity:1; transform:scale(1); }
+  .p1 { background:linear-gradient(135deg,#a8764a,#5e3e1f); }
+  .p2 { background:linear-gradient(135deg,#64748b,#334155); }
+  .p3 { background:linear-gradient(135deg,#178FC6,#125f84); }
+  .section-h { font-size:16px; color:#64748b; letter-spacing:2px; text-transform:uppercase; font-weight:700; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="wrap">
+      <div class="dash-head">
+        <div>
+          <div class="dash-sub">Portal do cliente</div>
+          <div class="dash-title">Olá, João 👋</div>
+        </div>
+        <div class="avatar-mini">JM</div>
+      </div>
+      <div class="prog-card">
+        <div class="prog-top">
+          <div><div class="prog-top-l">Obra concluída</div><div class="prog-big" id="bigPct">0%</div></div>
+          <div style="text-align:right;"><div style="font-size:14px; color:#64748b; letter-spacing:1.5px; text-transform:uppercase;">Entrega prevista</div><div style="font-size:22px; font-weight:700; color:#F07D17;">25 Out 2026</div></div>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="fill"></div></div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric"><div class="metric-l">Orçamento executado</div><div class="metric-v v-blue">102.400€</div></div>
+        <div class="metric"><div class="metric-l">Orçamento previsto</div><div class="metric-v">168.000€</div></div>
+        <div class="metric"><div class="metric-l">Desvio</div><div class="metric-v v-good">0%</div></div>
+      </div>
+      <div class="section-h">Fases</div>
+      <div class="phases-list" id="phases">
+        <div class="phase-row"><div class="phase-status phase-done">✓</div><div class="phase-name">Projecto arquitectura</div><div class="phase-date">12 Jan</div></div>
+        <div class="phase-row"><div class="phase-status phase-done">✓</div><div class="phase-name">Licenciamento</div><div class="phase-date">04 Mar</div></div>
+        <div class="phase-row"><div class="phase-status phase-done">✓</div><div class="phase-name">Fundações</div><div class="phase-date">20 Mar</div></div>
+        <div class="phase-row"><div class="phase-status phase-now">●</div><div class="phase-name">Estrutura metálica</div><div class="phase-date">em curso</div></div>
+        <div class="phase-row"><div class="phase-status phase-next">○</div><div class="phase-name">Acabamentos</div><div class="phase-date">15 Jul</div></div>
+        <div class="phase-row"><div class="phase-status phase-next">○</div><div class="phase-name">Entrega das chaves</div><div class="phase-date">25 Out</div></div>
+      </div>
+      <div class="section-h">Fotos da obra · esta semana</div>
+      <div class="photos" id="photos">
+        <div class="photo p1">🏗️</div>
+        <div class="photo p2">🧱</div>
+        <div class="photo p3">⚡</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    await wait(600);
+    document.getElementById('fill').style.width='61%';
+    const big=document.getElementById('bigPct');
+    let v=0;
+    const i=setInterval(()=>{v+=1;if(v>=61){v=61;clearInterval(i);}big.textContent=v+'%';},40);
+    const phases=document.querySelectorAll('.phase-row');
+    for(let j=0;j<phases.length;j++){await wait(200);phases[j].classList.add('show');}
+    const photos=document.querySelectorAll('.photo');
+    for(let j=0;j<photos.length;j++){await wait(220);photos[j].classList.add('show');}
+    await wait(3500);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

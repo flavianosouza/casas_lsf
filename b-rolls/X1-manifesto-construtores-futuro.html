@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll X1 — Manifesto Construtores do Futuro</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:28px; justify-content:center; }
+  .eyebrow { font-size:16px; color:#F07D17; letter-spacing:4px; text-transform:uppercase; font-weight:800; }
+  .manifesto { font-size:52px; font-weight:800; letter-spacing:-0.02em; line-height:1.15; }
+  .line { display:block; opacity:0; transform:translateY(14px); transition:all 0.6s cubic-bezier(0.4,0,0.2,1); min-height:1.2em; }
+  .line.show { opacity:1; transform:translateY(0); }
+  .highlight { background:linear-gradient(135deg,#178FC6 0%,#F07D17 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .strike { text-decoration:line-through; color:#64748b; font-weight:600; }
+  .signature { display:flex; gap:14px; align-items:center; margin-top:30px; opacity:0; transition:opacity 0.8s; }
+  .signature.show { opacity:1; }
+  .sig-avatar { width:60px; height:60px; border-radius:50%;
+                background:linear-gradient(135deg,#178FC6,#F07D17);
+                display:flex; align-items:center; justify-content:center; font-weight:800; font-size:22px; color:#fff; }
+  .sig-meta .n { font-weight:700; font-size:18px; }
+  .sig-meta .r { font-size:14px; color:#94a3b8; letter-spacing:1px; text-transform:uppercase; }
+  .hashtag { display:inline-block; background:rgba(240,125,23,0.15); border:1px solid rgba(240,125,23,0.3);
+             color:#F07D17; padding:10px 20px; border-radius:12px; font-weight:700; margin-top:20px;
+             opacity:0; transform:scale(0.9); transition:all 0.5s; }
+  .hashtag.show { opacity:1; transform:scale(1); }
+  .bg-effect {
+    position:absolute; inset:0; background:
+      radial-gradient(circle at 20% 30%, rgba(23,143,198,0.15), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(240,125,23,0.12), transparent 50%);
+    animation:bgMove 12s ease-in-out infinite alternate;
+  }
+  @keyframes bgMove { to { transform:scale(1.1); } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="bg-effect"></div>
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:20px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <div class="eyebrow">Manifesto · 2026</div>
+      <div class="manifesto">
+        <span class="line">Não queremos</span>
+        <span class="line"><span class="strike">derrapagens</span>.</span>
+        <span class="line">Não queremos</span>
+        <span class="line"><span class="strike">obras eternas</span>.</span>
+        <span class="line">Não queremos</span>
+        <span class="line"><span class="strike">surpresas na factura</span>.</span>
+        <span class="line" style="margin-top:16px;">Somos os</span>
+        <span class="line"><span class="highlight">Construtores</span></span>
+        <span class="line"><span class="highlight">do Futuro</span>.</span>
+      </div>
+      <div class="hashtag" id="hash">#ConstrutoresDoFuturo</div>
+      <div class="signature" id="sig">
+        <div class="sig-avatar">F</div>
+        <div class="sig-meta"><div class="n">Felipe · OBRASNET</div><div class="r">Fundador · Engenheiro</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    const lines=document.querySelectorAll('.line');
+    await wait(700);
+    for(let i=0;i<lines.length;i++){await wait(380);lines[i].classList.add('show');}
+    await wait(500);
+    document.getElementById('hash').classList.add('show');
+    await wait(500);
+    document.getElementById('sig').classList.add('show');
+    await wait(4500);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

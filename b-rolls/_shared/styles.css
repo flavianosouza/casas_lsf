@@ -1,0 +1,160 @@
+/* Shared styles for b-rolls — mirrors casaslsf.com design system */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0a0a0a;
+  --fg: #ededed;
+  --primary: #178FC6;
+  --primary-dark: #125f84;
+  --secondary: #F07D17;
+  --success: #22c55e;
+  --safe-top: 15%;
+  --safe-bottom: 15%;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1080px;
+  height: 1920px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.stage {
+  position: relative;
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at top, rgba(23,143,198,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(240,125,23,0.05) 0%, transparent 50%),
+    var(--bg);
+}
+
+.safe-area {
+  position: absolute;
+  inset: var(--safe-top) 0 var(--safe-bottom) 0;
+  padding: 0 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(23,143,198,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23,143,198,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.glass-card {
+  background: linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #178FC6 0%, #1a6fa0 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 18px 40px;
+  border-radius: 12px;
+  border: none;
+  font-size: 22px;
+  box-shadow: 0 0 20px rgba(23,143,198,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover { box-shadow: 0 0 35px rgba(23,143,198,0.5); transform: scale(1.03); }
+.btn-primary.pulse { animation: btnPulse 1.2s ease-in-out infinite; }
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(23,143,198,0.3); }
+  50% { box-shadow: 0 0 45px rgba(23,143,198,0.7); }
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #178FC6 0%, #1a9fd6 50%, #F07D17 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cursor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  z-index: 999;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cursor-click { animation: cursorClick 0.3s ease-out; }
+@keyframes cursorClick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.75); }
+}
+
+.logo-brand {
+  display: flex; align-items: center; gap: 14px;
+  font-weight: 800; font-size: 26px; letter-spacing: 0.5px;
+}
+.logo-brand img { height: 40px; }
+
+.field-label { font-size: 18px; color: #94a3b8; font-weight: 500; margin-bottom: 10px; display: block; letter-spacing: 0.3px; }
+.field-input {
+  width: 100%; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 18px 20px;
+  font-size: 22px; color: #fff; outline: none;
+  font-family: inherit;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.field-input.focused {
+  border-color: rgba(23,143,198,0.6);
+  box-shadow: 0 0 0 3px rgba(23,143,198,0.15);
+}
+
+.caret::after {
+  content: '';
+  display: inline-block;
+  width: 2px; height: 1em;
+  background: var(--primary);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.check-tick {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 60px rgba(34,197,94,0.5);
+}
+.check-tick svg { width: 60px; height: 60px; stroke: #fff; stroke-width: 4; fill: none; }
+.check-tick svg path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawCheck 0.5s ease-out 0.2s forwards; }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+/* Scale to fit 9:16 phone preview if opened in desktop viewport */
+@media (min-aspect-ratio: 9/16) {
+  body {
+    display: flex; align-items: center; justify-content: center;
+    background: #000;
+    width: 100vw; height: 100vh;
+  }
+  .stage {
+    transform: scale(calc(100vh / 1920));
+    transform-origin: center;
+  }
+}

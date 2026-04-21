@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll D1 — WhatsApp Felipe Orçamento</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  body { background: #000; }
+  .stage {
+    background:
+      linear-gradient(180deg, #0b141a 0%, #0b141a 100%);
+  }
+  .wa-header {
+    height: 110px; background: #1f2c33;
+    display: flex; align-items: center; padding: 0 24px; gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    position: relative; z-index: 10;
+  }
+  .wa-back { color: #8696a0; font-size: 32px; }
+  .wa-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, #178FC6 0%, #F07D17 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 700; color: #fff; flex-shrink: 0;
+    position: relative;
+  }
+  .wa-avatar::after {
+    content:''; position:absolute; bottom:2px; right:2px;
+    width:18px; height:18px; background:#22c55e; border-radius:50%;
+    border:3px solid #1f2c33;
+  }
+  .wa-meta { flex: 1; }
+  .wa-name { font-size: 22px; font-weight: 600; color: #e9edef; }
+  .wa-status { font-size: 15px; color: #8696a0; margin-top: 3px; }
+  .wa-icons { display: flex; gap: 28px; color: #aebac1; font-size: 26px; }
+  .wa-chat {
+    flex: 1; overflow: hidden; padding: 20px 16px;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><g fill='rgba(255,255,255,0.015)'><circle cx='20' cy='20' r='2'/><circle cx='80' cy='60' r='1.5'/><circle cx='140' cy='30' r='1'/><circle cx='50' cy='150' r='2'/><circle cx='170' cy='180' r='1.5'/></g></svg>"),
+      #0b141a;
+    display: flex; flex-direction: column; gap: 12px;
+    position: relative;
+  }
+  .wa-bubble {
+    max-width: 78%; padding: 14px 18px;
+    font-size: 22px; line-height: 1.45;
+    border-radius: 14px; position: relative;
+    opacity: 0; transform: translateY(8px);
+    transition: all 0.3s ease-out;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+  }
+  .wa-bubble.show { opacity: 1; transform: translateY(0); }
+  .wa-bubble .time {
+    display: block; font-size: 14px; color: rgba(255,255,255,0.55);
+    text-align: right; margin-top: 6px; font-weight: 400;
+  }
+  .wa-bubble .time .ticks { color: #53bdeb; margin-left: 4px; font-size: 16px; letter-spacing: -4px; }
+  .wa-bubble-in {
+    align-self: flex-start; background: #1f2c33; color: #e9edef;
+    border-bottom-left-radius: 4px;
+  }
+  .wa-bubble-out {
+    align-self: flex-end; background: #005c4b; color: #e9edef;
+    border-bottom-right-radius: 4px;
+  }
+  .wa-typing {
+    align-self: flex-start; background: #1f2c33;
+    padding: 16px 22px; border-radius: 14px; border-bottom-left-radius: 4px;
+    display: none; gap: 4px; align-items: center;
+  }
+  .wa-typing.show { display: flex; }
+  .wa-typing span {
+    width: 8px; height: 8px; border-radius: 50%; background: #8696a0;
+    animation: typing 1.2s ease-in-out infinite;
+  }
+  .wa-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .wa-typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+  .wa-footer {
+    height: 88px; background: #1f2c33; display: flex; align-items: center;
+    padding: 0 20px; gap: 16px;
+  }
+  .wa-input {
+    flex: 1; background: #2a3942; border-radius: 28px;
+    padding: 14px 22px; color: #8696a0; font-size: 20px;
+  }
+  .wa-send {
+    width: 60px; height: 60px; border-radius: 50%; background: #00a884;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; color: #fff;
+  }
+  .stage {
+    display: flex; flex-direction: column;
+  }
+  .wa-chat-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    padding-top: 15%; padding-bottom: 15%;
+  }
+  .wa-chat-wrap .wa-chat { flex: 1; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="wa-chat-wrap">
+    <div class="wa-header">
+      <div class="wa-back">‹</div>
+      <div class="wa-avatar">FC</div>
+      <div class="wa-meta">
+        <div class="wa-name">Felipe Cardoso · OBRASNET</div>
+        <div class="wa-status">online</div>
+      </div>
+      <div class="wa-icons">📹 📞 ⋮</div>
+    </div>
+
+    <div class="wa-chat" id="chat">
+      <!-- bubbles injected by JS -->
+    </div>
+
+    <div class="wa-footer">
+      <div class="wa-input">Escreve uma mensagem</div>
+      <div class="wa-send">➤</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const chat = document.getElementById('chat');
+
+  const conversation = [
+    { side: 'in',  text: 'Olá 👋 Queria saber quanto custa uma T3 em LSF.', time: '14:02' },
+    { side: 'out', delay: 900, typing: 1800, text: 'Olá! Sou o Felipe da OBRASNET. Uma moradia T3 em Light Steel Framing, tipicamente 130 m², fica entre <b>160.000€ e 175.000€</b> chave na mão. Classe energética A+ garantida. 🏠', time: '14:02' },
+    { side: 'in',  delay: 1200, text: 'E o prazo? Tenho pressa.', time: '14:03' },
+    { side: 'out', delay: 700, typing: 1500, text: '5 a 7 meses do projecto à entrega das chaves. Metade do tempo da construção tradicional. ⚡', time: '14:03' },
+    { side: 'in',  delay: 1100, text: 'Os bancos financiam este tipo de construção?', time: '14:04' },
+    { side: 'out', delay: 600, typing: 2000, text: 'Sim, todos os principais:\n✔ Millennium BCP\n✔ CGD\n✔ Santander\n✔ BPI\n\nEstrutura certificada pela Norma Europeia EC3 — aceite por todos os bancos portugueses.', time: '14:04' },
+    { side: 'in',  delay: 1100, text: 'Perfeito! Como começamos?', time: '14:05' },
+  ];
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function addBubble(side, text, time) {
+    const b = document.createElement('div');
+    b.className = 'wa-bubble ' + (side === 'in' ? 'wa-bubble-in' : 'wa-bubble-out');
+    b.innerHTML = text.replace(/\n/g, '<br>') + `<span class="time">${time}${side === 'out' ? '<span class="ticks">✓✓</span>' : ''}</span>`;
+    chat.appendChild(b);
+    requestAnimationFrame(() => b.classList.add('show'));
+  }
+
+  function showTyping() {
+    const t = document.createElement('div');
+    t.className = 'wa-typing show';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    chat.appendChild(t);
+    return t;
+  }
+
+  async function run() {
+    await wait(600);
+    for (const msg of conversation) {
+      if (msg.delay) await wait(msg.delay);
+      if (msg.typing) {
+        const t = showTyping();
+        await wait(msg.typing);
+        t.remove();
+      }
+      addBubble(msg.side, msg.text, msg.time);
+      await wait(350);
+    }
+    await wait(3000);
+    window.location.reload();
+  }
+
+  window.addEventListener('load', () => setTimeout(run, 400));
+})();
+</script>
+</body>
+</html>

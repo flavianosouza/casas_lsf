@@ -1,0 +1,41 @@
+/* Shared WhatsApp UI — used by D2..D5 */
+body { background:#000; }
+.wa-stage { display:flex; flex-direction:column; }
+.wa-chat-wrap { flex:1; display:flex; flex-direction:column; padding-top:15%; padding-bottom:15%; }
+.wa-header { height:110px; background:#1f2c33; display:flex; align-items:center; padding:0 24px; gap:16px;
+             border-bottom:1px solid rgba(255,255,255,0.04); position:relative; z-index:10; }
+.wa-back { color:#8696a0; font-size:32px; }
+.wa-avatar { width:72px; height:72px; border-radius:50%;
+             background:linear-gradient(135deg,#178FC6 0%,#F07D17 100%);
+             display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:#fff;
+             flex-shrink:0; position:relative; }
+.wa-avatar::after { content:''; position:absolute; bottom:2px; right:2px; width:18px; height:18px;
+                    background:#22c55e; border-radius:50%; border:3px solid #1f2c33; }
+.wa-meta { flex:1; }
+.wa-name { font-size:22px; font-weight:600; color:#e9edef; }
+.wa-status { font-size:15px; color:#8696a0; margin-top:3px; }
+.wa-icons { display:flex; gap:28px; color:#aebac1; font-size:26px; }
+.wa-chat { flex:1; overflow:hidden; padding:20px 16px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><g fill='rgba(255,255,255,0.015)'><circle cx='20' cy='20' r='2'/><circle cx='80' cy='60' r='1.5'/><circle cx='140' cy='30' r='1'/><circle cx='50' cy='150' r='2'/><circle cx='170' cy='180' r='1.5'/></g></svg>"), #0b141a;
+  display:flex; flex-direction:column; gap:12px; position:relative; }
+.wa-bubble { max-width:78%; padding:14px 18px; font-size:22px; line-height:1.45; border-radius:14px;
+             position:relative; opacity:0; transform:translateY(8px); transition:all 0.3s ease-out;
+             box-shadow:0 1px 1px rgba(0,0,0,0.2); }
+.wa-bubble.show { opacity:1; transform:translateY(0); }
+.wa-bubble .time { display:block; font-size:14px; color:rgba(255,255,255,0.55); text-align:right;
+                   margin-top:6px; font-weight:400; }
+.wa-bubble .time .ticks { color:#53bdeb; margin-left:4px; font-size:16px; letter-spacing:-4px; }
+.wa-bubble-in { align-self:flex-start; background:#1f2c33; color:#e9edef; border-bottom-left-radius:4px; }
+.wa-bubble-out { align-self:flex-end; background:#005c4b; color:#e9edef; border-bottom-right-radius:4px; }
+.wa-typing { align-self:flex-start; background:#1f2c33; padding:16px 22px; border-radius:14px;
+             border-bottom-left-radius:4px; display:none; gap:4px; align-items:center; }
+.wa-typing.show { display:flex; }
+.wa-typing span { width:8px; height:8px; border-radius:50%; background:#8696a0;
+                  animation:waTyping 1.2s ease-in-out infinite; }
+.wa-typing span:nth-child(2) { animation-delay:0.15s; }
+.wa-typing span:nth-child(3) { animation-delay:0.3s; }
+@keyframes waTyping { 0%,60%,100% { transform:translateY(0); opacity:0.5; } 30% { transform:translateY(-6px); opacity:1; } }
+.wa-footer { height:88px; background:#1f2c33; display:flex; align-items:center; padding:0 20px; gap:16px; }
+.wa-input { flex:1; background:#2a3942; border-radius:28px; padding:14px 22px; color:#8696a0; font-size:20px; }
+.wa-send { width:60px; height:60px; border-radius:50%; background:#00a884;
+           display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; }

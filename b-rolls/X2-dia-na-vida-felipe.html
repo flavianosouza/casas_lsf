@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll X2 — Um Dia do Felipe</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:20px; justify-content:center; }
+  h1 { font-size:46px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; text-align:center; }
+  .sub { font-size:18px; color:#94a3b8; text-align:center; }
+  .timeline { position:relative; padding-left:60px; }
+  .timeline::before { content:''; position:absolute; left:22px; top:20px; bottom:20px; width:3px;
+                      background:linear-gradient(180deg,#178FC6 0%,#F07D17 100%); border-radius:2px; }
+  .event {
+    position:relative; background:linear-gradient(165deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 22px; margin-bottom:14px;
+    opacity:0; transform:translateX(20px); transition:all 0.5s;
+  }
+  .event.show { opacity:1; transform:translateX(0); }
+  .event.highlight { border-color:rgba(240,125,23,0.4); box-shadow:0 0 25px rgba(240,125,23,0.15); }
+  .event::before {
+    content:''; position:absolute; left:-48px; top:22px; width:18px; height:18px;
+    border-radius:50%; background:#178FC6; border:3px solid #0a0a0a;
+    box-shadow:0 0 0 3px #178FC6; transition:all 0.3s;
+  }
+  .event.highlight::before { background:#F07D17; box-shadow:0 0 0 3px #F07D17, 0 0 20px rgba(240,125,23,0.6); }
+  .event-time { font-size:13px; color:#F07D17; font-weight:700; letter-spacing:2px; font-family:'JetBrains Mono',monospace; }
+  .event-title { font-size:20px; font-weight:700; margin-top:3px; }
+  .event-desc { font-size:15px; color:#94a3b8; margin-top:4px; line-height:1.4; }
+  .event-tag { display:inline-block; background:rgba(23,143,198,0.15); color:#5bbde0; font-size:11px;
+               padding:3px 10px; border-radius:6px; margin-top:6px; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+  .counter-hero {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px;
+  }
+  .counter-hero .c {
+    background:linear-gradient(165deg,rgba(240,125,23,0.12),rgba(23,143,198,0.05));
+    border:1px solid rgba(240,125,23,0.3); border-radius:14px; padding:14px; text-align:center;
+  }
+  .counter-hero .v { font-size:32px; font-weight:800; font-family:'JetBrains Mono',monospace; color:#F07D17; }
+  .counter-hero .l { font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:1.5px; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:14px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <h1>Um dia com o <span class="text-gradient">Felipe</span>.</h1>
+      <p class="sub">22 leads qualificados. 3 contratos fechados. Uma segunda-feira comum.</p>
+      <div class="timeline" id="tl">
+        <div class="event"><div class="event-time">07:30</div><div class="event-title">Revisão de pipeline</div><div class="event-desc">18 leads pendentes. Prioriza T3+ com terreno confirmado.</div></div>
+        <div class="event"><div class="event-time">09:12</div><div class="event-title">Orçamento T4 Algarve</div><div class="event-desc">Enviado em 90 min · Planta + breakdown + 4 PDFs.</div><div class="event-tag">225.000€</div></div>
+        <div class="event highlight"><div class="event-time">11:05</div><div class="event-title">Cliente fecha contrato</div><div class="event-desc">Joana M. · Óbidos · T3 135m² · Entrada aprovada.</div><div class="event-tag" style="background:rgba(34,197,94,0.15); color:#22c55e;">✓ ASSINADO</div></div>
+        <div class="event"><div class="event-time">13:30</div><div class="event-title">Visita ao showroom</div><div class="event-desc">2 famílias + 1 casal. Todos passaram para fase de planta.</div></div>
+        <div class="event"><div class="event-time">15:48</div><div class="event-title">Banco aprova financiamento</div><div class="event-desc">BCP aprovou 180.000€ para projecto em Tomar.</div><div class="event-tag">180K€</div></div>
+        <div class="event highlight"><div class="event-time">17:22</div><div class="event-title">2º contrato do dia</div><div class="event-desc">Pedro C. · T3 Tomar · Início de obra: 15 Maio.</div><div class="event-tag" style="background:rgba(34,197,94,0.15); color:#22c55e;">✓ ASSINADO</div></div>
+        <div class="event"><div class="event-time">19:40</div><div class="event-title">Entrega de chaves em Braga</div><div class="event-desc">Moradia T2 · 4 meses de obra · Zero derrapagem.</div><div class="event-tag" style="background:rgba(240,125,23,0.15); color:#F07D17;">🔑 ENTREGUE</div></div>
+      </div>
+      <div class="counter-hero">
+        <div class="c"><div class="v" data-to="22">0</div><div class="l">Leads qualificados</div></div>
+        <div class="c"><div class="v" data-to="3">0</div><div class="l">Contratos</div></div>
+        <div class="c"><div class="v">573K€</div><div class="l">Volume do dia</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    const evs=document.querySelectorAll('.event');
+    await wait(600);
+    for(let i=0;i<evs.length;i++){await wait(380);evs[i].classList.add('show');}
+    await wait(400);
+    document.querySelectorAll('[data-to]').forEach(el=>{
+      const to=parseInt(el.dataset.to);
+      let v=0;
+      const step=Math.max(1,Math.floor(to/30));
+      const it=setInterval(()=>{v+=step;if(v>=to){v=to;clearInterval(it);}el.textContent=v;},40);
+    });
+    await wait(4200);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

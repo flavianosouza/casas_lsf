@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B-Rolls · CASAS LSF / OBRASNET</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  html, body { width:100%; height:100%; overflow:auto; }
+  body { display:block; padding:48px; }
+  .stage { all:unset; }
+  .wrap { max-width:1280px; margin:0 auto; }
+  h1 { font-size:48px; font-weight:800; letter-spacing:-0.02em; margin-bottom:12px; }
+  .sub { color:#94a3b8; font-size:18px; margin-bottom:20px; }
+  .stats-row { display:flex; gap:16px; margin-bottom:40px; flex-wrap:wrap; }
+  .stat-pill { background:linear-gradient(165deg,rgba(34,197,94,0.12),rgba(34,197,94,0.02));
+               border:1px solid rgba(34,197,94,0.3); padding:10px 18px; border-radius:10px;
+               font-size:14px; color:#22c55e; font-weight:700; letter-spacing:1px; }
+  .category { margin:48px 0 20px; font-size:14px; color:#F07D17; font-weight:700; letter-spacing:3px; text-transform:uppercase; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:20px; }
+  .card-broll {
+    background:linear-gradient(165deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:18px; padding:24px; transition:all 0.3s;
+    display:flex; flex-direction:column;
+  }
+  .card-broll:hover { border-color:rgba(23,143,198,0.5); transform:translateY(-4px);
+                      box-shadow:0 20px 40px -15px rgba(0,0,0,0.5); }
+  .card-broll.extra { border-color:rgba(240,125,23,0.3); background:linear-gradient(165deg,rgba(240,125,23,0.08),rgba(255,255,255,0.01)); }
+  .tag { display:inline-block; background:rgba(34,197,94,0.15); color:#22c55e;
+         font-size:12px; padding:4px 10px; border-radius:6px; font-weight:600; letter-spacing:1px; margin-bottom:12px; width:fit-content; }
+  .tag.bonus { background:rgba(240,125,23,0.15); color:#F07D17; }
+  .card-broll h3 { font-size:20px; font-weight:700; margin-bottom:8px; }
+  .card-broll p { font-size:14px; color:#94a3b8; line-height:1.5; margin-bottom:16px; flex:1; }
+  .meta { font-size:12px; color:#64748b; margin-bottom:16px; display:flex; gap:12px; }
+  .actions { display:flex; gap:8px; }
+  .act { flex:1; text-align:center; text-decoration:none; font-size:14px; font-weight:600;
+         padding:10px; border-radius:8px; transition:all 0.2s; cursor:pointer; }
+  .act.open { background:#178FC6; color:#fff; }
+  .act.open:hover { background:#1a9fd6; }
+  .act.fs { background:rgba(255,255,255,0.06); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); }
+  .act.fs:hover { background:rgba(255,255,255,0.1); }
+  .record-box {
+    margin-top:56px; padding:32px; border-radius:16px;
+    background:linear-gradient(165deg,rgba(240,125,23,0.08),rgba(240,125,23,0.02));
+    border:1px solid rgba(240,125,23,0.2);
+  }
+  .record-box h2 { font-size:24px; margin-bottom:16px; color:#F07D17; }
+  .record-box ol { padding-left:20px; color:#cbd5e1; font-size:15px; line-height:1.8; }
+  .record-box code {
+    background:rgba(0,0,0,0.4); padding:3px 8px; border-radius:5px;
+    font-family:'JetBrains Mono',monospace; font-size:13px; color:#5bbde0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>B-Rolls · <span class="text-gradient">Instagram @obras_net</span></h1>
+  <p class="sub">Mini-clipes 9:16 (1080×1920) para screen recording. Design 1:1 com casaslsf.com. Cada HTML auto-executável.</p>
+  <div class="stats-row">
+    <div class="stat-pill">✓ 26 B-rolls prontos</div>
+    <div class="stat-pill">✓ 5 categorias + bónus</div>
+    <div class="stat-pill">✓ Auto-loop · Auto-play</div>
+    <div class="stat-pill">✓ Cores reais do site</div>
+  </div>
+
+  <div class="category">Categoria A · Auto-preenchimento</div>
+  <div class="grid">
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>A1 · Formulário orçamento</h3><p>Cursor preenche formulário sozinho. Dropdown T3. Botão pulsa. Tick verde.</p><div class="meta">⏱ ~24s</div><div class="actions"><a class="act open" href="A1-formulario-pedido-orcamento.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="A1-formulario-pedido-orcamento.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>A2 · Configurador casa</h3><p>Tipologia → acabamento → extras. Contador de preço anima até 194.000€.</p><div class="meta">⏱ ~20s</div><div class="actions"><a class="act open" href="A2-configurador-casa.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="A2-configurador-casa.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>A3 · Simulador financiamento</h3><p>3 sliders. Mensalidade em tempo real. "Aprovado" Millennium/CGD/Santander/BPI.</p><div class="meta">⏱ ~22s</div><div class="actions"><a class="act open" href="A3-simulador-financiamento.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="A3-simulador-financiamento.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>A4 · Newsletter</h3><p>Modal pop-up. Email digitado. Envelope voa. Confirmação.</p><div class="meta">⏱ ~14s</div><div class="actions"><a class="act open" href="A4-newsletter-subscricao.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="A4-newsletter-subscricao.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="category">Categoria B · Navegação do site</div>
+  <div class="grid">
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B1 · Scroll homepage</h3><p>Hero, métricas, propostas de valor, casos, testemunhos, CTA.</p><div class="meta">⏱ ~26s</div><div class="actions"><a class="act open" href="B1-homepage-scroll.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B1-homepage-scroll.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B2 · Galeria projectos</h3><p>Grid stagger. Lightbox com slider before/after.</p><div class="meta">⏱ ~16s</div><div class="actions"><a class="act open" href="B2-galeria-projectos.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B2-galeria-projectos.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B3 · Timeline obra</h3><p>14 meses vs 6 meses. Fases activam sequencialmente.</p><div class="meta">⏱ ~16s</div><div class="actions"><a class="act open" href="B3-timeline-obra.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B3-timeline-obra.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B4 · Mapa obras</h3><p>Pins em Portugal aparecem. Tooltip por cidade. Contadores.</p><div class="meta">⏱ ~26s</div><div class="actions"><a class="act open" href="B4-mapa-obras.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B4-mapa-obras.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B5 · Comparador custos</h3><p>Tabela linha a linha. Derrapagem tradicional em vermelho. Poupança 24.500€.</p><div class="meta">⏱ ~20s</div><div class="actions"><a class="act open" href="B5-comparador-custos.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B5-comparador-custos.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>B6 · Classe energética A+</h3><p>Escala E → A+. Selo preenche. Raios pulsam. -68% energia.</p><div class="meta">⏱ ~18s</div><div class="actions"><a class="act open" href="B6-classificacao-energetica.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="B6-classificacao-energetica.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="category">Categoria C · Confiança</div>
+  <div class="grid">
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>C1 · Certificações</h3><p>EC3 + IPQ + LNEC + CE + 4 bancos. Tick verde em cada.</p><div class="meta">⏱ ~16s</div><div class="actions"><a class="act open" href="C1-certificacoes.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="C1-certificacoes.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>C2 · Testemunhos carousel</h3><p>4 slides auto. Estrelas a acender. Google 4,9★ · 87 reviews.</p><div class="meta">⏱ ~18s</div><div class="actions"><a class="act open" href="C2-testemunhos-carousel.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="C2-testemunhos-carousel.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>C3 · Fases transparência</h3><p>3 pilares. Contadores: 50% tempo · 100% transparência · 24h resposta.</p><div class="meta">⏱ ~14s</div><div class="actions"><a class="act open" href="C3-fases-transparencia.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="C3-fases-transparencia.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="category">Categoria D · WhatsApp Felipe</div>
+  <div class="grid">
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>D1 · Orçamento</h3><p>Preço → prazo → financiamento bancário. "a digitar…" realista.</p><div class="meta">⏱ ~24s</div><div class="actions"><a class="act open" href="D1-whatsapp-felipe-orcamento.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="D1-whatsapp-felipe-orcamento.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>D2 · Objecção preço</h3><p>Felipe destrói "LSF é mais caro" com números de derrapagem.</p><div class="meta">⏱ ~26s</div><div class="actions"><a class="act open" href="D2-whatsapp-felipe-objeccao-preco.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="D2-whatsapp-felipe-objeccao-preco.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>D3 · Objecção sismos</h3><p>Norma EC3, aço dúctil, fogo REI 60. Técnico e concreto.</p><div class="meta">⏱ ~24s</div><div class="actions"><a class="act open" href="D3-whatsapp-felipe-objeccao-seguranca.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="D3-whatsapp-felipe-objeccao-seguranca.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>D4 · Agendamento showroom</h3><p>Calendário in-chat. Dia 23 · 10:30. Localização Óbidos.</p><div class="meta">⏱ ~22s</div><div class="actions"><a class="act open" href="D4-whatsapp-felipe-agendamento.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="D4-whatsapp-felipe-agendamento.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>D5 · Múltiplos clientes</h3><p>8 chats simultâneos. Novas mensagens chegam. Badges +unread.</p><div class="meta">⏱ ~18s</div><div class="actions"><a class="act open" href="D5-whatsapp-multiplos-clientes.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="D5-whatsapp-multiplos-clientes.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="category">Categoria E · Extras criativos</div>
+  <div class="grid">
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E1 · Loading IA</h3><p>Spinner + barra 0-100% + mensagens rotativas + confetis no fim.</p><div class="meta">⏱ ~18s</div><div class="actions"><a class="act open" href="E1-loading-orcamento-ia.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E1-loading-orcamento-ia.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E2 · Dashboard cliente</h3><p>61% concluído · fases · fotos da obra · orçamento executado.</p><div class="meta">⏱ ~14s</div><div class="actions"><a class="act open" href="E2-dashboard-cliente.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E2-dashboard-cliente.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E3 · Casa 3D 360°</h3><p>Cubo 3D CSS rodando. Camadas pulsam: fundação → estrutura → acabamento.</p><div class="meta">⏱ ~14s</div><div class="actions"><a class="act open" href="E3-3d-casa-rotacao.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E3-3d-casa-rotacao.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E4 · Contador 147 casas</h3><p>Ticker rápido 0→147 · paragem dramática · burst ring.</p><div class="meta">⏱ ~8s</div><div class="actions"><a class="act open" href="E4-contador-casas-entregues.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E4-contador-casas-entregues.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E5 · Split tradicional vs LSF</h3><p>Ecrã dividido. Trad em cinzento lento, LSF a cores rápido. 57%.</p><div class="meta">⏱ ~14s</div><div class="actions"><a class="act open" href="E5-split-screen-tradicional-vs-lsf.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E5-split-screen-tradicional-vs-lsf.html">Fullscreen</a></div></div>
+    <div class="card-broll"><div class="tag">PRONTO</div><h3>E6 · Notificação banco</h3><p>Lock screen. Notif BCP "Crédito aprovado 250.000€" + CGD + BPI vibram.</p><div class="meta">⏱ ~12s</div><div class="actions"><a class="act open" href="E6-notificacao-banco-aprovado.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="E6-notificacao-banco-aprovado.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="category" style="color:#F07D17;">★ Bónus · Construtores do Futuro</div>
+  <div class="grid">
+    <div class="card-broll extra"><div class="tag bonus">BÓNUS</div><h3>X1 · Manifesto #ConstrutoresDoFuturo</h3><p>Linhas de manifesto aparecem com rasurado sobre "derrapagens / obras eternas". Identidade do movimento.</p><div class="meta">⏱ ~16s</div><div class="actions"><a class="act open" href="X1-manifesto-construtores-futuro.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="X1-manifesto-construtores-futuro.html">Fullscreen</a></div></div>
+    <div class="card-broll extra"><div class="tag bonus">BÓNUS</div><h3>X2 · Dia na vida do Felipe</h3><p>Timeline dum dia: 22 leads · 3 contratos · 573K€ · chaves entregues. Prova social real.</p><div class="meta">⏱ ~22s</div><div class="actions"><a class="act open" href="X2-dia-na-vida-felipe.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="X2-dia-na-vida-felipe.html">Fullscreen</a></div></div>
+    <div class="card-broll extra"><div class="tag bonus">BÓNUS</div><h3>X3 · Terreno → chaves (140 dias)</h3><p>5 etapas com "fotos" estilizadas · contador dos dias · selo final de obra fechada.</p><div class="meta">⏱ ~18s</div><div class="actions"><a class="act open" href="X3-terreno-para-chaves.html" target="_blank">Abrir</a><a class="act fs" onclick="fs(event,this)" href="X3-terreno-para-chaves.html">Fullscreen</a></div></div>
+  </div>
+
+  <div class="record-box">
+    <h2>Como gravar em 9:16 (1080×1920)</h2>
+    <ol>
+      <li><b>OBS Studio (Windows, recomendado):</b> Sources → Browser Source → URL = <code>file:///C:/Users/PC/Desktop/CASAS LSF/b-rolls/A1-formulario-pedido-orcamento.html</code> · Width=1080, Height=1920. Output → Canvas 1080×1920, 60fps, MP4 H.264 CRF 18.</li>
+      <li><b>Chrome DevTools (rápido):</b> abre o HTML → F12 → Ctrl+Shift+M → Responsive 1080×1920 → extensão <i>Screencastify</i> ou <i>Loom</i> para gravar.</li>
+      <li><b>FFmpeg (CLI, Windows):</b> <code>ffmpeg -f gdigrab -framerate 60 -offset_x 0 -offset_y 0 -video_size 1080x1920 -i desktop -c:v libx264 -crf 18 -pix_fmt yuv420p broll.mp4</code></li>
+      <li><b>Puppeteer (headless, sem mão humana):</b> <code>npx puppeteer-screen-recorder --url file://.../A1.html --w 1080 --h 1920 --fps 60 --duration 25 --out A1.mp4</code></li>
+      <li><b>Mac:</b> QuickTime → New Screen Recording → selecciona região 1080×1920.</li>
+      <li>Cada HTML faz <b>auto-reload</b> ao fim da animação (loop perfeito). Grava 1-2 ciclos · corta e monta no CapCut.</li>
+      <li>Instagram Reels recomenda: <b>MP4 · 1080×1920 · 30-60fps · H.264 · &lt;250MB</b>. Todas as animações aqui respeitam margem de 15% topo/fundo.</li>
+    </ol>
+  </div>
+</div>
+<script>
+function fs(e,a){
+  e.preventDefault();
+  const w=window.open(a.href,'_blank');
+  w.addEventListener('load',()=>{try{w.document.documentElement.requestFullscreen();}catch(_){}});
+}
+</script>
+</body>
+</html>

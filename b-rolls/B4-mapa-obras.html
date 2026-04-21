@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll B4 — Mapa Obras</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:24px; justify-content:center; }
+  h1 { font-size:48px; font-weight:800; letter-spacing:-0.02em; text-align:center; line-height:1.1; }
+  .sub { font-size:20px; color:#94a3b8; text-align:center; }
+  .map-wrap { position:relative; width:720px; height:1100px; }
+  .map-wrap svg { width:100%; height:100%; filter:drop-shadow(0 0 40px rgba(23,143,198,0.15)); }
+  .pt-land { fill:rgba(23,143,198,0.08); stroke:rgba(23,143,198,0.4); stroke-width:1.5; }
+  .pin { position:absolute; width:30px; height:30px; transform:translate(-50%,-100%) scale(0);
+         transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+  .pin.show { transform:translate(-50%,-100%) scale(1); }
+  .pin-dot { width:30px; height:30px; background:#F07D17; border-radius:50% 50% 50% 0;
+             transform:rotate(-45deg); border:3px solid #fff; box-shadow:0 0 15px rgba(240,125,23,0.6); }
+  .pin-dot::after { content:''; position:absolute; inset:8px; background:#fff; border-radius:50%; }
+  .pin-pulse { position:absolute; inset:0; border-radius:50% 50% 50% 0; transform:rotate(-45deg);
+               background:rgba(240,125,23,0.4); animation:pinPulse 1.6s ease-out infinite; }
+  @keyframes pinPulse {
+    0% { transform:rotate(-45deg) scale(1); opacity:0.8; }
+    100% { transform:rotate(-45deg) scale(2.5); opacity:0; }
+  }
+  .tooltip {
+    position:absolute; background:#1a1a2e; border:1px solid rgba(23,143,198,0.5); border-radius:10px;
+    padding:12px 16px; font-size:14px; min-width:180px; transform:translate(-50%, -130%);
+    opacity:0; transition:opacity 0.3s; pointer-events:none; box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    white-space:nowrap; z-index:20;
+  }
+  .tooltip.show { opacity:1; }
+  .tooltip .city { color:#F07D17; font-weight:700; }
+  .tooltip .detail { color:#94a3b8; font-size:12px; margin-top:2px; }
+  .counter-wrap { display:flex; gap:40px; margin-top:8px; }
+  .counter { text-align:center; }
+  .counter .n { font-size:56px; font-weight:800; font-family:'JetBrains Mono',monospace;
+                background:linear-gradient(135deg,#178FC6,#F07D17); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .counter .l { font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:1.5px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:20px; align-self:flex-start;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <h1>Casas entregues em <span class="text-gradient">Portugal inteiro</span>.</h1>
+      <div class="map-wrap">
+        <svg viewBox="0 0 300 460" xmlns="http://www.w3.org/2000/svg">
+          <path class="pt-land" d="M 90 30 L 130 28 L 160 38 L 180 60 L 200 90 L 215 130 L 220 170 L 225 220 L 220 260 L 215 300 L 200 340 L 180 370 L 160 395 L 145 420 L 135 440 L 120 430 L 105 400 L 95 370 L 85 330 L 75 290 L 72 250 L 70 210 L 72 170 L 78 130 L 82 90 L 86 55 Z"/>
+        </svg>
+        <div class="pin" data-city="Braga" data-detail="T3 · 6 meses · 172.000€" style="left:52%; top:18%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Porto" data-detail="T4 · 7 meses · 220.000€" style="left:48%; top:22%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Viana do Castelo" data-detail="T4 · 170m² · 215.000€" style="left:42%; top:14%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Tomar" data-detail="T2 · 95m² · 118.000€" style="left:52%; top:45%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Óbidos, Leiria" data-detail="T3 · 135m² · 168.000€" style="left:46%; top:52%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Lisboa" data-detail="T3 · 140m² · 185.000€" style="left:45%; top:62%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Évora" data-detail="T3 · 130m² · 162.000€" style="left:58%; top:70%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="pin" data-city="Faro, Algarve" data-detail="T4 · 175m² · 225.000€" style="left:52%; top:88%;"><div class="pin-dot"></div><div class="pin-pulse"></div></div>
+        <div class="tooltip" id="tt"><div class="city" id="tt-city"></div><div class="detail" id="tt-detail"></div></div>
+      </div>
+      <div class="counter-wrap">
+        <div class="counter"><div class="n" id="c1">0</div><div class="l">Casas entregues</div></div>
+        <div class="counter"><div class="n" id="c2">0</div><div class="l">Distritos</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function animN(el,to,dur=1600){
+    const start=performance.now();
+    function tick(t){
+      const p=Math.min((t-start)/dur,1);
+      const v=Math.floor(to*(1-Math.pow(1-p,3)));
+      el.textContent=v;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  async function run(){
+    const pins=document.querySelectorAll('.pin');
+    const tt=document.getElementById('tt');
+    const ttCity=document.getElementById('tt-city');
+    const ttDet=document.getElementById('tt-detail');
+    await wait(600);
+    for(let i=0;i<pins.length;i++){
+      await wait(280);
+      pins[i].classList.add('show');
+    }
+    await wait(500);
+    animN(document.getElementById('c1'),147);
+    animN(document.getElementById('c2'),18);
+    await wait(1700);
+    for(let i=0;i<pins.length;i++){
+      const p=pins[i], r=p.getBoundingClientRect(), m=p.parentElement.getBoundingClientRect();
+      const scale=m.width/720;
+      tt.style.left=((r.left-m.left)/scale+15)+'px';
+      tt.style.top=((r.top-m.top)/scale)+'px';
+      ttCity.textContent='📍 '+p.dataset.city;
+      ttDet.textContent=p.dataset.detail;
+      tt.classList.add('show');
+      await wait(900);
+      tt.classList.remove('show');
+      await wait(180);
+    }
+    await wait(600);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E6 — Notificação Banco</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .phone-bg {
+    position:absolute; inset:0;
+    background:linear-gradient(180deg,#4a5568 0%,#2d3748 50%,#1a202c 100%);
+  }
+  .phone-bg::before { content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at top,rgba(255,255,255,0.08),transparent 50%); }
+  .lock-info { position:absolute; top:12%; left:50%; transform:translateX(-50%); text-align:center; color:#fff; }
+  .lock-info .time { font-size:140px; font-weight:200; letter-spacing:-4px; line-height:1; }
+  .lock-info .date { font-size:22px; font-weight:500; margin-top:4px; opacity:0.9; }
+  .status-bar { position:absolute; top:20px; left:20px; right:20px; display:flex; justify-content:space-between;
+                color:#fff; font-size:16px; opacity:0.9; font-weight:600; }
+  .notif-wrap { position:absolute; top:45%; left:20px; right:20px; display:flex; flex-direction:column; gap:10px; }
+  .notif {
+    background:rgba(255,255,255,0.85); backdrop-filter:blur(20px);
+    border-radius:18px; padding:16px 18px; color:#1a202c;
+    display:flex; gap:14px; align-items:flex-start;
+    opacity:0; transform:translateY(40px) scale(0.95);
+    transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow:0 10px 40px rgba(0,0,0,0.3);
+  }
+  .notif.show { opacity:1; transform:translateY(0) scale(1); }
+  .notif.vibrate { animation:vibrate 0.5s ease-out; }
+  @keyframes vibrate {
+    0%,100% { transform:translateY(0) scale(1); }
+    20% { transform:translate(-3px,0) scale(1); }
+    40% { transform:translate(3px,0) scale(1); }
+    60% { transform:translate(-2px,0) scale(1); }
+    80% { transform:translate(2px,0) scale(1); }
+  }
+  .notif-app { width:44px; height:44px; border-radius:10px; flex-shrink:0;
+               display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:18px; }
+  .notif-body { flex:1; min-width:0; }
+  .notif-app-row { display:flex; justify-content:space-between; font-size:12px; color:#64748b; font-weight:600; }
+  .notif-title { font-size:16px; font-weight:700; margin-top:2px; }
+  .notif-text { font-size:14px; color:#1a202c; margin-top:3px; line-height:1.3; }
+  .notif-text .amt { color:#16a34a; font-weight:800; font-size:18px; }
+  .app-bcp { background:linear-gradient(135deg,#006b3f,#004d2d); }
+  .app-cgd { background:linear-gradient(135deg,#003da5,#002870); }
+  .app-san { background:linear-gradient(135deg,#ec0000,#a00000); }
+  .app-bpi { background:linear-gradient(135deg,#002f6c,#001a40); }
+  .glow-approved {
+    position:absolute; inset:0; background:radial-gradient(circle at 50% 55%,rgba(34,197,94,0.25),transparent 40%);
+    opacity:0; transition:opacity 0.6s; pointer-events:none;
+  }
+  .glow-approved.show { opacity:1; animation:glowPulse 2s ease-in-out infinite; }
+  @keyframes glowPulse { 50% { opacity:0.5; } }
+  .success-stamp {
+    position:absolute; bottom:12%; left:50%; transform:translateX(-50%);
+    background:linear-gradient(135deg,#16a34a,#22c55e); color:#fff; font-weight:800;
+    padding:14px 30px; border-radius:14px; font-size:22px; letter-spacing:1px;
+    opacity:0; transform:translate(-50%,20px); transition:all 0.6s;
+    box-shadow:0 0 40px rgba(34,197,94,0.5);
+  }
+  .success-stamp.show { opacity:1; transform:translate(-50%,0); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone-bg"></div>
+  <div class="glow-approved" id="glow"></div>
+  <div class="status-bar"><div>14:23</div><div>📶 🔋 100%</div></div>
+  <div class="lock-info"><div class="time">14:23</div><div class="date">Segunda, 21 Abril</div></div>
+  <div class="notif-wrap" id="notifs">
+    <div class="notif" data-app="bcp">
+      <div class="notif-app app-bcp">B</div>
+      <div class="notif-body">
+        <div class="notif-app-row"><span>MILLENNIUM BCP</span><span>agora</span></div>
+        <div class="notif-title">Crédito habitação aprovado ✅</div>
+        <div class="notif-text">Parabéns! Financiamento aprovado · <span class="amt">250.000€</span> · Taxa fixa 3,2%</div>
+      </div>
+    </div>
+    <div class="notif" data-app="cgd">
+      <div class="notif-app app-cgd">CGD</div>
+      <div class="notif-body">
+        <div class="notif-app-row"><span>CAIXA</span><span>agora</span></div>
+        <div class="notif-title">Pré-aprovação em 48h</div>
+        <div class="notif-text">Documentação validada. Proposta pronta para assinatura.</div>
+      </div>
+    </div>
+    <div class="notif" data-app="bpi">
+      <div class="notif-app app-bpi">BPI</div>
+      <div class="notif-body">
+        <div class="notif-app-row"><span>BPI</span><span>agora</span></div>
+        <div class="notif-title">Proposta melhorada</div>
+        <div class="notif-text">Spread 0,7% · <span class="amt">245.000€</span> · 30 anos</div>
+      </div>
+    </div>
+  </div>
+  <div class="success-stamp" id="stamp">✓ Casa financiada · Obra pode começar</div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    await wait(900);
+    const notifs=document.querySelectorAll('.notif');
+    for(let i=0;i<notifs.length;i++){
+      await wait(1200);
+      notifs[i].classList.add('show');
+      notifs[i].classList.add('vibrate');
+      setTimeout(()=>notifs[i].classList.remove('vibrate'), 600);
+    }
+    await wait(1000);
+    document.getElementById('glow').classList.add('show');
+    document.getElementById('stamp').classList.add('show');
+    await wait(4500);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

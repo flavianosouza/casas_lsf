@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E5 — Split Screen</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  html, body { overflow:hidden; }
+  .split { position:absolute; inset:0; display:flex; flex-direction:column; }
+  .headline { text-align:center; padding:15% 20px 20px; font-size:36px; font-weight:800; letter-spacing:-0.01em; line-height:1.1; }
+  .side-by { flex:1; display:flex; position:relative; }
+  .side { flex:1; position:relative; overflow:hidden; }
+  .side-trad { background:linear-gradient(180deg,#2a2a2a,#1a1a1a); filter:grayscale(1) brightness(0.7); }
+  .side-lsf { background:linear-gradient(180deg,rgba(23,143,198,0.15),rgba(240,125,23,0.08),#0a1422); }
+  .side-label { position:absolute; top:16px; left:50%; transform:translateX(-50%);
+                background:rgba(0,0,0,0.7); padding:8px 18px; border-radius:8px; font-weight:800; font-size:16px; letter-spacing:2px; z-index:10; }
+  .side-trad .side-label { color:#94a3b8; border:1px solid rgba(255,255,255,0.2); }
+  .side-lsf .side-label { color:#F07D17; border:1px solid rgba(240,125,23,0.4); background:rgba(240,125,23,0.1); }
+  .divider { position:absolute; left:50%; top:0; bottom:0; width:3px;
+             background:linear-gradient(180deg,#F07D17,#178FC6); transform:translateX(-50%);
+             box-shadow:0 0 20px rgba(240,125,23,0.6); z-index:20; }
+  .vs-ball { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+             width:80px; height:80px; border-radius:50%;
+             background:linear-gradient(135deg,#F07D17,#178FC6);
+             display:flex; align-items:center; justify-content:center; font-weight:900; font-size:28px;
+             z-index:21; box-shadow:0 0 30px rgba(240,125,23,0.5); }
+  .scene { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:20px; }
+  .build-bars { display:flex; gap:6px; align-items:flex-end; height:340px; }
+  .bar-brick { flex:1; background:linear-gradient(180deg,#555,#333); border:1px solid #444; transition:height 10s cubic-bezier(0.4,0,0.2,1); height:20%; }
+  .side-trad .bar-brick { height:35%; }
+  .side-trad .bar-brick:nth-child(even) { height:40%; }
+  .bar-lsf-struct {
+    flex:1; background:linear-gradient(180deg,#178FC6,#125f84); position:relative;
+    height:0%; transition:height 3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:0 0 15px rgba(23,143,198,0.4);
+  }
+  .bar-lsf-struct::before {
+    content:''; position:absolute; inset:0; background:
+      repeating-linear-gradient(0deg,transparent 0,transparent 18px,rgba(255,255,255,0.15) 18px,rgba(255,255,255,0.15) 20px),
+      repeating-linear-gradient(90deg,transparent 0,transparent 18px,rgba(255,255,255,0.15) 18px,rgba(255,255,255,0.15) 20px);
+  }
+  .side-timer { position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
+                background:rgba(0,0,0,0.8); padding:10px 20px; border-radius:10px;
+                font-family:'JetBrains Mono',monospace; font-weight:800; font-size:20px; min-width:160px; text-align:center; }
+  .side-trad .side-timer { color:#94a3b8; }
+  .side-lsf .side-timer { color:#F07D17; box-shadow:0 0 20px rgba(240,125,23,0.3); }
+  .crane { position:absolute; right:8%; top:15%; color:rgba(255,255,255,0.15); font-size:80px; }
+  .final-banner { text-align:center; padding:14px 20px 15%; font-size:18px; color:#94a3b8; }
+  .final-banner b { color:#F07D17; font-size:22px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="split">
+    <div class="headline">Mesma casa. <span class="text-gradient">Metade do tempo.</span></div>
+    <div class="side-by">
+      <div class="side side-trad">
+        <div class="side-label">TRADICIONAL</div>
+        <div class="crane">🏗️</div>
+        <div class="scene">
+          <div class="build-bars">
+            <div class="bar-brick"></div><div class="bar-brick"></div><div class="bar-brick"></div>
+            <div class="bar-brick"></div><div class="bar-brick"></div><div class="bar-brick"></div>
+          </div>
+        </div>
+        <div class="side-timer" id="t1">0 meses</div>
+      </div>
+      <div class="side side-lsf">
+        <div class="side-label">OBRASNET LSF</div>
+        <div class="scene">
+          <div class="build-bars">
+            <div class="bar-lsf-struct"></div><div class="bar-lsf-struct"></div><div class="bar-lsf-struct"></div>
+            <div class="bar-lsf-struct"></div><div class="bar-lsf-struct"></div><div class="bar-lsf-struct"></div>
+          </div>
+        </div>
+        <div class="side-timer" id="t2">0 meses</div>
+      </div>
+      <div class="divider"></div>
+      <div class="vs-ball">VS</div>
+    </div>
+    <div class="final-banner"><b>57% menos tempo</b> · Mesma qualidade · Metade da obra</div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function timer(el, max, dur){
+    const s=performance.now();
+    function tick(t){
+      const p=Math.min((t-s)/dur,1);
+      el.textContent=Math.floor(max*p)+' meses';
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  async function run(){
+    await wait(800);
+    const lsfBars=document.querySelectorAll('.bar-lsf-struct');
+    const heights=[30,55,75,90,70,85];
+    lsfBars.forEach((b,i)=>setTimeout(()=>{b.style.height=heights[i]+'%';}, i*200));
+    timer(document.getElementById('t2'), 6, 4000);
+    timer(document.getElementById('t1'), 14, 10000);
+    // trad slowly grows more
+    const tradBars=document.querySelectorAll('.side-trad .bar-brick');
+    setTimeout(()=>{tradBars.forEach(b=>{b.style.height='65%';});}, 4500);
+    setTimeout(()=>{tradBars.forEach(b=>{b.style.height='80%';});}, 8000);
+    await wait(11000);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

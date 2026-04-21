@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll C2 — Testemunhos</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:32px; justify-content:center; }
+  h1 { font-size:48px; font-weight:800; letter-spacing:-0.02em; text-align:center; line-height:1.1; }
+  .sub { font-size:20px; color:#94a3b8; text-align:center; }
+  .carousel { position:relative; min-height:620px; }
+  .slide {
+    position:absolute; inset:0;
+    background:linear-gradient(165deg,rgba(255,255,255,0.05),rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:44px;
+    display:flex; flex-direction:column; gap:22px;
+    opacity:0; transform:translateX(60px); transition:all 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .slide.show { opacity:1; transform:translateX(0); }
+  .slide.out { opacity:0; transform:translateX(-60px); }
+  .header-t { display:flex; align-items:center; gap:18px; }
+  .avatar { width:80px; height:80px; border-radius:50%; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center; font-size:30px; font-weight:700; color:#fff;
+            box-shadow:0 0 30px rgba(23,143,198,0.3); }
+  .av-1 { background:linear-gradient(135deg,#178FC6,#F07D17); }
+  .av-2 { background:linear-gradient(135deg,#F07D17,#22c55e); }
+  .av-3 { background:linear-gradient(135deg,#22c55e,#178FC6); }
+  .av-4 { background:linear-gradient(135deg,#a855f7,#178FC6); }
+  .meta-t { flex:1; }
+  .name-t { font-size:22px; font-weight:700; color:#fff; }
+  .role-t { font-size:16px; color:#94a3b8; margin-top:2px; }
+  .stars {
+    display:flex; gap:4px; font-size:30px;
+  }
+  .star { color:#374151; transition:color 0.3s, transform 0.3s; }
+  .star.lit { color:#F07D17; transform:scale(1.15); text-shadow:0 0 12px rgba(240,125,23,0.5); }
+  .quote { font-size:24px; line-height:1.55; color:#e2e8f0; font-weight:500; position:relative; padding-left:30px; flex:1; }
+  .quote::before { content:'"'; position:absolute; left:-10px; top:-20px; font-size:120px; font-family:Georgia,serif; color:rgba(23,143,198,0.3); line-height:1; }
+  .proof { display:flex; gap:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06); }
+  .proof-item { flex:1; text-align:center; }
+  .proof-v { font-size:22px; font-weight:700; color:#5bbde0; font-family:'JetBrains Mono',monospace; }
+  .proof-l { font-size:13px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  .dots { display:flex; justify-content:center; gap:10px; }
+  .dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.15); transition:all 0.3s; }
+  .dot.active { background:#F07D17; width:30px; border-radius:5px; }
+  .google-row { display:flex; justify-content:center; align-items:center; gap:14px; font-size:16px; color:#94a3b8; padding-top:6px; }
+  .google-logo { font-weight:700; font-size:22px; letter-spacing:-1px; }
+  .google-logo b:nth-child(1) { color:#4285F4; }
+  .google-logo b:nth-child(2) { color:#EA4335; }
+  .google-logo b:nth-child(3) { color:#FBBC05; }
+  .google-logo b:nth-child(4) { color:#4285F4; }
+  .google-logo b:nth-child(5) { color:#34A853; }
+  .google-logo b:nth-child(6) { color:#EA4335; }
+  .rating-big { font-size:30px; font-weight:800; color:#F07D17; font-family:'JetBrains Mono',monospace; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:10px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <h1>O que dizem os nossos <span class="text-gradient">clientes</span>.</h1>
+      <p class="sub">140+ moradias entregues · Avaliações verificadas</p>
+      <div class="carousel" id="car"></div>
+      <div class="dots" id="dots"></div>
+      <div class="google-row"><div class="google-logo"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></div> Reviews · <div class="rating-big">4,9 ★</div> · 87 avaliações</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const slides=[
+    {av:'JM', avClass:'av-1', name:'João Marques', role:'T3 · Óbidos, Leiria', quote:'Pedi orçamento ao meio-dia, recebi planta e preço detalhado ao final do dia. Cinco meses depois, chaves na mão. Zero surpresas no preço.', proof:[{v:'5 meses',l:'Prazo real'},{v:'168K€',l:'Investimento'},{v:'A+',l:'Classe'}]},
+    {av:'AS', avClass:'av-2', name:'Ana Silva', role:'T4 · Melgaço, Viana', quote:'Comparei com 4 empresas tradicionais. A OBRASNET foi a única que mostrou o orçamento detalhado por fases. Poupei 32.000€ e ganhei 6 meses.', proof:[{v:'32K€',l:'Poupou'},{v:'6 meses',l:'Mais rápido'},{v:'A+',l:'Classe'}]},
+    {av:'PC', avClass:'av-3', name:'Pedro Costa', role:'T3 · Tomar, Santarém', quote:'A casa ficou com o orçamento certo ao cêntimo. Recomendo a qualquer pessoa que queira casa própria sem dores de cabeça.', proof:[{v:'0€',l:'Derrapagem'},{v:'4,5 meses',l:'Obra'},{v:'A+',l:'Classe'}]},
+    {av:'MR', avClass:'av-4', name:'Mariana Rocha', role:'T2 · Braga', quote:'A transparência foi o que me convenceu. Via a obra progredir todas as semanas no portal do cliente. Experiência brutal.', proof:[{v:'100%',l:'Transparente'},{v:'4 meses',l:'Obra'},{v:'A+',l:'Classe'}]}
+  ];
+  const car=document.getElementById('car'), dots=document.getElementById('dots');
+  slides.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='slide';
+    el.innerHTML=`
+      <div class="header-t">
+        <div class="avatar ${s.avClass}">${s.av}</div>
+        <div class="meta-t"><div class="name-t">${s.name}</div><div class="role-t">${s.role}</div></div>
+        <div class="stars">${[1,2,3,4,5].map(n=>`<span class="star" data-n="${n}">★</span>`).join('')}</div>
+      </div>
+      <div class="quote">${s.quote}</div>
+      <div class="proof">${s.proof.map(p=>`<div class="proof-item"><div class="proof-v">${p.v}</div><div class="proof-l">${p.l}</div></div>`).join('')}</div>
+    `;
+    car.appendChild(el);
+    const d=document.createElement('div'); d.className='dot'; dots.appendChild(d);
+  });
+  async function showSlide(idx){
+    const all=car.querySelectorAll('.slide');
+    const allDots=dots.querySelectorAll('.dot');
+    all.forEach((el,j)=>{
+      if(j===idx){el.classList.remove('out');el.classList.add('show');}
+      else if(el.classList.contains('show')){el.classList.remove('show');el.classList.add('out');}
+    });
+    allDots.forEach((d,j)=>d.classList.toggle('active',j===idx));
+    const stars=all[idx].querySelectorAll('.star');
+    await wait(400);
+    for(let i=0;i<stars.length;i++){await wait(80);stars[i].classList.add('lit');}
+  }
+  async function run(){
+    await wait(600);
+    for(let i=0;i<slides.length;i++){
+      await showSlide(i);
+      await wait(3600);
+    }
+    await wait(400);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

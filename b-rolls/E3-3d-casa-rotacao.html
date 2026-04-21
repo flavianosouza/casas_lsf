@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E3 — Casa 3D Rotação</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:28px; justify-content:center; align-items:center; }
+  h1 { font-size:44px; font-weight:800; text-align:center; letter-spacing:-0.02em; line-height:1.1; }
+  .sub { font-size:18px; color:#94a3b8; text-align:center; }
+  .scene { width:700px; height:700px; perspective:1400px; position:relative; }
+  .house3d {
+    width:100%; height:100%; transform-style:preserve-3d; position:relative;
+    animation:rotate360 14s linear infinite;
+  }
+  @keyframes rotate360 { from { transform:rotateY(0deg) rotateX(-8deg); } to { transform:rotateY(360deg) rotateX(-8deg); } }
+  .cube-face {
+    position:absolute; width:400px; height:400px;
+    left:50%; top:50%; margin-left:-200px; margin-top:-200px;
+    border:2px solid #178FC6;
+    background:linear-gradient(135deg,rgba(23,143,198,0.15),rgba(23,143,198,0.02));
+    box-shadow:0 0 30px rgba(23,143,198,0.3); backface-visibility:visible;
+  }
+  .f-front { transform:translateZ(200px); }
+  .f-back { transform:rotateY(180deg) translateZ(200px); }
+  .f-right { transform:rotateY(90deg) translateZ(200px); }
+  .f-left { transform:rotateY(-90deg) translateZ(200px); }
+  .f-top { transform:rotateX(90deg) translateZ(200px); background:linear-gradient(135deg,rgba(240,125,23,0.15),rgba(240,125,23,0.02)); border-color:#F07D17; }
+  .f-bottom { transform:rotateX(-90deg) translateZ(200px); }
+  .roof-peak {
+    position:absolute; width:0; height:0;
+    border-left:240px solid transparent;
+    border-right:240px solid transparent;
+    border-bottom:180px solid rgba(240,125,23,0.25);
+    left:50%; top:50%; margin-left:-240px; margin-top:-380px;
+    transform:translateZ(0) rotateX(0deg);
+  }
+  .window-svg { position:absolute; inset:0; opacity:0.6; }
+  .window-svg rect { fill:none; stroke:rgba(91,189,224,0.6); stroke-width:2; }
+  .layers-legend { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .layer-pill {
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+    padding:10px 18px; border-radius:10px; font-size:15px; font-weight:600;
+    opacity:0; transition:opacity 0.5s, border-color 0.3s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .layer-pill.show { opacity:1; }
+  .layer-pill.active { border-color:#F07D17; background:rgba(240,125,23,0.1); color:#F07D17; }
+  .layer-dot { width:10px; height:10px; border-radius:50%; }
+  .stats-ring { display:flex; justify-content:space-around; width:100%; }
+  .stat-s { text-align:center; }
+  .stat-s .v { font-size:28px; font-weight:800; color:#5bbde0; font-family:'JetBrains Mono',monospace; }
+  .stat-s .l { font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  .floor-shadow { position:absolute; bottom:-30px; left:50%; transform:translateX(-50%);
+    width:600px; height:40px; background:radial-gradient(ellipse,rgba(0,0,0,0.6),transparent 70%); filter:blur(10px); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:10px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <div>
+        <h1>A tua casa em <span class="text-gradient">3D</span>.</h1>
+        <p class="sub">Render gerado por IA em segundos. 360°.</p>
+      </div>
+      <div class="scene">
+        <div class="floor-shadow"></div>
+        <div class="house3d">
+          <div class="cube-face f-front"><svg class="window-svg" viewBox="0 0 400 400"><rect x="60" y="80" width="100" height="140"/><rect x="240" y="80" width="100" height="140"/><rect x="160" y="240" width="80" height="160"/></svg></div>
+          <div class="cube-face f-back"><svg class="window-svg" viewBox="0 0 400 400"><rect x="100" y="100" width="200" height="150"/></svg></div>
+          <div class="cube-face f-right"><svg class="window-svg" viewBox="0 0 400 400"><rect x="80" y="100" width="100" height="130"/><rect x="220" y="100" width="100" height="130"/></svg></div>
+          <div class="cube-face f-left"><svg class="window-svg" viewBox="0 0 400 400"><rect x="80" y="100" width="100" height="130"/><rect x="220" y="100" width="100" height="130"/></svg></div>
+          <div class="cube-face f-top"></div>
+          <div class="cube-face f-bottom"></div>
+        </div>
+      </div>
+      <div class="layers-legend" id="legend">
+        <div class="layer-pill"><div class="layer-dot" style="background:#64748b;"></div>Fundação</div>
+        <div class="layer-pill"><div class="layer-dot" style="background:#178FC6;"></div>Estrutura LSF</div>
+        <div class="layer-pill"><div class="layer-dot" style="background:#fbbf24;"></div>Isolamento</div>
+        <div class="layer-pill"><div class="layer-dot" style="background:#F07D17;"></div>Acabamento</div>
+      </div>
+      <div class="stats-ring">
+        <div class="stat-s"><div class="v">135m²</div><div class="l">Área útil</div></div>
+        <div class="stat-s"><div class="v">T3</div><div class="l">Tipologia</div></div>
+        <div class="stat-s"><div class="v">A+</div><div class="l">Classe</div></div>
+        <div class="stat-s"><div class="v">168K€</div><div class="l">Chave na mão</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    await wait(700);
+    const pills=document.querySelectorAll('.layer-pill');
+    for(let i=0;i<pills.length;i++){await wait(200);pills[i].classList.add('show');}
+    await wait(500);
+    // cycle active
+    let idx=0;
+    const cycle=setInterval(()=>{
+      pills.forEach(p=>p.classList.remove('active'));
+      pills[idx%pills.length].classList.add('active');
+      idx++;
+    },1100);
+    await wait(12000);
+    clearInterval(cycle);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

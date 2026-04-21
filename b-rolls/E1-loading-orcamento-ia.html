@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E1 — Loading IA Orçamento</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:40px; justify-content:center; align-items:center; text-align:center; }
+  .spinner { width:160px; height:160px; position:relative; }
+  .spinner svg { width:100%; height:100%; animation:rot 2s linear infinite; }
+  @keyframes rot { to { transform:rotate(360deg); } }
+  .spinner circle { stroke:#178FC6; stroke-width:4; fill:none; stroke-linecap:round;
+                    stroke-dasharray:250 500; animation:dashMove 1.8s ease-in-out infinite; }
+  @keyframes dashMove { 0% { stroke-dashoffset:0; } 50% { stroke-dashoffset:-250; } 100% { stroke-dashoffset:-500; } }
+  .spinner-glow { position:absolute; inset:0; background:radial-gradient(circle,rgba(23,143,198,0.4),transparent 60%); filter:blur(20px); }
+  .ai-badge { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+              font-size:42px; font-weight:800; background:linear-gradient(135deg,#178FC6,#F07D17);
+              -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:1px; }
+  h1 { font-size:48px; font-weight:800; letter-spacing:-0.02em; line-height:1.15; }
+  .msg { font-size:22px; color:#94a3b8; min-height:40px; transition:opacity 0.3s; }
+  .progress-wrap { width:100%; max-width:600px; }
+  .progress-top { display:flex; justify-content:space-between; margin-bottom:12px; }
+  .progress-lbl { font-size:14px; color:#64748b; letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+  .progress-pct { font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; color:#5bbde0; }
+  .progress-track { height:10px; background:rgba(255,255,255,0.08); border-radius:5px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,#178FC6,#F07D17); width:0%; transition:width 0.3s; box-shadow:0 0 15px rgba(23,143,198,0.5); }
+  .done-wrap { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px;
+               opacity:0; transition:opacity 0.6s; pointer-events:none; }
+  .done-wrap.show { opacity:1; }
+  .done-price { font-size:96px; font-weight:900; font-family:'JetBrains Mono',monospace;
+                background:linear-gradient(135deg,#22c55e,#178FC6); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .confetti { position:absolute; width:10px; height:20px; opacity:0; }
+  @keyframes confettiFall { 0% { transform:translateY(-100px) rotate(0); opacity:1; } 100% { transform:translateY(1800px) rotate(720deg); opacity:0; } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:20px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap" id="loading">
+      <div class="spinner">
+        <div class="spinner-glow"></div>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40"/></svg>
+        <div class="ai-badge">IA</div>
+      </div>
+      <h1>A calcular o teu<br><span class="text-gradient">orçamento personalizado</span></h1>
+      <div class="msg" id="msg">A iniciar motor de cálculo…</div>
+      <div class="progress-wrap">
+        <div class="progress-top"><div class="progress-lbl">Progresso</div><div class="progress-pct" id="pct">0%</div></div>
+        <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+      </div>
+    </div>
+    <div class="done-wrap" id="done">
+      <div class="check-tick" style="width:140px; height:140px;"><svg viewBox="0 0 60 60"><path d="M14 30 L26 42 L46 20" stroke-linecap="round"/></svg></div>
+      <div>
+        <div style="font-size:18px; color:#64748b; letter-spacing:3px; text-transform:uppercase; font-weight:700;">Orçamento pronto</div>
+        <div class="done-price" id="price">168.000€</div>
+        <div style="font-size:20px; color:#cbd5e1; margin-top:6px;">T3 · 135 m² · Chave na mão · 5 meses</div>
+      </div>
+    </div>
+    <div id="confetti-holder"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const stages=[
+    {pct:15, msg:'A analisar projecto…'},
+    {pct:30, msg:'A identificar materiais óptimos…'},
+    {pct:50, msg:'A auditar quantidades…'},
+    {pct:70, msg:'A comparar preços de 1.400 fornecedores…'},
+    {pct:88, msg:'A validar margem de segurança…'},
+    {pct:100, msg:'Orçamento pronto!'}
+  ];
+  async function run(){
+    const fill=document.getElementById('fill'), pct=document.getElementById('pct'), msg=document.getElementById('msg');
+    await wait(500);
+    for(const st of stages){
+      msg.style.opacity='0';
+      await wait(200);
+      msg.textContent=st.msg;
+      msg.style.opacity='1';
+      fill.style.width=st.pct+'%';
+      let v=parseInt(pct.textContent) || 0;
+      const target=st.pct;
+      const inc=setInterval(()=>{
+        v+=2;
+        if(v>=target){v=target; clearInterval(inc);}
+        pct.textContent=v+'%';
+      },30);
+      await wait(1400);
+    }
+    await wait(400);
+    document.getElementById('loading').style.opacity='0';
+    document.getElementById('done').classList.add('show');
+    // Confetti
+    const holder=document.getElementById('confetti-holder');
+    const colors=['#178FC6','#F07D17','#22c55e','#fbbf24','#a855f7'];
+    for(let i=0;i<60;i++){
+      const c=document.createElement('div');
+      c.className='confetti';
+      c.style.background=colors[i%colors.length];
+      c.style.left=Math.random()*100+'%';
+      c.style.top='10%';
+      c.style.animation=`confettiFall ${2+Math.random()*1.5}s ${Math.random()*0.5}s ease-out forwards`;
+      holder.appendChild(c);
+    }
+    await wait(4500);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

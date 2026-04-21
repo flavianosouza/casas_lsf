@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll E4 — Contador Casas</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:40px; justify-content:center; align-items:center; text-align:center; }
+  .eyebrow { font-size:20px; color:#F07D17; letter-spacing:4px; text-transform:uppercase; font-weight:700; }
+  .counter-big {
+    font-size:320px; font-weight:900; font-family:'JetBrains Mono',monospace; line-height:0.9;
+    background:linear-gradient(135deg,#178FC6 0%,#1a9fd6 30%,#F07D17 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    letter-spacing:-8px; filter:drop-shadow(0 0 40px rgba(23,143,198,0.25));
+  }
+  .counter-label { font-size:32px; font-weight:700; color:#fff; letter-spacing:1px; }
+  .sub-mid { font-size:20px; color:#94a3b8; max-width:800px; }
+  .split-row { display:flex; gap:40px; margin-top:20px; }
+  .split-item { flex:1; }
+  .split-v { font-size:56px; font-weight:800; font-family:'JetBrains Mono',monospace; color:#F07D17; }
+  .split-l { font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+  .burst { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+  .burst-ring {
+    width:0; height:0; border-radius:50%; border:4px solid rgba(23,143,198,0.5);
+    opacity:0; transition:all 1.2s ease-out;
+  }
+  .burst-ring.go { width:1200px; height:1200px; opacity:0; border-width:0; }
+  .drum { font-variant-numeric:tabular-nums; }
+  .dramatic {
+    animation:flashFinal 0.3s;
+  }
+  @keyframes flashFinal {
+    0% { transform:scale(1); }
+    50% { transform:scale(1.2); filter:drop-shadow(0 0 80px rgba(240,125,23,0.8)); }
+    100% { transform:scale(1); }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="burst"><div class="burst-ring" id="ring"></div></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:20px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <div class="eyebrow">OBRASNET · Casas LSF</div>
+      <div>
+        <div class="counter-big drum" id="big">0</div>
+        <div class="counter-label" style="margin-top:16px;">casas <span class="text-gradient">entregues</span></div>
+      </div>
+      <p class="sub-mid">De norte a sul de Portugal. Chave na mão. A+ garantida. Zero derrapagem.</p>
+      <div class="split-row">
+        <div class="split-item"><div class="split-v" id="s1">0</div><div class="split-l">Distritos</div></div>
+        <div class="split-item"><div class="split-v" id="s2">0</div><div class="split-l">Casas em obra</div></div>
+        <div class="split-item"><div class="split-v" id="s3">0</div><div class="split-l">Satisfação</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function fastTicker(el, finalVal, dur){
+    return new Promise(res=>{
+      const start=performance.now();
+      function tick(t){
+        const p=Math.min((t-start)/dur,1);
+        // mostra números aleatórios até perto do fim
+        if(p<0.85){
+          el.textContent=Math.floor(Math.random()*finalVal);
+        } else {
+          const ease=(p-0.85)/0.15;
+          el.textContent=Math.floor(finalVal*ease);
+          if(p>=1){el.textContent=finalVal; res();}
+        }
+        if(p<1)requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  function simpleCount(el, to, suf='', dur=1400){
+    const s=performance.now();
+    function tick(t){
+      const p=Math.min((t-s)/dur,1);
+      const v=Math.floor(to*(1-Math.pow(1-p,3)));
+      el.textContent=v+suf;
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  async function run(){
+    await wait(700);
+    const big=document.getElementById('big');
+    await fastTicker(big, 147, 3000);
+    big.classList.add('dramatic');
+    document.getElementById('ring').classList.add('go');
+    setTimeout(()=>{
+      simpleCount(document.getElementById('s1'), 18);
+      simpleCount(document.getElementById('s2'), 23);
+      simpleCount(document.getElementById('s3'), 98, '%');
+    }, 300);
+    await wait(4500);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

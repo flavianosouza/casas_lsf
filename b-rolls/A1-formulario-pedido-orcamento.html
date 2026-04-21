@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll A1 — Formulário de Pedido de Orçamento</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .form-wrap { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  h1 { font-size: 52px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+  h1 span { display: block; margin-top: 8px; }
+  .subtitle { font-size: 22px; color: #94a3b8; margin-top: 12px; }
+  .row { display: flex; gap: 20px; }
+  .row > .field { flex: 1; }
+  .field { position: relative; }
+  .select-menu {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0;
+    background: #1a1a2e; border: 1px solid rgba(23,143,198,0.4);
+    border-radius: 12px; padding: 8px; z-index: 50;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    opacity: 0; pointer-events: none; transform: translateY(-8px);
+    transition: all 0.25s ease-out;
+  }
+  .select-menu.open { opacity: 1; transform: translateY(0); }
+  .select-opt { padding: 14px 18px; border-radius: 8px; font-size: 20px; cursor: pointer; transition: background 0.2s; }
+  .select-opt:hover, .select-opt.hl { background: rgba(23,143,198,0.2); color: #5bbde0; }
+  .success-overlay {
+    position: absolute; inset: 0; background: rgba(10,10,10,0.85);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 32px; opacity: 0; pointer-events: none; transition: opacity 0.4s;
+  }
+  .success-overlay.show { opacity: 1; }
+  .success-overlay .msg { font-size: 36px; font-weight: 700; text-align: center; }
+  .success-overlay .sub { font-size: 22px; color: #94a3b8; }
+  .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 24px 0 32px 0; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 36px; }
+  .header-nav { font-size: 16px; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="header-bar">
+      <div class="logo-brand">
+        <img src="_shared/assets/logo-obrasnet.png" alt="OBRASNET">
+      </div>
+      <div class="header-nav">casaslsf.com</div>
+    </div>
+
+    <div class="form-wrap">
+      <div>
+        <h1>Pede o teu <span class="text-gradient">orçamento gratuito</span></h1>
+        <p class="subtitle">Resposta em 24h com plantas, custos e prazos.</p>
+      </div>
+
+      <div class="glass-card">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="field">
+            <label class="field-label">Nome completo</label>
+            <div class="field-input" id="f-nome"><span class="typed"></span><span class="caret" data-active="1"></span></div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label class="field-label">Email</label>
+              <div class="field-input" id="f-email"><span class="typed"></span></div>
+            </div>
+            <div class="field">
+              <label class="field-label">Telefone</label>
+              <div class="field-input" id="f-tel"><span class="typed"></span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label class="field-label">Localização da obra</label>
+              <div class="field-input" id="f-loc"><span class="typed"></span></div>
+            </div>
+            <div class="field">
+              <label class="field-label">Tipologia</label>
+              <div class="field-input" id="f-tipo" style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="typed" style="color:#64748b">Seleciona…</span>
+                <span style="color:#94a3b8">▾</span>
+              </div>
+              <div class="select-menu" id="f-tipo-menu">
+                <div class="select-opt">T1 · 60 m²</div>
+                <div class="select-opt">T2 · 90 m²</div>
+                <div class="select-opt">T3 · 130 m²</div>
+                <div class="select-opt">T4 · 170 m²</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label class="field-label">Área útil (m²)</label>
+              <div class="field-input" id="f-area"><span class="typed"></span></div>
+            </div>
+            <div class="field">
+              <label class="field-label">Prazo desejado</label>
+              <div class="field-input" id="f-prazo"><span class="typed"></span></div>
+            </div>
+          </div>
+          <button class="btn-primary" id="btn-submit" style="margin-top:8px;">Pedir orçamento gratuito</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-overlay" id="success">
+      <div class="check-tick"><svg viewBox="0 0 60 60"><path d="M14 30 L26 42 L46 20" stroke-linecap="round"/></svg></div>
+      <div>
+        <div class="msg">Pedido recebido ✓</div>
+        <div class="sub" style="margin-top:12px; text-align:center;">A nossa equipa responde em 24h.</div>
+      </div>
+    </div>
+  </div>
+
+  <img src="_shared/cursor.svg" class="cursor" id="cursor" style="left:540px; top:960px;">
+</div>
+
+<script>
+(function () {
+  const stage = document.querySelector('.stage');
+  const cursor = document.getElementById('cursor');
+  const success = document.getElementById('success');
+
+  const steps = [
+    { field: 'f-nome', value: 'João Marques', typeSpeed: 55 },
+    { field: 'f-email', value: 'joao.marques@gmail.com', typeSpeed: 45 },
+    { field: 'f-tel', value: '+351 912 345 678', typeSpeed: 60 },
+    { field: 'f-loc', value: 'Óbidos, Leiria', typeSpeed: 65 },
+    { field: 'f-tipo', value: 'T3 · 130 m²', dropdown: true, choose: 2 },
+    { field: 'f-area', value: '135', typeSpeed: 80 },
+    { field: 'f-prazo', value: '6 meses', typeSpeed: 70 },
+  ];
+
+  function rectCenter(el) {
+    const r = el.getBoundingClientRect();
+    const s = stage.getBoundingClientRect();
+    const scale = s.width / 1080;
+    return {
+      x: (r.left - s.left) / scale + (r.width / scale) / 2,
+      y: (r.top - s.top) / scale + (r.height / scale) / 2,
+    };
+  }
+
+  function moveCursor(el) {
+    return new Promise(res => {
+      const c = rectCenter(el);
+      cursor.style.left = (c.x - 4) + 'px';
+      cursor.style.top = (c.y - 4) + 'px';
+      setTimeout(res, 650);
+    });
+  }
+
+  function click() {
+    cursor.classList.add('cursor-click');
+    return new Promise(res => setTimeout(() => { cursor.classList.remove('cursor-click'); res(); }, 320));
+  }
+
+  function setCaretActive(id) {
+    document.querySelectorAll('.caret').forEach(c => c.removeAttribute('data-active'));
+    const f = document.getElementById(id);
+    if (f) {
+      f.classList.add('focused');
+      let caret = f.querySelector('.caret');
+      if (!caret) {
+        caret = document.createElement('span');
+        caret.className = 'caret';
+        f.appendChild(caret);
+      }
+      caret.setAttribute('data-active', '1');
+    }
+  }
+
+  function blurAll() {
+    document.querySelectorAll('.field-input').forEach(f => f.classList.remove('focused'));
+  }
+
+  async function typeInto(id, value, speed) {
+    const f = document.getElementById(id);
+    const typed = f.querySelector('.typed');
+    typed.style.color = '#fff';
+    typed.textContent = '';
+    for (let i = 0; i < value.length; i++) {
+      typed.textContent += value[i];
+      await wait(speed + Math.random() * 30);
+    }
+  }
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function pickDropdown(fieldId, choice, label) {
+    const menu = document.getElementById(fieldId + '-menu');
+    menu.classList.add('open');
+    await wait(400);
+    const opts = menu.querySelectorAll('.select-opt');
+    for (let i = 0; i <= choice; i++) {
+      opts.forEach(o => o.classList.remove('hl'));
+      opts[i].classList.add('hl');
+      await wait(240);
+    }
+    await moveCursor(opts[choice]);
+    await click();
+    const typed = document.getElementById(fieldId).querySelector('.typed');
+    typed.style.color = '#fff';
+    typed.textContent = label;
+    menu.classList.remove('open');
+    await wait(300);
+  }
+
+  async function run() {
+    await wait(600);
+    for (const step of steps) {
+      const el = document.getElementById(step.field);
+      await moveCursor(el);
+      await click();
+      blurAll();
+      setCaretActive(step.field);
+      if (step.dropdown) {
+        await pickDropdown(step.field, step.choose, step.value);
+      } else {
+        await typeInto(step.field, step.value, step.typeSpeed);
+      }
+      await wait(200);
+    }
+    blurAll();
+    const btn = document.getElementById('btn-submit');
+    btn.classList.add('pulse');
+    await moveCursor(btn);
+    await wait(400);
+    await click();
+    btn.classList.remove('pulse');
+    await wait(250);
+    success.classList.add('show');
+    await wait(3500);
+    window.location.reload();
+  }
+
+  window.addEventListener('load', () => setTimeout(run, 400));
+})();
+</script>
+</body>
+</html>

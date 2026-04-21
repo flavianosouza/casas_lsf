@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll A3 — Simulador Financiamento</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:30px; justify-content:center; }
+  h1 { font-size:48px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; }
+  .slider-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:26px 30px; }
+  .slider-top { display:flex; justify-content:space-between; margin-bottom:18px; }
+  .slider-label { font-size:18px; color:#94a3b8; letter-spacing:1px; }
+  .slider-val { font-family:'JetBrains Mono',monospace; font-size:32px; color:#5bbde0; font-weight:700; }
+  .track { height:8px; background:rgba(255,255,255,0.08); border-radius:4px; position:relative; }
+  .fill { height:100%; background:linear-gradient(90deg,#178FC6,#F07D17); border-radius:4px; width:0%;
+          transition:width 2s cubic-bezier(0.4,0,0.2,1); box-shadow:0 0 15px rgba(23,143,198,0.5); }
+  .knob { position:absolute; top:50%; width:28px; height:28px; border-radius:50%; background:#fff;
+          transform:translate(-50%,-50%); box-shadow:0 4px 15px rgba(0,0,0,0.4); left:0%;
+          transition:left 2s cubic-bezier(0.4,0,0.2,1); }
+  .result-box { background:linear-gradient(165deg,rgba(34,197,94,0.12),rgba(23,143,198,0.04));
+                border:1px solid rgba(34,197,94,0.3); border-radius:20px; padding:36px; text-align:center; }
+  .result-label { font-size:18px; color:#94a3b8; letter-spacing:2px; text-transform:uppercase; }
+  .result-value { font-size:84px; font-weight:800; color:#22c55e; font-family:'JetBrains Mono',monospace; margin-top:8px; }
+  .result-sub { font-size:18px; color:#cbd5e1; margin-top:8px; }
+  .banks { display:flex; gap:16px; justify-content:center; margin-top:30px; flex-wrap:wrap; }
+  .bank { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+          padding:12px 20px; font-weight:700; font-size:18px; opacity:0; transition:opacity 0.4s; }
+  .bank.show { opacity:1; }
+  .approved-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(34,197,94,0.2);
+                    border:1px solid rgba(34,197,94,0.5); color:#22c55e; padding:10px 24px;
+                    border-radius:30px; font-weight:700; font-size:18px; margin-top:20px;
+                    opacity:0; transform:scale(0.8); transition:all 0.5s; }
+  .approved-badge.show { opacity:1; transform:scale(1); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:24px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <h1>Simula o teu <span class="text-gradient">crédito habitação</span></h1>
+      <div class="slider-box">
+        <div class="slider-top"><div class="slider-label">VALOR DA CASA</div><div class="slider-val" id="v1">0€</div></div>
+        <div class="track"><div class="fill" id="f1"></div><div class="knob" id="k1"></div></div>
+      </div>
+      <div class="slider-box">
+        <div class="slider-top"><div class="slider-label">ENTRADA</div><div class="slider-val" id="v2">0€</div></div>
+        <div class="track"><div class="fill" id="f2"></div><div class="knob" id="k2"></div></div>
+      </div>
+      <div class="slider-box">
+        <div class="slider-top"><div class="slider-label">PRAZO (ANOS)</div><div class="slider-val" id="v3">0</div></div>
+        <div class="track"><div class="fill" id="f3"></div><div class="knob" id="k3"></div></div>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Prestação mensal estimada</div>
+        <div class="result-value" id="vm">0€</div>
+        <div class="result-sub">Taxa Euribor 12M + spread 0,7% · Cálculo indicativo</div>
+        <div class="approved-badge" id="badge">✓ Pré-aprovação em 48h</div>
+        <div class="banks" id="banks">
+          <div class="bank">Millennium BCP</div>
+          <div class="bank">CGD</div>
+          <div class="bank">Santander</div>
+          <div class="bank">BPI</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  function setSlider(percent, valEl, finalVal, unit='€'){
+    document.getElementById('f'+percent.id).style.width=percent.pct+'%';
+    document.getElementById('k'+percent.id).style.left=percent.pct+'%';
+    animCounter(document.getElementById('v'+percent.id), finalVal, 2000, unit);
+  }
+  function animCounter(el,to,dur,unit){
+    const from=0, start=performance.now();
+    function tick(t){
+      const p=Math.min((t-start)/dur,1);
+      const v=from+(to-from)*(1-Math.pow(1-p,3));
+      if(unit==='€') el.textContent=Math.round(v).toLocaleString('pt-PT')+'€';
+      else el.textContent=Math.round(v);
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  async function run(){
+    await wait(700);
+    setSlider({id:'1',pct:62}, null, 175000);
+    await wait(2200);
+    setSlider({id:'2',pct:22}, null, 35000);
+    await wait(2200);
+    setSlider({id:'3',pct:75}, null, 30, '');
+    animCounter(document.getElementById('vm'), 548, 1800);
+    document.getElementById('vm').textContent='';
+    setTimeout(()=>{
+      const el=document.getElementById('vm');
+      let v=0, step=548/60;
+      const i=setInterval(()=>{v+=step;if(v>=548){v=548;clearInterval(i);}el.textContent=Math.round(v).toLocaleString('pt-PT')+'€';},30);
+    },300);
+    await wait(2400);
+    document.getElementById('badge').classList.add('show');
+    const banks=document.querySelectorAll('.bank');
+    for(let i=0;i<banks.length;i++){await wait(180);banks[i].classList.add('show');}
+    await wait(3000);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>

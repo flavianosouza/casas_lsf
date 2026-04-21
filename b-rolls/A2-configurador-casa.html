@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>B-Roll A2 — Configurador Casa</title>
+<link rel="stylesheet" href="_shared/styles.css">
+<style>
+  .wrap { flex:1; display:flex; flex-direction:column; gap:32px; justify-content:center; }
+  h1 { font-size:52px; font-weight:800; letter-spacing:-0.02em; line-height:1.1; }
+  .step { opacity:0.3; transition:opacity 0.5s; }
+  .step.active { opacity:1; }
+  .step-label { font-size:16px; color:#64748b; text-transform:uppercase; letter-spacing:2px; margin-bottom:10px; font-weight:600; }
+  .options { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .opt { background:rgba(255,255,255,0.04); border:2px solid rgba(255,255,255,0.08);
+         border-radius:14px; padding:22px 14px; text-align:center; font-size:22px; font-weight:600;
+         transition:all 0.3s; cursor:pointer; }
+  .opt.selected { border-color:#178FC6; background:rgba(23,143,198,0.15); box-shadow:0 0 25px rgba(23,143,198,0.3); }
+  .opt .sub { font-size:14px; color:#94a3b8; font-weight:400; margin-top:4px; }
+  .price-box { background:linear-gradient(165deg,rgba(240,125,23,0.1),rgba(23,143,198,0.05));
+               border:1px solid rgba(240,125,23,0.3); border-radius:20px; padding:40px; text-align:center; margin-top:16px; }
+  .price-label { font-size:18px; color:#94a3b8; letter-spacing:2px; text-transform:uppercase; }
+  .price-value { font-size:88px; font-weight:800; font-family:'JetBrains Mono',monospace;
+                 background:linear-gradient(135deg,#F07D17,#178FC6); -webkit-background-clip:text; background-clip:text; color:transparent; margin-top:10px; }
+  .price-sub { font-size:20px; color:#cbd5e1; margin-top:12px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="grid-bg"></div>
+  <div class="safe-area">
+    <div class="logo-brand" style="margin-bottom:30px;"><img src="_shared/assets/logo-obrasnet.png"></div>
+    <div class="wrap">
+      <h1>Configura a tua <span class="text-gradient">casa</span> em segundos.</h1>
+
+      <div class="step" id="s1">
+        <div class="step-label">1 · Tipologia</div>
+        <div class="options" id="tipo-opts">
+          <div class="opt">T1<div class="sub">60 m²</div></div>
+          <div class="opt">T2<div class="sub">90 m²</div></div>
+          <div class="opt">T3<div class="sub">130 m²</div></div>
+          <div class="opt">T4<div class="sub">170 m²</div></div>
+        </div>
+      </div>
+
+      <div class="step" id="s2">
+        <div class="step-label">2 · Acabamento</div>
+        <div class="options" id="acab-opts" style="grid-template-columns:repeat(3,1fr);">
+          <div class="opt">Standard<div class="sub">1.100€/m²</div></div>
+          <div class="opt">Premium<div class="sub">1.350€/m²</div></div>
+          <div class="opt">Luxury<div class="sub">1.650€/m²</div></div>
+        </div>
+      </div>
+
+      <div class="step" id="s3">
+        <div class="step-label">3 · Extras</div>
+        <div class="options" id="extras-opts" style="grid-template-columns:repeat(3,1fr);">
+          <div class="opt">Piscina<div class="sub">+18.000€</div></div>
+          <div class="opt">Solar<div class="sub">+6.500€</div></div>
+          <div class="opt">Garagem<div class="sub">+12.000€</div></div>
+        </div>
+      </div>
+
+      <div class="price-box">
+        <div class="price-label">Orçamento estimado</div>
+        <div class="price-value" id="price">0€</div>
+        <div class="price-sub">Entrega em <b id="prazo">6 meses</b> · Classe A+ · Financiamento disponível</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const animCounter=(el,to,dur=1200)=>new Promise(res=>{
+    const start=performance.now(), from=parseFloat(el.dataset.v||0);
+    function tick(t){
+      const p=Math.min((t-start)/dur,1);
+      const v=from+(to-from)*(1-Math.pow(1-p,3));
+      el.textContent=Math.round(v).toLocaleString('pt-PT')+'€';
+      if(p<1)requestAnimationFrame(tick);else{el.dataset.v=to;res();}
+    }
+    requestAnimationFrame(tick);
+  });
+  async function selectOpt(containerId, idx, delay=500){
+    const opts=document.getElementById(containerId).querySelectorAll('.opt');
+    for(let i=0;i<=idx;i++){
+      opts.forEach(o=>o.classList.remove('hl'));
+      if(i<idx){opts[i].style.borderColor='rgba(23,143,198,0.4)';await wait(180);opts[i].style.borderColor='';}
+    }
+    opts[idx].classList.add('selected');
+    await wait(delay);
+  }
+  async function run(){
+    const price=document.getElementById('price');
+    await wait(700);
+    document.getElementById('s1').classList.add('active');
+    await wait(600);
+    await selectOpt('tipo-opts',2);
+    await animCounter(price,143000);
+    document.getElementById('s2').classList.add('active');
+    await wait(400);
+    await selectOpt('acab-opts',1);
+    await animCounter(price,175500);
+    document.getElementById('s3').classList.add('active');
+    await wait(400);
+    await selectOpt('extras-opts',1,300);
+    await animCounter(price,182000);
+    await selectOpt('extras-opts',2,300);
+    await animCounter(price,194000);
+    await wait(2800);
+    window.location.reload();
+  }
+  window.addEventListener('load',()=>setTimeout(run,400));
+})();
+</script>
+</body>
+</html>
