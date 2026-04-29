@@ -1,28 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { APP_ROUTES } from "@/lib/app-routes.generated";
 
-// Known app routes that should NOT be redirected
-const APP_ROUTES = new Set([
-  "/",
-  "/simulador",
-  "/plantas",
-  "/custos",
-  "/metodos",
-  "/como-funciona",
-  "/blog",
-  "/privacidade",
-  "/termos",
-  "/sobre-obrasnet",
-  "/metodologia-construtiva",
-  "/processo-construcao-lsf",
-  "/preco-construcao-lsf-por-m2",
-  "/quanto-custa-casa-lsf",
-  "/casa-lsf-financiamento",
-  "/empresa-construcao-lsf-portugal",
-  "/analise-planta",
-  "/pladur-preco",
-  "/iva-6-construcao",
-]);
+// APP_ROUTES is auto-generated from frontend/src/app/<dir>/page.tsx by
+// scripts/generate-app-routes.mjs (runs on prebuild/predev). Any new
+// top-level static page is automatically allowlisted — no manual edit
+// here is required when adding pages.
 
 // Old WordPress blog slugs → correct slugs (301 redirects)
 // These old URLs still receive significant Google impressions

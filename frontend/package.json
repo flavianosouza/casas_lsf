@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "gen:routes": "node scripts/generate-app-routes.mjs",
+    "predev": "node scripts/generate-app-routes.mjs",
+    "prebuild": "node scripts/generate-app-routes.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
