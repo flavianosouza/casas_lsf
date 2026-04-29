@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { APP_ROUTES } from "@/lib/app-routes.generated";
+import { WP_BLOG_SLUGS } from "@/lib/blog-slugs.generated";
 
 // APP_ROUTES is auto-generated from frontend/src/app/<dir>/page.tsx by
 // scripts/generate-app-routes.mjs (runs on prebuild/predev). Any new
 // top-level static page is automatically allowlisted — no manual edit
 // here is required when adding pages.
+//
+// WP_BLOG_SLUGS is auto-generated from /api/artigos/slugs by
+// scripts/generate-blog-slugs.mjs (runs on prebuild/predev). Used by the
+// catch-all fallback to only redirect known WP-legacy slugs to /blog/<slug>,
+// instead of every random root path. Unknown paths return a clean 404.
 
 // Old WordPress blog slugs → correct slugs (301 redirects)
 // These old URLs still receive significant Google impressions
@@ -121,15 +127,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
-  // All other root-level paths → redirect to /blog/{slug}
-  // These are old WordPress post URLs (e.g., /pavilhoes-pre-fabricados-preco-m2)
+  // Root-level path → redirect to /blog/{slug} ONLY for known WP-legacy slugs.
+  // Unknown slugs fall through to Next.js (which returns 404) instead of
+  // creating phantom 301→404 redirect chains that pollute Google's index.
   const slug = pathname.replace(/^\//, "").replace(/\/$/, "");
   if (slug && !slug.includes("/")) {
-    const url = request.nextUrl.clone();
-    // Use corrected slug if an old→new mapping exists, avoiding double 301
-    const correctedSlug = BLOG_SLUG_REDIRECTS[slug] || slug;
-    url.pathname = `/blog/${correctedSlug}`;
-    return NextResponse.redirect(url, 301);
+    const renamed = BLOG_SLUG_REDIRECTS[slug];
+    if (renamed) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/blog/${renamed}`;
+      return NextResponse.redirect(url, 301);
+    }
+    if (WP_BLOG_SLUGS.has(slug)) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/blog/${slug}`;
+      return NextResponse.redirect(url, 301);
+    }
+    // Unknown slug — let Next.js render its 404 directly.
   }
 
   return NextResponse.next();

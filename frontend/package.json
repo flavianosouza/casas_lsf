@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "gen:routes": "node scripts/generate-app-routes.mjs",
-    "predev": "node scripts/generate-app-routes.mjs",
-    "prebuild": "node scripts/generate-app-routes.mjs",
+    "gen:slugs": "node scripts/generate-blog-slugs.mjs",
+    "gen:all": "npm run gen:routes && npm run gen:slugs",
+    "predev": "npm run gen:all",
+    "prebuild": "npm run gen:all",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
